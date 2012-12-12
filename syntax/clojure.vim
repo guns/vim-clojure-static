@@ -69,21 +69,11 @@ syn match   clojureDispatch "\^"
 syn match   clojureAnonArg contained "%\(\d\|&\)\?"
 syn match   clojureVarArg contained "&"
 
-syn region clojureSexpLevel0 matchgroup=clojureParen0 start="(" matchgroup=clojureParen0 end=")"           contains=@clojureTopCluster,clojureSexpLevel1
-syn region clojureSexpLevel1 matchgroup=clojureParen1 start="(" matchgroup=clojureParen1 end=")" contained contains=@clojureTopCluster,clojureSexpLevel2
-syn region clojureSexpLevel2 matchgroup=clojureParen2 start="(" matchgroup=clojureParen2 end=")" contained contains=@clojureTopCluster,clojureSexpLevel3
-syn region clojureSexpLevel3 matchgroup=clojureParen3 start="(" matchgroup=clojureParen3 end=")" contained contains=@clojureTopCluster,clojureSexpLevel4
-syn region clojureSexpLevel4 matchgroup=clojureParen4 start="(" matchgroup=clojureParen4 end=")" contained contains=@clojureTopCluster,clojureSexpLevel5
-syn region clojureSexpLevel5 matchgroup=clojureParen5 start="(" matchgroup=clojureParen5 end=")" contained contains=@clojureTopCluster,clojureSexpLevel6
-syn region clojureSexpLevel6 matchgroup=clojureParen6 start="(" matchgroup=clojureParen6 end=")" contained contains=@clojureTopCluster,clojureSexpLevel7
-syn region clojureSexpLevel7 matchgroup=clojureParen7 start="(" matchgroup=clojureParen7 end=")" contained contains=@clojureTopCluster,clojureSexpLevel8
-syn region clojureSexpLevel8 matchgroup=clojureParen8 start="(" matchgroup=clojureParen8 end=")" contained contains=@clojureTopCluster,clojureSexpLevel9
-syn region clojureSexpLevel9 matchgroup=clojureParen9 start="(" matchgroup=clojureParen9 end=")" contained contains=@clojureTopCluster,clojureSexpLevel0
-
-syn region  clojureAnonFn  matchgroup=clojureParen0 start="#(" matchgroup=clojureParen0 end=")"  contains=@clojureTopCluster,clojureAnonArg,clojureSexpLevel0
-syn region  clojureVector  matchgroup=clojureParen0 start="\[" matchgroup=clojureParen0 end="\]" contains=@clojureTopCluster,clojureVarArg,clojureSexpLevel0
-syn region  clojureMap     matchgroup=clojureParen0 start="{"  matchgroup=clojureParen0 end="}"  contains=@clojureTopCluster,clojureSexpLevel0
-syn region  clojureSet     matchgroup=clojureParen0 start="#{" matchgroup=clojureParen0 end="}"  contains=@clojureTopCluster,clojureSexpLevel0
+syn region  clojureSexp    matchgroup=clojureParen start="("  matchgroup=clojureParen end=")"  contains=@clojureTopCluster
+syn region  clojureAnonFn  matchgroup=clojureParen start="#(" matchgroup=clojureParen end=")"  contains=@clojureTopCluster,clojureAnonArg,clojureSexp
+syn region  clojureVector  matchgroup=clojureParen start="\[" matchgroup=clojureParen end="\]" contains=@clojureTopCluster,clojureVarArg,clojureSexp
+syn region  clojureMap     matchgroup=clojureParen start="{"  matchgroup=clojureParen end="}"  contains=@clojureTopCluster,clojureSexp
+syn region  clojureSet     matchgroup=clojureParen start="#{" matchgroup=clojureParen end="}"  contains=@clojureTopCluster,clojureSexp
 
 syn region  clojurePattern start=/L\=\#"/ skip=/\\\\\|\\"/ end=/"/
 
@@ -93,7 +83,7 @@ syn region  clojurePattern start=/L\=\#"/ skip=/\\\\\|\\"/ end=/"/
 " See also: https://bitbucket.org/kotarak/vimclojure/issue/87/comment-is-highlighted-incorrectly
 "
 "syn region  clojureCommentSexp                          start="("                                       end=")" transparent contained contains=clojureCommentSexp
-"syn region  clojureComment     matchgroup=clojureParen0 start="(comment"rs=s+1 matchgroup=clojureParen0 end=")"                       contains=clojureTopCluster
+"syn region  clojureComment     matchgroup=clojureParen  start="(comment"rs=s+1 matchgroup=clojureParen  end=")"                       contains=clojureTopCluster
 syn match   clojureComment "comment"
 syn region  clojureComment start="#!" end="\n"
 syn match   clojureComment "#_"
@@ -134,76 +124,7 @@ HiLink clojureTodo      Todo
 
 HiLink clojureError     Error
 
-HiLink clojureParen0    Delimiter
-
-if !exists("g:vimclojure#ParenRainbowColorsDark")
-	if exists("g:vimclojure#ParenRainbowColors")
-		let g:vimclojure#ParenRainbowColorsDark =
-					\ g:vimclojure#ParenRainbowColors
-	else
-		let g:vimclojure#ParenRainbowColorsDark = {
-					\ '1': 'ctermfg=yellow      guifg=orange1',
-					\ '2': 'ctermfg=green       guifg=yellow1',
-					\ '3': 'ctermfg=cyan        guifg=greenyellow',
-					\ '4': 'ctermfg=magenta     guifg=green1',
-					\ '5': 'ctermfg=red         guifg=springgreen1',
-					\ '6': 'ctermfg=yellow      guifg=cyan1',
-					\ '7': 'ctermfg=green       guifg=slateblue1',
-					\ '8': 'ctermfg=cyan        guifg=magenta1',
-					\ '9': 'ctermfg=magenta     guifg=purple1'
-					\ }
-	endif
-endif
-
-if !exists("g:vimclojure#ParenRainbowColorsLight")
-	if exists("g:vimclojure#ParenRainbowColors")
-		let g:vimclojure#ParenRainbowColorsLight =
-					\ g:vimclojure#ParenRainbowColors
-	else
-		let g:vimclojure#ParenRainbowColorsLight = {
-					\ '1': 'ctermfg=darkyellow  guifg=orangered3',
-					\ '2': 'ctermfg=darkgreen   guifg=orange2',
-					\ '3': 'ctermfg=blue        guifg=yellow3',
-					\ '4': 'ctermfg=darkmagenta guifg=olivedrab4',
-					\ '5': 'ctermfg=red         guifg=green4',
-					\ '6': 'ctermfg=darkyellow  guifg=paleturquoise3',
-					\ '7': 'ctermfg=darkgreen   guifg=deepskyblue4',
-					\ '8': 'ctermfg=blue        guifg=darkslateblue',
-					\ '9': 'ctermfg=darkmagenta guifg=darkviolet'
-					\ }
-	endif
-endif
-
-function! VimClojureSetupParenRainbow()
-	if &background == "dark"
-		let colors = g:vimclojure#ParenRainbowColorsDark
-	else
-		let colors = g:vimclojure#ParenRainbowColorsLight
-	endif
-
-	for [level, color] in items(colors)
-		execute "highlight clojureParen" . level . " " . color
-	endfor
-endfunction
-
-if vimclojure#ParenRainbow != 0
-	call VimClojureSetupParenRainbow()
-
-	augroup VimClojureSyntax
-		au!
-		autocmd ColorScheme * if &ft == "clojure" | call VimClojureSetupParenRainbow() | endif
-	augroup END
-else
-	HiLink clojureParen1 clojureParen0
-	HiLink clojureParen2 clojureParen0
-	HiLink clojureParen3 clojureParen0
-	HiLink clojureParen4 clojureParen0
-	HiLink clojureParen5 clojureParen0
-	HiLink clojureParen6 clojureParen0
-	HiLink clojureParen7 clojureParen0
-	HiLink clojureParen8 clojureParen0
-	HiLink clojureParen9 clojureParen0
-endif
+HiLink clojureParen     Delimiter
 
 delcommand HiLink
 
