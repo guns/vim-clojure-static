@@ -4,6 +4,10 @@
 "              modified by Meikel Brandmeyer <mb@kotka.de>
 " URL:         http://kotka.de/projects/clojure/vimclojure.html
 
+" This file forked from the VimClojure project:
+" Maintainer:  guns <self@sungpae.com>
+" URL:         https://github.com/guns/vim-clojure-runtime
+
 if version < 600
     syntax clear
 elseif exists("b:current_syntax")
@@ -355,3 +359,5 @@ endif
 delcommand HiLink
 
 let b:current_syntax = "clojure"
+
+" vim:ts=8 sts=8 sw=8 noet:
