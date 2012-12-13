@@ -83,7 +83,29 @@ bugs may not reside upstream.
 Alternate Interactive Development Plugins
 =========================================
 
-TODO
+### [vim-foreplay](https://github.com/tpope/vim-foreplay)
+
+New nREPL client by Tim Pope.
+
+### [slimv.vim](http://www.vim.org/scripts/script.php?script_id=2531)
+
+SWANK client for Vim by Tamas Kovacs.
+
+### [screen](http://www.vim.org/scripts/script.php?script_id=2711)
+
+Send text to REPLs running in GNU Screen or tmux. Not Clojure specific.
+
+By Eric Van Dewoestine.
+
+Try <https://github.com/guns/screen> for better window handling if you
+are running tmux 1.5 or higher.
+
+### [VimClojure](http://www.vim.org/scripts/script.php?script_id=2501)
+
+The original interactive Clojure editing environment by Meikel
+Brandmeyer. These runtime files are *incompatible* with the original
+VimClojure project in several small ways, so be sure to uninstall
+vim-clojure-static when using VimClojure.
 
 Options
 =======
