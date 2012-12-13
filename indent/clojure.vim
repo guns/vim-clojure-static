@@ -39,6 +39,10 @@ if !exists("g:clojure_fuzzy_indent_patterns")
 	let g:clojure_fuzzy_indent_patterns = "with.*,def.*,let.*"
 endif
 
+if !exists("g:clojure_align_multiline_strings")
+	let g:clojure_align_multiline_strings = 0
+endif
+
 function! s:SynIdName()
 	return synIDattr(synID(line("."), col("."), 0), "name")
 endfunction
@@ -183,7 +187,7 @@ function! GetClojureIndent()
 	" normal lisp indenting or not.
 	let i = s:CheckForString()
 	if i > -1
-		return i
+		return i + !!g:clojure_align_multiline_strings
 	endif
 
 	call cursor(0, 1)
