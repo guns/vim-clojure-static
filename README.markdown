@@ -46,13 +46,15 @@ VimClojure, the static runtime files are not standalone scripts and
 cannot easily be extracted from the VimClojure support libraries. The
 side effects of this coupling are:
 
-    * Hacking on the runtime files is more difficult
-    * Installation from source is more complicated (e.g. installing
-      clojure runtime files from the source repository must first build
-      a zip file via `gradle`)
-    * Installing the whole VimClojure distribution for the runtime files
-      is overkill. A smaller, self-contained set of files would be
-      eligible for inclusion in Vim itself.
+* Hacking on the runtime files is more difficult
+
+* Installation from source is more complicated (e.g. installing clojure
+  runtime files from the source repository must first build a zip file
+  via `gradle`)
+
+* Installing the whole VimClojure distribution for the runtime files is
+  overkill. A smaller, self-contained set of files would be eligible for
+  inclusion in Vim itself.
 
 This is a shame since VimClojure's syntax and indent scripts are of very
 high quality. This fork aims to address these problems.
@@ -86,30 +88,26 @@ Options
 The indent script has a few configurable options. Documentation with
 default values below:
 
-`g:clojure_maxlines`
---------------------
+### `g:clojure_maxlines`
 
 Maximum scan distance of searchpairpos().
 
 ```vim
+" Default
 let g:clojure_maxlines = 100
 ```
 
-`g:clojure_fuzzy_indent` and `g:clojure_fuzzy_indent_patterns`
---------------------------------------------------------------
+### `g:clojure_fuzzy_indent` and `g:clojure_fuzzy_indent_patterns`
 
 Indent words that match patterns as if they are included in `lispwords`.
 
 ```vim
+" Default
 let g:clojure_fuzzy_indent = 1
-```
-
-```vim
 let g:clojure_fuzzy_indent_patterns = "with.*,def.*,let.*"
 ```
 
-`g:clojure_align_multiline_strings`
------------------------------------
+### `g:clojure_align_multiline_strings`
 
 When indenting multiline strings, align subsequent lines to the column
 after the opening quote, instead of the same column.
@@ -131,6 +129,7 @@ Demo:
 ```
 
 ```vim
+" Default
 let g:clojure_align_multiline_strings = 0
 ```
 
@@ -143,6 +142,7 @@ class Clojure editor.
 Thanks to [Tim Pope](https://github.com/tpope/) for advice in #vim.
 
 Copyright 2008-2012 (c) Meikel Brandmeyer.
+
 All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
