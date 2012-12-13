@@ -70,7 +70,7 @@ syn match   clojureDispatch "\(#^\|#'\)"
 syn match   clojureDispatch "\^"
 
 syn match   clojureAnonArg contained "%\(\d\|&\)\?"
-syn match   clojureVarArg contained "&"
+syn match   clojureVarArg "&"
 
 syn region  clojureSexp    matchgroup=clojureParen start="("  matchgroup=clojureParen end=")"  contains=@clojureTopCluster
 syn region  clojureAnonFn  matchgroup=clojureParen start="#(" matchgroup=clojureParen end=")"  contains=@clojureTopCluster,clojureAnonArg,clojureSexp
