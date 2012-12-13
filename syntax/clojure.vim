@@ -1,12 +1,12 @@
 " Vim syntax file
 " Language:    Clojure
-" Maintainer:  Toralf Wittner <toralf.wittner@gmail.com>
+" Authors:     Toralf Wittner <toralf.wittner@gmail.com>
 "              modified by Meikel Brandmeyer <mb@kotka.de>
 " URL:         http://kotka.de/projects/clojure/vimclojure.html
 
 " This file forked from the VimClojure project:
-" Maintainer:  guns <self@sungpae.com>
-" URL:         https://github.com/guns/vim-clojure-runtime
+" Maintainer:  Sung Pae <self@sungpae.com>
+" URL:         https://github.com/guns/vim-clojure-static
 
 if version < 600
     syntax clear

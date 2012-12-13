@@ -1,10 +1,10 @@
 " Vim filetype plugin file
 " Language:     Clojure
-" Maintainer:   Meikel Brandmeyer <mb@kotka.de>
+" Author:       Meikel Brandmeyer <mb@kotka.de>
 
 " This file forked from the VimClojure project:
-" Maintainer:   guns <self@sungpae.com>
-" URL:          https://github.com/guns/vim-clojure-runtime
+" Maintainer:   Sung Pae <self@sungpae.com>
+" URL:          https://github.com/guns/vim-clojure-static
 
 " Only do this when not done yet for this buffer
 if exists("b:did_ftplugin")
