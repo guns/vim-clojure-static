@@ -18,7 +18,9 @@ set cpo&vim
 
 let b:undo_ftplugin = "setlocal fo< com< cms< cpt< isk< def<"
 
-setlocal define=^\\s*(def\\(-\\|n\\|n-\\|macro\\|struct\\|multi\\)?
+" There will be false positives, but this is arguably better than missing the
+" whole set of user-defined def* definitions.
+setlocal define=\\v[(/]def(ault)@!\\S*
 
 " Set 'formatoptions' to break comment lines but not other lines,
 " and insert the comment leader when hitting <CR> or using "o".
