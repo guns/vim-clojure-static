@@ -19,6 +19,7 @@ setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
 " Highlight superfluous closing parens, brackets and braces.
 syn match clojureError "]\|}\|)"
 
+" Generated from genkeywords.clj
 " Clojure 1.5.0-beta1
 syntax keyword clojureConstant nil
 syntax keyword clojureBoolean false true
