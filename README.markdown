@@ -103,7 +103,7 @@ are running tmux 1.5 or higher.
 ### [VimClojure](http://www.vim.org/scripts/script.php?script_id=2501)
 
 The original interactive Clojure editing environment by Meikel
-Brandmeyer. These runtime files are *incompatible* with the original
+Brandmeyer. These runtime files are **incompatible** with the original
 VimClojure project in several small ways, so be sure to uninstall
 vim-clojure-static when using VimClojure.
 
