@@ -304,8 +304,8 @@ setlocal lispwords+=if,if-not,if-let,when,when-not,when-let,when-first
 setlocal lispwords+=condp,case,loop,dotimes,for,while
 
 " Blocks:
-setlocal lispwords+=do,doto,try,catch,locking,with-in-str,with-out-str,with-open
-setlocal lispwords+=dosync,with-local-vars,doseq,dorun,doall,->,->>,future
+setlocal lispwords+=doto,try,catch,locking,with-in-str,with-out-str,with-open
+setlocal lispwords+=dosync,with-local-vars,doseq,dorun,doall,future
 setlocal lispwords+=with-bindings
 
 " Namespaces:
