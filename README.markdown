@@ -76,6 +76,10 @@ Differences from VimClojure
   comprehensive completions, please consider using an interactive
   development plugin listed below.
 
+Please send any bug reports to this project; while the majority of the
+code is in sync with VimClojure, there are still enough differences that
+bugs may not reside upstream.
+
 Alternate Interactive Development Plugins
 =========================================
 
