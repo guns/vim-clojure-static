@@ -48,8 +48,8 @@ side effects of this coupling are:
 * Hacking on the runtime files is more difficult
 
 * Installation from source is more complicated (e.g. installing clojure
-  runtime files from the source repository must first build a zip file
-  via `gradle`)
+  runtime files from the source repository necessitates building a zip
+  file via `gradle`)
 
 * Installing the whole VimClojure distribution for the runtime files is
   overkill. A smaller, self-contained set of files would be eligible for
