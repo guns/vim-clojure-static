@@ -1,0 +1,132 @@
+*clojure* *clojure.txt* *clojure.vim* *vim-clojure-static*
+>
+                o8o
+                '"'
+    oooo    ooooooo ooo. .oo.  .oo.
+     `88.  .8' `888 `888P"Y88bP"Y88b
+      `88..8'   888  888   888   888
+       `888'    888  888   888   888
+        `8'    o888oo888o o888o o888o
+
+
+             oooo           o8o
+             `888           '"'
+     .ooooo.  888  .ooooo. oooooooo  oooo oooo d8b .ooooo.
+    d88' `"Y8 888 d88' `88b`888`888  `888 `888""8Pd88' `88b
+    888       888 888   888 888 888   888  888    888ooo888
+    888   .o8 888 888   888 888 888   888  888    888    .o
+    `Y8bod8P'o888o`Y8bod8P' 888 `V88V"V8P'd888b   `Y8bod8P'
+                            888
+                        .o. 88P
+                 .      `Y888P  .   o8o
+               .o8            .o8   '"'
+      .oooo.o.o888oo .oooo. .o888oooooo  .ooooo.
+     d88(  "8  888  `P  )88b  888  `888 d88' `"Y8
+     `"Y88b.   888   .oP"888  888   888 888
+     o.  )88b  888 .d8(  888  888 . 888 888   .o8
+     8""888P'  "888"`Y888""8o "888"o888o`Y8bod8P'
+<
+
+========================================================================
+INTRODUCTION                                        *clojure-introduction*
+
+Meikel Brandmeyer's excellent Clojure runtime files, extracted and
+decomplected for static editing and for use with alternate Clojure
+development plugins.
+
+========================================================================
+OPTIONS                                   *clojure-options* *clojure-indent*
+
+The indent script has a few configurable options. Documentation with
+default values below:
+
+                                                      *g:clojure_maxlines*
+
+Maximum scan distance of searchpairpos().
+>
+    " Default
+    let g:clojure_maxlines = 100
+<
+
+                  *g:clojure_fuzzy_indent* *g:clojure_fuzzy_indent_patterns*
+
+Indent words that match patterns as if they are included in 'lispwords'
+>
+    " Default
+    let g:clojure_fuzzy_indent = 1
+    let g:clojure_fuzzy_indent_patterns = "with.*,def.*,let.*"
+<
+
+                                       *g:clojure_align_multiline_strings*
+
+When indenting multiline strings, align subsequent lines to the column
+after the opening quote, instead of the same column.
+
+For example:
+>
+    (def default
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+      enim ad minim veniam, quis nostrud exercitation ullamco laboris
+      nisi ut aliquip ex ea commodo consequat.")
+
+    (def aligned
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+       enim ad minim veniam, quis nostrud exercitation ullamco laboris
+       nisi ut aliquip ex ea commodo consequat.")
+<
+
+>
+    " Default
+    let g:clojure_align_multiline_strings = 0
+<
+
+=======================================================================
+ABOUT                                                     *clojure-about*
+
+This document and associated runtime files are maintained at:
+https://github.com/guns/vim-clojure-static
+
+*syntax/clojure.vim*
+
+    Authors:    Toralf Wittner <toralf.wittner@gmail.com>
+                modified by Meikel Brandmeyer <mb@kotka.de>
+    URL:        http://kotka.de/projects/clojure/vimclojure.html
+
+    Maintainer: Sung Pae <self@sungpae.com>
+    URL:        https://github.com/guns/vim-clojure-static
+
+*indent/clojure.vim*
+*ftplugin/clojure.vim*
+
+    Author:     Meikel Brandmeyer <mb@kotka.de>
+    URL:        http://kotka.de/projects/clojure/vimclojure.html
+
+    Maintainer: guns <self@sungpae.com>
+    URL:        https://github.com/guns/vim-clojure-static
+
+VimClojure license:
+
+Copyright 2008-2012 (c) Meikel Brandmeyer.
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+vim:ft=help tw=72 norl:

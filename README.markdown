@@ -18,13 +18,13 @@
     `Y8bod8P'o888o`Y8bod8P' 888 `V88V"V8P'd888b   `Y8bod8P'
                             888
                         .o. 88P
-                 .      `Y888P   .   o8o
-               .o8             .o8   `"'
-      .oooo.o.o888oo .oooo.  .o888oooooo  .ooooo.
-     d88(  "8  888  `P  )88b   888  `888 d88' `"Y8
-     `"Y88b.   888   .oP"888   888   888 888
-     o.  )88b  888 .d8(  888   888 . 888 888   .o8
-     8""888P'  "888"`Y888""8o  "888"o888o`Y8bod8P'
+                 .      `Y888P  .   o8o
+               .o8            .o8   '"'
+      .oooo.o.o888oo .oooo. .o888oooooo  .ooooo.
+     d88(  "8  888  `P  )88b  888  `888 d88' `"Y8
+     `"Y88b.   888   .oP"888  888   888 888
+     o.  )88b  888 .d8(  888  888 . 888 888   .o8
+     8""888P'  "888"`Y888""8o "888"o888o`Y8bod8P'
 
 
 
@@ -115,7 +115,7 @@ let g:clojure_fuzzy_indent_patterns = "with.*,def.*,let.*"
 When indenting multiline strings, align subsequent lines to the column
 after the opening quote, instead of the same column.
 
-Demo:
+For example:
 
 ```clojure
 (def default
