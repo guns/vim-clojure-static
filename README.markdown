@@ -45,11 +45,10 @@ VimClojure, the static runtime files are not standalone scripts and
 cannot easily be extracted from the VimClojure support libraries. The
 side effects of this coupling are:
 
-* Hacking on the runtime files is more difficult
+* Hacking on the runtime files is more difficult.
 
-* Installation from source is more complicated (e.g. installing clojure
-  runtime files from the source repository necessitates building a zip
-  file via `gradle`)
+* Installing the latest revisions from source is more complicated than
+  tracking a single repository.
 
 * Installing the whole VimClojure distribution for the runtime files is
   overkill. A smaller, self-contained set of files would be eligible for
