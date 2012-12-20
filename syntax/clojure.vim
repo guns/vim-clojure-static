@@ -14,7 +14,7 @@ elseif exists("b:current_syntax")
     finish
 endif
 
-setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
+setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:,$
 
 " Highlight superfluous closing parens, brackets and braces.
 syn match clojureError "]\|}\|)"
