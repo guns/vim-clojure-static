@@ -280,7 +280,7 @@ function! GetClojureIndent()
 		endfor
 	endif
 
-	normal! w
+	normal! W
 	if paren[0] < line(".")
 		return paren[1] + &shiftwidth - 1
 	endif
