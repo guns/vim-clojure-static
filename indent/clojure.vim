@@ -258,7 +258,7 @@ function! GetClojureIndent()
 	" We still have to check, whether the keyword starts with a (, [ or {.
 	" In that case we use the ( position for indent.
 	let w = s:CurrentWord()
-	if stridx('([{', w[0]) > 0
+	if stridx('([{', w[0]) > -1
 		return paren[1]
 	endif
 
