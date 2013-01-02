@@ -103,7 +103,7 @@ https://github.com/guns/vim-clojure-static
     Author:     Meikel Brandmeyer <mb@kotka.de>
     URL:        http://kotka.de/projects/clojure/vimclojure.html
 
-    Maintainer: guns <self@sungpae.com>
+    Maintainer: Sung Pae <self@sungpae.com>
     URL:        https://github.com/guns/vim-clojure-static
 
 VimClojure license:

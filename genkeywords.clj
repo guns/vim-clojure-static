@@ -3,7 +3,7 @@
 ;; Vim keyword syntax generator for Clojure.
 ;; Functionality kept in a monolithic function for easy copy and paste.
 ;;
-;; Copyright (c) 2012 guns <self@sungpae.com>
+;; Copyright (c) 2012 Sung Pae <self@sungpae.com>
 ;; Distributed under the MIT license.
 ;; http://www.opensource.org/licenses/mit-license.php
 

@@ -4,7 +4,7 @@
 " URL:           http://kotka.de/projects/clojure/vimclojure.html
 
 " This file forked from the VimClojure project:
-" Maintainer:    guns <self@sungpae.com>
+" Maintainer:    Sung Pae <self@sungpae.com>
 " URL:           https://github.com/guns/vim-clojure-static
 
 " Only load this indent file when no other was loaded.
