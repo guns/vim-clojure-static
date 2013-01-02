@@ -35,9 +35,6 @@ syntax keyword clojureVariable *1 *2 *3 *agent* *allow-unresolved-vars* *assert*
 syn cluster clojureAtomCluster   contains=clojureError,clojureFunc,clojureMacro,clojureCond,clojureDefine,clojureRepeat,clojureException,clojureConstant,clojureVariable,clojureSpecial,clojureKeyword,clojureString,clojureCharacter,clojureNumber,clojureBoolean,clojureQuote,clojureUnquote,clojureDispatch,clojurePattern
 syn cluster clojureTopCluster    contains=@clojureAtomCluster,clojureComment,clojureSexp,clojureAnonFn,clojureVector,clojureMap,clojureSet
 
-syn keyword clojureTodo contained FIXME XXX TODO FIXME: XXX: TODO:
-syn match   clojureComment contains=clojureTodo ";.*$"
-
 syn match   clojureKeyword "\c:\{1,2}[a-z0-9?!\-_+*.=<>#$]\+\(/[a-z0-9?!\-_+*.=<>#$]\+\)\?"
 
 syn region  clojureString start=/L\="/ skip=/\\\\\|\\"/ end=/"/
@@ -80,15 +77,9 @@ syn region  clojureSet     matchgroup=clojureParen start="#{" matchgroup=clojure
 
 syn region  clojurePattern start=/L\=\#"/ skip=/\\\\\|\\"/ end=/"/
 
-" FIXME: Matching of 'comment' is broken. It seems we can't nest
-" the different highlighting items, when they share the same end
-" pattern.
-" See also: https://bitbucket.org/kotarak/vimclojure/issue/87/comment-is-highlighted-incorrectly
-"
-"syn region  clojureCommentSexp                          start="("                                       end=")" transparent contained contains=clojureCommentSexp
-"syn region  clojureComment     matchgroup=clojureParen  start="(comment"rs=s+1 matchgroup=clojureParen  end=")"                       contains=clojureTopCluster
-syn match   clojureComment "comment"
-syn region  clojureComment start="#!" end="\n"
+syn keyword clojureTodo    contained FIXME XXX TODO FIXME: XXX: TODO:
+syn match   clojureComment contains=clojureTodo ";.*$"
+syn match   clojureComment "#!.*$"
 syn match   clojureComment "#_"
 
 syn sync fromstart
