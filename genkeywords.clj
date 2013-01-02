@@ -48,7 +48,7 @@
                            (str "syntax keyword clojure" group \space
                                 (clojure.string/join \space (sort (names keywords)))))
                          builtins)]
-    (clojure.string/join \newline definitions)))
+    (str "\" Clojure " (clojure-version) \newline
+         (clojure.string/join \newline definitions))))
 
-(println (str "\" Clojure " (clojure-version) \newline
-              (vim-syntax-keywords)))
+(println (vim-syntax-keywords))
