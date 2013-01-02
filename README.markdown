@@ -28,9 +28,8 @@
 
 
 
-Meikel Brandmeyer's excellent Clojure runtime files, extracted and
-decomplected for static editing and for use with alternate Clojure
-development plugins.
+Meikel Brandmeyer's excellent Clojure runtime files, extracted for
+static editing and use with alternate Clojure development plugins.
 
 Rationale
 =========
@@ -86,6 +85,17 @@ Alternate Interactive Development Plugins
 
 New nREPL client by Tim Pope.
 
+### [VimClojure](http://www.vim.org/scripts/script.php?script_id=2501)
+
+The original interactive Clojure editing environment by Meikel
+Brandmeyer. These runtime files are **incompatible** with the original
+VimClojure project in several small ways, so be sure to uninstall
+vim-clojure-static when using VimClojure.
+
+Meikel has [announced](https://groups.google.com/forum/?fromgroups=#!topic/vimclojure/B-UU8qctd5A)
+that the upcoming version of VimClojure will feature only the dynamic
+portion of the project, and will be compatible with these static files.
+
 ### [slimv.vim](http://www.vim.org/scripts/script.php?script_id=2531)
 
 SWANK client for Vim by Tamas Kovacs.
@@ -98,13 +108,6 @@ By Eric Van Dewoestine.
 
 Try <https://github.com/guns/screen> for better window handling if you
 are running tmux 1.5 or higher.
-
-### [VimClojure](http://www.vim.org/scripts/script.php?script_id=2501)
-
-The original interactive Clojure editing environment by Meikel
-Brandmeyer. These runtime files are **incompatible** with the original
-VimClojure project in several small ways, so be sure to uninstall
-vim-clojure-static when using VimClojure.
 
 Options
 =======

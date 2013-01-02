@@ -30,9 +30,8 @@
 ========================================================================
 INTRODUCTION                                        *clojure-introduction*
 
-Meikel Brandmeyer's excellent Clojure runtime files, extracted and
-decomplected for static editing and for use with alternate Clojure
-development plugins.
+Meikel Brandmeyer's excellent Clojure runtime files, extracted for
+static editing and use with alternate Clojure development plugins.
 
 ========================================================================
 OPTIONS                                   *clojure-options* *clojure-indent*
