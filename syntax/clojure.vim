@@ -51,9 +51,8 @@ syn match   clojureCharacter "\\formfeed"
 
 let radixChars = "0123456789abcdefghijklmnopqrstuvwxyz"
 for radix in range(2, 36)
-	execute 'syn match clojureNumber "\c\<-\?' . radix . 'r['
-				\ . strpart(radixChars, 0, radix)
-				\ . ']\+\>"'
+    execute 'syn match clojureNumber "\c\<-\?' . radix
+        \ . 'r[' . strpart(radixChars, 0, radix) . ']\+\>"'
 endfor
 
 syn match   clojureNumber "\<-\=[0-9]\+\(\.[0-9]*\)\=\(M\|\([eE][-+]\?[0-9]\+\)\)\?\>"
@@ -85,9 +84,9 @@ syn match   clojureComment "#_"
 syn sync fromstart
 
 if version >= 600
-	command -nargs=+ HiLink highlight default link <args>
+    command -nargs=+ HiLink highlight default link <args>
 else
-	command -nargs=+ HiLink highlight         link <args>
+    command -nargs=+ HiLink highlight         link <args>
 endif
 
 HiLink clojureConstant  Constant
@@ -124,4 +123,4 @@ delcommand HiLink
 
 let b:current_syntax = "clojure"
 
-" vim:ts=8 sts=8 sw=8 noet:
+" vim:sts=4 sw=4 et:
