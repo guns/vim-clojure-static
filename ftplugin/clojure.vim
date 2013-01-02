@@ -16,7 +16,7 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
-let b:undo_ftplugin = "setlocal fo< com< cms< cpt< isk< def<"
+let b:undo_ftplugin = 'setlocal define< formatoptions< comments< commentstring<'
 
 " There will be false positives, but this is arguably better than missing the
 " whole set of user-defined def* definitions.
@@ -25,10 +25,10 @@ setlocal define=\\v[(/]def(ault)@!\\S*
 " Set 'formatoptions' to break comment lines but not other lines,
 " and insert the comment leader when hitting <CR> or using "o".
 setlocal formatoptions-=t formatoptions+=croql
-setlocal commentstring=;%s
 
 " Set 'comments' to format dashed lists in comments.
 setlocal comments=sO:;\ -,mO:;\ \ ,n:;
+setlocal commentstring=;%s
 
 " Take all directories of the CLOJURE_SOURCE_DIRS environment variable
 " and add them to the path option.
@@ -44,6 +44,9 @@ for s:dir in split($CLOJURE_SOURCE_DIRS, s:delim)
 	let s:path = substitute(s:path, '\ ', '\\ ', 'g')
 	execute "setlocal path+=" . s:path
 endfor
+if exists('$CLOJURE_SOURCE_DIRS')
+	let b:undo_ftplugin .= '| setlocal path<'
+endif
 
 " When the matchit plugin is loaded, this makes the % command skip parens and
 " braces in comments.
