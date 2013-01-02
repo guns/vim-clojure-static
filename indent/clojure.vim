@@ -16,7 +16,7 @@ let b:did_indent = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-let b:undo_indent = "setlocal ai< si< lw< et< sts< sw< inde< indk<"
+let b:undo_indent = 'setlocal autoindent< smartindent< lispwords< expandtab< softtabstop< shiftwidth< indentexpr< indentkeys<'
 
 setlocal noautoindent expandtab nosmartindent
 
@@ -301,7 +301,7 @@ else
 	" normal lisp indenting.
 	setlocal indentexpr=
 	setlocal lisp
-	let b:undo_indent .= " lisp<"
+	let b:undo_indent .= '| setlocal lisp<'
 
 endif
 
