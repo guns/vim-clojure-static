@@ -16,9 +16,9 @@
                   ;; http://clojure.org/special_forms
                   ["Special" '[def if do let quote var fn loop recur throw try
                                catch finally monitor-enter monitor-exit . new set!]]
-                  ;; The duplicates from Special are intentional
+                  ;; The duplicates from Special are intentional here
                   ["Exception" '[try catch finally throw]]
-                  ["Cond" '[if if-not if-let when when-> when->> when-not
+                  ["Cond" '[if-not if-let when when-> when->> when-not
                             when-let when-first cond condp case]]
                   ["Repeat" '[map mapv mapcat reduce reduce-kv filter filterv
                               for doall dorun doseq dotimes map-indexed keep
