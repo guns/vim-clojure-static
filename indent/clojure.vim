@@ -39,6 +39,10 @@ if exists("*searchpairpos")
         let g:clojure_fuzzy_indent_patterns = "with.*,def.*,let.*"
     endif
 
+    if !exists('g:clojure_special_indent_words')
+        let g:clojure_special_indent_words = 'deftype,defrecord,reify,proxy,extend-type,extend-protocol,letfn'
+    endif
+
     if !exists("g:clojure_align_multiline_strings")
         let g:clojure_align_multiline_strings = 0
     endif
@@ -155,8 +159,7 @@ if exists("*searchpairpos")
         call cursor(nextParen)
 
         call search('\S', 'W')
-        let keyword = s:CurrentWord()
-        if index(['deftype', 'defrecord', 'reify', 'proxy', 'extend-type', 'extend-protocol', 'letfn'], keyword) >= 0
+        if g:clojure_special_indent_words =~ '\<' . s:CurrentWord() . '\>'
             return 1
         endif
 
@@ -258,7 +261,7 @@ if exists("*searchpairpos")
             return paren[1]
         endif
 
-        " Noe we want to test words with any leading non-word chars stripped;
+        " Test words with any leading non-word chars stripped;
         " e.g. #'defn should indent like defn.
         let ww = substitute(w, '\v\W*(\w.*)', '\1', '')
 
