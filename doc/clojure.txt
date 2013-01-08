@@ -41,7 +41,9 @@ default values below:
 
                                                       *g:clojure_maxlines*
 
-Maximum scan distance of searchpairpos().
+Maximum scan distance of searchpairpos(). Larger values trade performance
+for correctness when dealing with very long forms. A value of 0 means search
+without limits.
 >
     " Default
     let g:clojure_maxlines = 100
