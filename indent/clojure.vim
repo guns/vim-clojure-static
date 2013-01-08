@@ -43,7 +43,7 @@ if exists("*searchpairpos")
         let g:clojure_special_indent_words = 'deftype,defrecord,reify,proxy,extend-type,extend-protocol,letfn'
     endif
 
-    if !exists("g:clojure_align_multiline_strings")
+    if !exists('g:clojure_align_multiline_strings')
         let g:clojure_align_multiline_strings = 0
     endif
 
@@ -270,8 +270,6 @@ if exists("*searchpairpos")
             return paren[1] + &shiftwidth - 1
         endif
 
-        " XXX: Slight glitch here with special cases. However it's only
-        " a heureustic. Offline we can't do more.
         if g:clojure_fuzzy_indent
             \ && ww != 'with-meta'
             for pat in split(g:clojure_fuzzy_indent_patterns, ",")
