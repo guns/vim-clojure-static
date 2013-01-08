@@ -91,6 +91,17 @@ Each candidate word is tested for special treatment in this order:
     3. Return true if word matches a pattern in *g:clojure_fuzzy_indent_patterns*
     4. Return false and indent normally otherwise
 
+                                          *g:clojure_special_indent_words*
+
+Some forms in Clojure are indented so that every subform is indented only two
+spaces, regardless of 'lispwords'. If you have a custom construct that should
+be indented in this idiosyncratic fashion, you can add your symbols to the
+default list below.
+>
+    " Default
+    let g:clojure_special_indent_words = 'deftype,defrecord,reify,proxy,extend-type,extend-protocol,letfn'
+<
+
                                        *g:clojure_align_multiline_strings*
 
 When indenting multiline strings, align subsequent lines to the column

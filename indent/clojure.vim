@@ -237,8 +237,8 @@ if exists("*searchpairpos")
         " Now we have to reimplement lispindent. This is surprisingly easy, as
         " soon as one has access to syntax items.
         "
-        " - Check whether we are in a special position after deftype, defrecord,
-        "   reify, proxy or letfn. These are special cases.
+        " - Check whether we are in a special position after a word in
+        "   g:clojure_special_indent_words. These are special cases.
         " - Get the next keyword after the (.
         " - If its first character is also a (, we have another sexp and align
         "   one column to the right of the unmatched (.
