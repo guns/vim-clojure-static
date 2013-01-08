@@ -35,8 +35,12 @@ if exists("*searchpairpos")
         let g:clojure_fuzzy_indent = 1
     endif
 
-    if !exists("g:clojure_fuzzy_indent_patterns")
-        let g:clojure_fuzzy_indent_patterns = "with.*,def.*,let.*"
+    if !exists('g:clojure_fuzzy_indent_patterns')
+        let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
+    endif
+
+    if !exists('g:clojure_fuzzy_indent_blacklist')
+        let g:clojure_fuzzy_indent_blacklist = ['^with-meta$', '-fn$']
     endif
 
     if !exists('g:clojure_special_indent_words')
@@ -62,6 +66,18 @@ if exists("*searchpairpos")
     function! s:IsParen()
         return s:CurrentChar() =~ '\v[\(\)\[\]\{\}]' &&
              \ s:SynIdName() !~? '\vstring|comment'
+    endfunction
+
+    " Returns 1 if string matches a pattern in 'patterns', which may be a
+    " list of patterns, or a comma-delimited string of implicitly anchored
+    " patterns.
+    function! s:MatchesOne(patterns, string)
+        let list = type(a:patterns) == type([])
+                   \ ? a:patterns
+                   \ : map(split(a:patterns, ','), '"^" . v:val . "$"')
+        for pat in list
+            if a:string =~ pat | return 1 | endif
+        endfor
     endfunction
 
     function! s:SavePosition()
@@ -271,14 +287,9 @@ if exists("*searchpairpos")
         endif
 
         if g:clojure_fuzzy_indent
-            \ && ww != 'with-meta'
-            for pat in split(g:clojure_fuzzy_indent_patterns, ",")
-                if ww =~ '^' . pat . '$'
-                    \ && ww !~ '^' . pat . '\*$'
-                    \ && ww !~ '^' . pat . '-fn$'
-                    return paren[1] + &shiftwidth - 1
-                endif
-            endfor
+            \ && !s:MatchesOne(g:clojure_fuzzy_indent_blacklist, ww)
+            \ && s:MatchesOne(g:clojure_fuzzy_indent_patterns, ww)
+            return paren[1] + &shiftwidth - 1
         endif
 
         normal! W
