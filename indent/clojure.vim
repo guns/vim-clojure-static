@@ -261,9 +261,10 @@ if exists("*searchpairpos")
             return paren[1]
         endif
 
-        " Test words with any leading non-word chars stripped;
-        " e.g. #'defn should indent like defn.
-        let ww = substitute(w, '\v\W*(\w.*)', '\1', '')
+        " Test words without namespace qualifiers and leading non-word chars.
+        "
+        " e.g. clojure.core/defn and #'defn should both indent like defn.
+        let ww = substitute(w, '\v%(.*/|\W*)(.*)', '\1', '')
 
         if &lispwords =~ '\<' . ww . '\>'
             return paren[1] + &shiftwidth - 1
@@ -273,11 +274,10 @@ if exists("*searchpairpos")
         " a heureustic. Offline we can't do more.
         if g:clojure_fuzzy_indent
             \ && ww != 'with-meta'
-            \ && ww != 'clojure.core/with-meta'
             for pat in split(g:clojure_fuzzy_indent_patterns, ",")
-                if ww =~ '\(^\|/\)' . pat . '$'
-                    \ && ww !~ '\(^\|/\)' . pat . '\*$'
-                    \ && ww !~ '\(^\|/\)' . pat . '-fn$'
+                if ww =~ '^' . pat . '$'
+                    \ && ww !~ '^' . pat . '\*$'
+                    \ && ww !~ '^' . pat . '-fn$'
                     return paren[1] + &shiftwidth - 1
                 endif
             endfor
