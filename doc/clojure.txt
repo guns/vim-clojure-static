@@ -80,7 +80,7 @@ fuzzy indent feature. The defaults are:
 <
 
 |g:clojure_fuzzy_indent_patterns| and |g:clojure_fuzzy_indent_blacklist| are
-*Lists* of patterns that will be matched against the unqualified symbol at the
+|Lists| of patterns that will be matched against the unqualified symbol at the
 head of a list. This means that a pattern like "^foo" will match all these
 candidates: "foobar", "my.ns/foobar", and "#'foobar".
 
