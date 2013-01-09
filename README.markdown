@@ -116,9 +116,10 @@ default values below:
 Maximum scan distance of searchpairpos(). Larger values trade performance
 for correctness when dealing with very long forms. A value of 0 means search
 without limits.
+
 ```vim
-    " Default
-    let g:clojure_maxlines = 100
+" Default
+let g:clojure_maxlines = 100
 ```
 
 ### `g:clojure_fuzzy_indent`, `g:clojure_fuzzy_indent_patterns`, and `g:clojure_fuzzy_indent_blacklist`
@@ -128,25 +129,27 @@ forms whose following lines must be indented as if the word is on the
 first line alone.
 
 For example:
-```vim
-    (defn good []
-      "Correct indentation")
 
-    (defn bad []
-          "Incorrect indentation")
+```clojure
+(defn good []
+  "Correct indentation")
+
+(defn bad []
+      "Incorrect indentation")
 ```
 
 If you would like to match words that match a pattern, you can use the
 fuzzy indent feature. The defaults are:
-```vim
-    " Default
-    let g:clojure_fuzzy_indent = 1
-    let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
-    let g:clojure_fuzzy_indent_blacklist = ['^with-meta$', '-fn$']
 
-    " Legacy comma-delimited string version; the list format above is
-    " recommended. Note that patterns are implicitly anchored with ^ and $.
-    let g:clojure_fuzzy_indent_patterns = 'with.*,def.*,let.*'
+```vim
+" Default
+let g:clojure_fuzzy_indent = 1
+let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
+let g:clojure_fuzzy_indent_blacklist = ['^with-meta$', '-fn$']
+
+" Legacy comma-delimited string version; the list format above is
+" recommended. Note that patterns are implicitly anchored with ^ and $.
+let g:clojure_fuzzy_indent_patterns = 'with.*,def.*,let.*'
 ```
 
 `g:clojure_fuzzy_indent_patterns` and `g:clojure_fuzzy_indent_blacklist` are
@@ -167,9 +170,10 @@ Some forms in Clojure are indented so that every subform is indented only two
 spaces, regardless of 'lispwords'. If you have a custom construct that should
 be indented in this idiosyncratic fashion, you can add your symbols to the
 default list below.
+
 ```vim
-    " Default
-    let g:clojure_special_indent_words = 'deftype,defrecord,reify,proxy,extend-type,extend-protocol,letfn'
+" Default
+let g:clojure_special_indent_words = 'deftype,defrecord,reify,proxy,extend-type,extend-protocol,letfn'
 ```
 
 ### `g:clojure_align_multiline_strings`
@@ -178,23 +182,24 @@ When indenting multiline strings, align subsequent lines to the column
 after the opening quote, instead of the same column.
 
 For example:
-```clojure
-    (def default
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-      enim ad minim veniam, quis nostrud exercitation ullamco laboris
-      nisi ut aliquip ex ea commodo consequat.")
 
-    (def aligned
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-       enim ad minim veniam, quis nostrud exercitation ullamco laboris
-       nisi ut aliquip ex ea commodo consequat.")
+```clojure
+(def default
+  "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+  enim ad minim veniam, quis nostrud exercitation ullamco laboris
+  nisi ut aliquip ex ea commodo consequat.")
+
+(def aligned
+  "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+   eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+   enim ad minim veniam, quis nostrud exercitation ullamco laboris
+   nisi ut aliquip ex ea commodo consequat.")
 ```
 
 ```vim
-    " Default
-    let g:clojure_align_multiline_strings = 0
+" Default
+let g:clojure_align_multiline_strings = 0
 ```
 
 License and Acknowledgements
