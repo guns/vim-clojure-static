@@ -277,12 +277,13 @@ if exists("*searchpairpos")
             return paren[1]
         endif
 
-        " Test words without namespace qualifiers and leading non-word chars.
+        " Test words without namespace qualifiers and leading reader macro
+        " metacharacters.
         "
         " e.g. clojure.core/defn and #'defn should both indent like defn.
-        let ww = substitute(w, '\v%(.*/|\W*)(.*)', '\1', '')
+        let ww = substitute(w, "\\v%(.*/|[#'`~@^,]*)(.*)", '\1', '')
 
-        if &lispwords =~ '\<' . ww . '\>'
+        if &lispwords =~ '\V\<' . ww . '\>'
             return paren[1] + &shiftwidth - 1
         endif
 
