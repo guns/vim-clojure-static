@@ -33,7 +33,7 @@ syntax keyword clojureFunc * *' + +' - -' ->ArrayChunk ->Vec ->VecNode ->VecSeq 
 syntax keyword clojureVariable *1 *2 *3 *agent* *allow-unresolved-vars* *assert* *clojure-version* *command-line-args* *compile-files* *compile-path* *compiler-options* *data-readers* *default-data-reader-fn* *e *err* *file* *flush-on-newline* *fn-loader* *in* *math-context* *ns* *out* *print-dup* *print-length* *print-level* *print-meta* *print-readably* *read-eval* *source-path* *unchecked-math* *use-context-classloader* *verbose-defrecords* *warn-on-reflection* EMPTY-NODE char-escape-string char-name-string clojure.core/*1 clojure.core/*2 clojure.core/*3 clojure.core/*agent* clojure.core/*allow-unresolved-vars* clojure.core/*assert* clojure.core/*clojure-version* clojure.core/*command-line-args* clojure.core/*compile-files* clojure.core/*compile-path* clojure.core/*compiler-options* clojure.core/*data-readers* clojure.core/*default-data-reader-fn* clojure.core/*e clojure.core/*err* clojure.core/*file* clojure.core/*flush-on-newline* clojure.core/*fn-loader* clojure.core/*in* clojure.core/*math-context* clojure.core/*ns* clojure.core/*out* clojure.core/*print-dup* clojure.core/*print-length* clojure.core/*print-level* clojure.core/*print-meta* clojure.core/*print-readably* clojure.core/*read-eval* clojure.core/*source-path* clojure.core/*unchecked-math* clojure.core/*use-context-classloader* clojure.core/*verbose-defrecords* clojure.core/*warn-on-reflection* clojure.core/EMPTY-NODE clojure.core/char-escape-string clojure.core/char-name-string clojure.core/default-data-readers clojure.core/primitives-classnames clojure.core/print-dup clojure.core/print-method clojure.core/unquote clojure.core/unquote-splicing default-data-readers primitives-classnames print-dup print-method unquote unquote-splicing
 
 syn cluster clojureAtomCluster   contains=clojureError,clojureFunc,clojureMacro,clojureCond,clojureDefine,clojureRepeat,clojureException,clojureConstant,clojureVariable,clojureSpecial,clojureKeyword,clojureString,clojureCharacter,clojureNumber,clojureBoolean,clojureQuote,clojureUnquote,clojureDispatch,clojureRegexp
-syn cluster clojureTopCluster    contains=@clojureAtomCluster,clojureComment,clojureSexp,clojureAnonFn,clojureVector,clojureMap,clojureSet
+syn cluster clojureTopCluster    contains=@NoSpell,@clojureAtomCluster,clojureComment,clojureSexp,clojureAnonFn,clojureVector,clojureMap,clojureSet
 
 syn match   clojureKeyword "\c:\{1,2}[a-z0-9?!\-_+*.=<>#$]\+\(/[a-z0-9?!\-_+*.=<>#$]\+\)\?"
 
@@ -77,7 +77,7 @@ syn region  clojureSet     matchgroup=clojureParen start="#{" matchgroup=clojure
 syn region  clojureRegexp  start=/L\=\#"/ skip=/\\\\\|\\"/ end=/"/
 
 syn keyword clojureTodo    contained FIXME XXX TODO FIXME: XXX: TODO:
-syn match   clojureComment contains=clojureTodo ";.*$"
+syn match   clojureComment contains=clojureTodo,@Spell ";.*$"
 syn match   clojureComment "#!.*$"
 syn match   clojureComment "#_"
 
