@@ -314,26 +314,87 @@ else
 
 endif
 
-" Defintions:
-setlocal lispwords=def,def-,defn,defn-,defmacro,defmacro-,defmethod,defmulti
-setlocal lispwords+=defonce,defvar,defvar-,defunbound,let,fn,letfn,binding,proxy
-setlocal lispwords+=defnk,definterface,defprotocol,deftype,defrecord,reify
-setlocal lispwords+=extend,extend-protocol,extend-type,bound-fn
+" Specially indented symbols from clojure.core and clojure.test.
+"
+" Clojure symbols are indented in the defn style when they:
+"
+"   * Define vars and anonymous functions
+"   * Create new lexical scopes or scopes with altered environments
+"   * Create conditional branches from a predicate function or value
+"
+" The arglists for these functions are generally in the form of [x & body];
+" Functions that accept a flat list of forms do not treat the first argument
+" specially and hence are not indented specially.
+"
+" We make an exception for exception handling, since it is exceptional. :)
 
-" Conditionals and Loops:
-setlocal lispwords+=if,if-not,if-let,when,when-not,when-let,when-first
-setlocal lispwords+=condp,case,loop,dotimes,for,while
+" Definitions
+setlocal lispwords=
+setlocal lispwords+=bound-fn
+setlocal lispwords+=def
+setlocal lispwords+=definline
+setlocal lispwords+=definterface
+setlocal lispwords+=defmacro
+setlocal lispwords+=defmethod
+setlocal lispwords+=defmulti
+setlocal lispwords+=defn
+setlocal lispwords+=defn-
+setlocal lispwords+=defonce
+setlocal lispwords+=defprotocol
+setlocal lispwords+=defrecord
+setlocal lispwords+=defstruct
+setlocal lispwords+=deftest " clojure.test
+setlocal lispwords+=deftest- " clojure.test
+setlocal lispwords+=deftype
+setlocal lispwords+=extend
+setlocal lispwords+=extend-protocol
+setlocal lispwords+=extend-type
+setlocal lispwords+=fn
+setlocal lispwords+=ns
+setlocal lispwords+=proxy
+setlocal lispwords+=reify
+setlocal lispwords+=set-test " clojure.test
 
-" Blocks:
-setlocal lispwords+=doto,try,catch,locking,with-in-str,with-out-str,with-open
-setlocal lispwords+=dosync,with-local-vars,doseq,dorun,doall,future
+" Binding forms
+setlocal lispwords+=as->
+setlocal lispwords+=binding
+setlocal lispwords+=doall
+setlocal lispwords+=dorun
+setlocal lispwords+=doseq
+setlocal lispwords+=dotimes
+setlocal lispwords+=doto
+setlocal lispwords+=for
+setlocal lispwords+=if-let
+setlocal lispwords+=let
+setlocal lispwords+=letfn
+setlocal lispwords+=locking
+setlocal lispwords+=loop
+setlocal lispwords+=testing " clojure.test
+setlocal lispwords+=when-first
+setlocal lispwords+=when-let
 setlocal lispwords+=with-bindings
+setlocal lispwords+=with-in-str
+setlocal lispwords+=with-local-vars
+setlocal lispwords+=with-open
+setlocal lispwords+=with-precision
+setlocal lispwords+=with-redefs
+setlocal lispwords+=with-redefs-fn
+setlocal lispwords+=with-test " clojure.test
 
-" Namespaces:
-setlocal lispwords+=ns,clojure.core/ns
+" Conditional branching
+setlocal lispwords+=case
+setlocal lispwords+=cond->
+setlocal lispwords+=cond->>
+setlocal lispwords+=condp
+setlocal lispwords+=if
+setlocal lispwords+=if-not
+setlocal lispwords+=when
+setlocal lispwords+=when-not
+setlocal lispwords+=while
 
-" Java Classes:
-setlocal lispwords+=gen-class,gen-interface
+" Exception handling
+setlocal lispwords+=catch
+setlocal lispwords+=try " For aesthetics when enclosing single line
 
 let &cpo = s:save_cpo
 
