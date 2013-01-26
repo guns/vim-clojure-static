@@ -40,7 +40,7 @@ if exists("*searchpairpos")
     endif
 
     if !exists('g:clojure_fuzzy_indent_blacklist')
-        let g:clojure_fuzzy_indent_blacklist = ['^with-meta$', '-fn$']
+        let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
     endif
 
     if !exists('g:clojure_special_indent_words')

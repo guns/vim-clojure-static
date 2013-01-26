@@ -145,7 +145,7 @@ fuzzy indent feature. The defaults are:
 " Default
 let g:clojure_fuzzy_indent = 1
 let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
-let g:clojure_fuzzy_indent_blacklist = ['^with-meta$', '-fn$']
+let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
 
 " Legacy comma-delimited string version; the list format above is
 " recommended. Note that patterns are implicitly anchored with ^ and $.

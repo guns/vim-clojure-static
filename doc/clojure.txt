@@ -72,7 +72,7 @@ fuzzy indent feature. The defaults are:
     " Default
     let g:clojure_fuzzy_indent = 1
     let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
-    let g:clojure_fuzzy_indent_blacklist = ['^with-meta$', '-fn$']
+    let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
 
     " Legacy comma-delimited string version; the list format above is
     " recommended. Note that patterns are implicitly anchored with ^ and $.
@@ -80,9 +80,9 @@ fuzzy indent feature. The defaults are:
 <
 
 |g:clojure_fuzzy_indent_patterns| and |g:clojure_fuzzy_indent_blacklist| are
-|Lists| of patterns that will be matched against the unqualified symbol at the
-head of a list. This means that a pattern like "^foo" will match all these
-candidates: "foobar", "my.ns/foobar", and "#'foobar".
+|Lists| of patterns that will be matched against the unquoted, unqualified
+symbol at the head of a list. This means that a pattern like "^foo" will match
+all these candidates: "foobar", "my.ns/foobar", and "#'foobar".
 
 Each candidate word is tested for special treatment in this order:
 
