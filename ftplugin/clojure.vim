@@ -32,6 +32,8 @@ setlocal commentstring=;%s
 
 " Take all directories of the CLOJURE_SOURCE_DIRS environment variable
 " and add them to the path option.
+"
+" This is a legacy option for VimClojure users.
 if has("win32") || has("win64")
     let s:delim = ";"
 else
