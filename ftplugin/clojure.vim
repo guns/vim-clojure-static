@@ -16,17 +16,17 @@ set cpo&vim
 
 let b:undo_ftplugin = 'setlocal define< formatoptions< comments< commentstring< complete<'
 
-" There will be false positives, but this is arguably better than missing the
-" whole set of user-defined def* definitions.
+" There will be false positives, but this is better than missing the whole set
+" of user-defined def* definitions.
 setlocal define=\\v[(/]def(ault)@!\\S*
 
-" Set 'formatoptions' to break comment lines but not other lines,
-" and insert the comment leader when hitting <CR> or using "o".
+" Remove 't' from 'formatoptions' to avoid auto-wrapping code. The '+=croql'
+" is standard ftplugin boilerplate, although it is arguably intrusive.
 setlocal formatoptions-=t formatoptions+=croql
 
-" Set 'comments' to format dashed lists in comments.
-setlocal comments=sO:;\ -,mO:;\ \ ,n:;
-setlocal commentstring=;%s
+" Lisp comments are routinely nested (e.g. ;;; SECTION HEADING)
+setlocal comments=n:;
+setlocal commentstring=;\ %s
 
 function! s:escape_path_for_option(path)
     let path = fnameescape(a:path)
@@ -36,8 +36,7 @@ function! s:escape_path_for_option(path)
     return path
 endfunction
 
-" Provide insert mode completions for special forms and public vars in
-" clojure.core
+" Provide insert mode completions for special forms and clojure.core
 for s:compfile in split(globpath(&rtp, "ftplugin/clojure/*.txt"), '\n')
     execute 'setlocal complete+=k' . s:escape_path_for_option(s:compfile)
 endfor
@@ -46,18 +45,19 @@ endfor
 " and add them to the path option.
 "
 " This is a legacy option for VimClojure users.
-let s:delim = (has("win32") || has("win64")) ? ';' : ':'
-for s:dir in split($CLOJURE_SOURCE_DIRS, s:delim)
-    execute "setlocal path+=" . s:escape_path_for_option(s:dir . "/**")
-endfor
 if exists('$CLOJURE_SOURCE_DIRS')
-    let b:undo_ftplugin .= '| setlocal path<'
+    for s:dir in split($CLOJURE_SOURCE_DIRS, (has("win32") || has("win64")) ? ';' : ':')
+        execute "setlocal path+=" . s:escape_path_for_option(s:dir . "/**")
+    endfor
+    let b:undo_ftplugin .= ' | setlocal path<'
 endif
 
-" When the matchit plugin is loaded, this makes the % command skip parens and
-" braces in comments.
-let b:match_words = &matchpairs
-let b:match_skip = 's:comment\|string\|character'
+" Skip brackets in ignored syntax regions when using the % command
+if exists('loaded_matchit')
+    let b:match_words = &matchpairs
+    let b:match_skip = 's:comment\|string\|regex\|character'
+    let b:undo_ftplugin .= ' | unlet! b:match_words b:match_skip'
+endif
 
 " Win32 can filter files in the browse dialog
 if has("gui_win32") && !exists("b:browsefilter")
@@ -65,6 +65,7 @@ if has("gui_win32") && !exists("b:browsefilter")
                        \ "ClojureScript Source Files (*.cljs)\t*.cljs\n" .
                        \ "Java Source Files (*.java)\t*.java\n" .
                        \ "All Files (*.*)\t*.*\n"
+    let b:undo_ftplugin .= ' | unlet! b:browsefilter'
 endif
 
 delfunction s:escape_path_for_option
