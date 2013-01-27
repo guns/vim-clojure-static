@@ -10,13 +10,12 @@
 if exists("b:did_ftplugin")
     finish
 endif
-
 let b:did_ftplugin = 1
 
 let s:cpo_save = &cpo
 set cpo&vim
 
-let b:undo_ftplugin = 'setlocal define< formatoptions< comments< commentstring<'
+let b:undo_ftplugin = 'setlocal define< formatoptions< comments< commentstring< complete<'
 
 " There will be false positives, but this is arguably better than missing the
 " whole set of user-defined def* definitions.
@@ -30,21 +29,27 @@ setlocal formatoptions-=t formatoptions+=croql
 setlocal comments=sO:;\ -,mO:;\ \ ,n:;
 setlocal commentstring=;%s
 
+function! s:escape_path_for_option(path)
+    let path = fnameescape(a:path)
+    " Whitespace escaping for Windows
+    let path = substitute(path, '\', '\\\\', 'g')
+    let path = substitute(path, '\ ', '\\ ', 'g')
+    return path
+endfunction
+
+" Provide insert mode completions for special forms and public vars in
+" clojure.core
+for s:compfile in split(globpath(&rtp, "ftplugin/clojure/*.txt"), '\n')
+    execute 'setlocal complete+=k' . s:escape_path_for_option(s:compfile)
+endfor
+
 " Take all directories of the CLOJURE_SOURCE_DIRS environment variable
 " and add them to the path option.
 "
 " This is a legacy option for VimClojure users.
-if has("win32") || has("win64")
-    let s:delim = ";"
-else
-    let s:delim = ":"
-endif
+let s:delim = (has("win32") || has("win64")) ? ';' : ':'
 for s:dir in split($CLOJURE_SOURCE_DIRS, s:delim)
-    let s:path = fnameescape(s:dir . "/**")
-    " Whitespace escaping for Windows
-    let s:path = substitute(s:path, '\', '\\\\', 'g')
-    let s:path = substitute(s:path, '\ ', '\\ ', 'g')
-    execute "setlocal path+=" . s:path
+    execute "setlocal path+=" . s:escape_path_for_option(s:dir . "/**")
 endfor
 if exists('$CLOJURE_SOURCE_DIRS')
     let b:undo_ftplugin .= '| setlocal path<'
@@ -62,6 +67,8 @@ if has("gui_win32") && !exists("b:browsefilter")
                        \ "Java Source Files (*.java)\t*.java\n" .
                        \ "All Files (*.*)\t*.*\n"
 endif
+
+delfunction s:escape_path_for_option
 
 let &cpo = s:cpo_save
 
