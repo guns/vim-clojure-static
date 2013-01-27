@@ -17,11 +17,8 @@ set cpo&vim
 
 let b:undo_indent = 'setlocal autoindent< smartindent< lispwords< expandtab< softtabstop< shiftwidth< indentexpr< indentkeys<'
 
-setlocal noautoindent expandtab nosmartindent
-
-setlocal softtabstop=2
-setlocal shiftwidth=2
-
+setlocal noautoindent nosmartindent
+setlocal softtabstop=2 shiftwidth=2 expandtab
 setlocal indentkeys=!,o,O
 
 if exists("*searchpairpos")
