@@ -1,8 +1,7 @@
 " Vim filetype plugin file
 " Language:     Clojure
 " Author:       Meikel Brandmeyer <mb@kotka.de>
-
-" This file forked from the VimClojure project:
+"
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 
