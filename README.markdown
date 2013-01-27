@@ -70,9 +70,9 @@ Differences from VimClojure
   [`rainbow_parentheses.vim`](https://github.com/kien/rainbow_parentheses.vim)
   is an excellent replacement.
 
-* Static completion is not provided. If you are looking for
-  comprehensive completions, please consider using an interactive
-  development plugin listed below.
+* Static completion is provided for special forms and public vars in
+  `clojure.core`. If you are looking for more comprehensive completions,
+  please consider using an interactive development plugin listed below.
 
 Interactive Clojure Development Plugins
 =======================================
@@ -205,8 +205,8 @@ let g:clojure_align_multiline_strings = 0
 License and Acknowledgements
 ============================
 
-Thanks to Meikel Brandmeyer for his excellent work on making Vim a first
-class Clojure editor.
+Many thanks to [Meikel Brandmeyer](http://kotka.de/) for his excellent
+work on making Vim a first class Clojure editor.
 
 Thanks to [Tim Pope](https://github.com/tpope/) for advice in #vim.
 
