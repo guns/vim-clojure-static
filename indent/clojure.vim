@@ -1,10 +1,11 @@
 " Vim indent file
-" Language:      Clojure
-" Author:        Meikel Brandmeyer <mb@kotka.de>
-" URL:           http://kotka.de/projects/clojure/vimclojure.html
+" Language:     Clojure
+" Author:       Meikel Brandmeyer <mb@kotka.de>
+" URL:          http://kotka.de/projects/clojure/vimclojure.html
 "
-" Maintainer:    Sung Pae <self@sungpae.com>
-" URL:           https://github.com/guns/vim-clojure-static
+" Maintainer:   Sung Pae <self@sungpae.com>
+" URL:          https://github.com/guns/vim-clojure-static
+" License:      Same as Vim
 
 " Only load this indent file when no other was loaded.
 if exists("b:did_indent")
