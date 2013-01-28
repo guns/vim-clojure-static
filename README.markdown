@@ -70,9 +70,10 @@ Differences from VimClojure
   [`rainbow_parentheses.vim`](https://github.com/kien/rainbow_parentheses.vim)
   is an excellent replacement.
 
-* Static completion is provided for special forms and public vars in
-  `clojure.core`. If you are looking for more comprehensive completions,
-  please consider using an interactive development plugin listed below.
+* Insert mode completion is provided for special forms and public
+  vars in `clojure.core`. If you are looking for more comprehensive
+  completions, please consider using an interactive development plugin
+  listed below.
 
 Interactive Clojure Development Plugins
 =======================================
