@@ -1,4 +1,4 @@
-*clojure* *clojure.txt* *clojure.vim* *vim-clojure-static*
+*clojure* *clojure.txt*                         Last Change: 28 January 2013
 
 ========================================================================
 INTRODUCTION                                        *clojure-introduction*
@@ -120,3 +120,5 @@ All other files:
 Modified and relicensed under the Vim License for distribution with Vim:
 
     Copyright 2013 (c) Sung Pae <self@sungpae.com>
+
+ vim:tw=78:ft=help:norl:

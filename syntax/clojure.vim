@@ -7,6 +7,7 @@
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
+" Last Change:  28 January 2013
 
 if version < 600
     syntax clear
