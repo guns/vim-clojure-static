@@ -70,5 +70,5 @@
 
 (comment
   (do (spit "/tmp/clojure-keywords.vim" syntax-keywords)
-      (spit "/home/guns/src/vim-clojure-static/ftplugin/clojure/clojure.core.txt" core-dictionary)
-      (spit "/home/guns/src/vim-clojure-static/ftplugin/clojure/special-forms.txt" special-forms-dictionary)))
+      (spit "/home/guns/src/vim-clojure-static/ftplugin/clojure/clojure.core.dict" core-dictionary)
+      (spit "/home/guns/src/vim-clojure-static/ftplugin/clojure/special-forms.dict" special-forms-dictionary)))
