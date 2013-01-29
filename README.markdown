@@ -125,18 +125,17 @@ let g:clojure_maxlines = 100
 
 ### `g:clojure_fuzzy_indent`, `g:clojure_fuzzy_indent_patterns`, and `g:clojure_fuzzy_indent_blacklist`
 
-The 'lispwords' option is a list of comma-separated words that mark special
-forms whose following lines must be indented as if the word is on the
-first line alone.
+The 'lispwords' option is a list of comma-separated words that mark
+special forms whose subforms must be indented with two spaces.
 
 For example:
 
 ```clojure
-(defn good []
-  "Correct indentation")
-
 (defn bad []
       "Incorrect indentation")
+
+(defn good []
+  "Correct indentation")
 ```
 
 If you would like to match words that match a pattern, you can use the
