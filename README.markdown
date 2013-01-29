@@ -28,21 +28,21 @@
 
 
 
-Meikel Brandmeyer's excellent Clojure runtime files, extracted for
-static editing and use with alternate Clojure development plugins.
+Meikel Brandmeyer's excellent Clojure runtime files, extracted for static
+editing and use with alternate Clojure development plugins.
 
 Rationale
 =========
 
-[VimClojure](http://www.vim.org/scripts/script.php?script_id=2501)
-consists of a syntax script, indent script, filetype settings, limited
-static completions, and a sophisticated synchronous REPL environment for
-interacting with JVM Clojure processes.
+[VimClojure](http://www.vim.org/scripts/script.php?script_id=2501) consists of
+a syntax script, indent script, filetype settings, limited static completions,
+and a sophisticated synchronous REPL environment for interacting with JVM
+Clojure processes.
 
 While it is not necessary to use any of the interactive features of
-VimClojure, the static runtime files are not standalone scripts and
-cannot easily be extracted from the VimClojure support libraries. The
-side effects of this coupling are:
+VimClojure, the static runtime files are not standalone scripts and cannot
+easily be extracted from the VimClojure support libraries. The side effects of
+this coupling are:
 
 * Hacking on the runtime files is more difficult.
 
@@ -53,8 +53,8 @@ side effects of this coupling are:
   overkill. A smaller, self-contained set of files would be eligible for
   inclusion in Vim itself.
 
-This is a shame since VimClojure's syntax and indent scripts are of very
-high quality. This fork aims to address these problems.
+This is a shame since VimClojure's syntax and indent scripts are of very high
+quality. This fork aims to address these problems.
 
 Differences from VimClojure
 ===========================
@@ -70,10 +70,9 @@ Differences from VimClojure
   [`rainbow_parentheses.vim`](https://github.com/kien/rainbow_parentheses.vim)
   is an excellent replacement.
 
-* Insert mode completion is provided for special forms and public
-  vars in `clojure.core`. If you are looking for more comprehensive
-  completions, please consider using an interactive development plugin
-  listed below.
+* Insert mode completion is provided for special forms and public vars in
+  `clojure.core`. If you are looking for more comprehensive completions,
+  please consider using an interactive development plugin listed below.
 
 Interactive Clojure Development Plugins
 =======================================
@@ -84,14 +83,14 @@ New nREPL client by Tim Pope.
 
 ### [VimClojure](http://www.vim.org/scripts/script.php?script_id=2501)
 
-The original interactive Clojure editing environment by Meikel
-Brandmeyer. These runtime files are **incompatible** with the original
-VimClojure project in several small ways, so be sure to uninstall
-vim-clojure-static when using VimClojure.
+The original interactive Clojure editing environment by Meikel Brandmeyer.
+These runtime files are **incompatible** with the original VimClojure project
+in several small ways, so be sure to uninstall vim-clojure-static when using
+VimClojure.
 
 Meikel has [announced](https://groups.google.com/forum/?fromgroups=#!topic/vimclojure/B-UU8qctd5A)
-that the upcoming version of VimClojure will feature only the dynamic
-portion of the project, and will be compatible with these static files.
+that the upcoming version of VimClojure will feature only the dynamic portion
+of the project, and will be compatible with these static files.
 
 ### [slimv.vim](http://www.vim.org/scripts/script.php?script_id=2531)
 
@@ -103,19 +102,24 @@ Send text to REPLs running in GNU Screen or tmux. Not Clojure specific.
 
 By Eric Van Dewoestine.
 
-Try <https://github.com/guns/screen> for better window handling if you
-are running tmux 1.5 or higher.
+Try <https://github.com/guns/screen> for better window handling if you are
+running tmux 1.5 or higher.
 
 Options
 =======
 
-The indent script has a few configurable options. Documentation with
-default values below:
+Clojure indentation differs somewhat from traditional Lisps, due in part to
+the use of square and curly brackets, and otherwise by community convention.
+These conventions are not always universally followed, so the Clojure indent
+script offers a few configurable options, listed below.
+
+If the current vim does not include searchpairpos(), the indent script falls
+back to normal `'lisp'` indenting, and the following options are ignored.
 
 ### `g:clojure_maxlines`
 
-Maximum scan distance of searchpairpos(). Larger values trade performance
-for correctness when dealing with very long forms. A value of 0 means search
+Set maximum scan distance of searchpairpos(). Larger values trade performance
+for correctness when dealing with very long forms. A value of 0 will scan
 without limits.
 
 ```vim
@@ -125,8 +129,8 @@ let g:clojure_maxlines = 100
 
 ### `g:clojure_fuzzy_indent`, `g:clojure_fuzzy_indent_patterns`, and `g:clojure_fuzzy_indent_blacklist`
 
-The 'lispwords' option is a list of comma-separated words that mark
-special forms whose subforms must be indented with two spaces.
+The `'lispwords'` option is a list of comma-separated words that mark special
+forms whose subforms must be indented with two spaces.
 
 For example:
 
@@ -138,8 +142,8 @@ For example:
   "Correct indentation")
 ```
 
-If you would like to match words that match a pattern, you can use the
-fuzzy indent feature. The defaults are:
+If you would like to specify `'lispwords'` with a pattern instead, you can use
+the fuzzy indent feature:
 
 ```vim
 " Default
@@ -153,23 +157,23 @@ let g:clojure_fuzzy_indent_patterns = 'with.*,def.*,let.*'
 ```
 
 `g:clojure_fuzzy_indent_patterns` and `g:clojure_fuzzy_indent_blacklist` are
-*Lists* of patterns that will be matched against the unqualified symbol at the
+lists of patterns that will be matched against the unqualified symbol at the
 head of a list. This means that a pattern like `"^foo"` will match all these
 candidates: `"foobar"`, `"my.ns/foobar"`, and `"#'foobar"`.
 
 Each candidate word is tested for special treatment in this order:
 
-1. Return true if word is literally in 'lispwords'
+1. Return true if word is literally in `'lispwords'`
 2. Return false if word matches a pattern in `g:clojure_fuzzy_indent_blacklist`
 3. Return true if word matches a pattern in `g:clojure_fuzzy_indent_patterns`
 4. Return false and indent normally otherwise
 
 ### `g:clojure_special_indent_words`
 
-Some forms in Clojure are indented so that every subform is indented only two
-spaces, regardless of 'lispwords'. If you have a custom construct that should
-be indented in this idiosyncratic fashion, you can add your symbols to the
-default list below.
+Some forms in Clojure are indented so that every subform is indented only
+two spaces, regardless of `'lispwords'`. If you have a custom construct that
+should be indented in this idiosyncratic fashion, you can add your symbols to
+the default list below.
 
 ```vim
 " Default
@@ -178,8 +182,8 @@ let g:clojure_special_indent_words = 'deftype,defrecord,reify,proxy,extend-type,
 
 ### `g:clojure_align_multiline_strings`
 
-When indenting multiline strings, align subsequent lines to the column
-after the opening quote, instead of the same column.
+Align subsequent lines in multiline strings to the column after the opening
+quote, instead of the same column.
 
 For example:
 
@@ -197,6 +201,8 @@ For example:
    nisi ut aliquip ex ea commodo consequat.")
 ```
 
+This option is off by default.
+
 ```vim
 " Default
 let g:clojure_align_multiline_strings = 0
@@ -205,8 +211,8 @@ let g:clojure_align_multiline_strings = 0
 License and Acknowledgements
 ============================
 
-Many thanks to [Meikel Brandmeyer](http://kotka.de/) for his excellent
-work on making Vim a first class Clojure editor.
+Many thanks to [Meikel Brandmeyer](http://kotka.de/) for his excellent work on
+making Vim a first class Clojure editor.
 
 Thanks to [Tim Pope](https://github.com/tpope/) for advice in #vim.
 
@@ -224,3 +230,7 @@ Modified and relicensed under the Vim License for distribution with Vim:
 * Copyright 2013 (c) Sung Pae <self@sungpae.com>
 
 See LICENSE.txt for more information.
+
+<!--
+ vim:ft=markdown:et:tw=78:
+-->

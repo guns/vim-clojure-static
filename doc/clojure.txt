@@ -5,15 +5,20 @@ INTRODUCTION						*clojure-introduction*
 Meikel Brandmeyer's excellent Clojure runtime files. Includes syntax, indent,
 ftdetect, and ftplugin scripts.
 
-CLOJURE							*ft-clojure-indent*
+CLOJURE					*ft-clojure-indent* *clojure-indent*
 
-The Clojure indent script has a few configurable options. Documentation with
-default values below:
+Clojure indentation differs somewhat from traditional Lisps, due in part to
+the use of square and curly brackets, and otherwise by community convention.
+These conventions are not always universally followed, so the Clojure indent
+script offers a few configurable options, listed below.
+
+If the current vim does not include searchpairpos(), the indent script falls
+back to normal 'lisp' indenting, and the following options are ignored.
 
 							*g:clojure_maxlines*
 
-Maximum scan distance of searchpairpos(). Larger values trade performance
-for correctness when dealing with very long forms. A value of 0 means search
+Set maximum scan distance of searchpairpos(). Larger values trade performance
+for correctness when dealing with very long forms. A value of 0 will scan
 without limits.
 >
 	" Default
@@ -35,8 +40,8 @@ For example:
 	(defn good []
 	  "Correct indentation")
 <
-If you would like to match words that match a pattern, you can use the fuzzy
-indent feature. The defaults are:
+If you would like to specify 'lispwords' with a |pattern| instead, you can use
+the fuzzy indent feature:
 >
 	" Default
 	let g:clojure_fuzzy_indent = 1
@@ -76,8 +81,8 @@ default list below.
 
 					*g:clojure_align_multiline_strings*
 
-When indenting multiline strings, align subsequent lines to the column after
-the opening quote, instead of the same column.
+Align subsequent lines in multiline strings to the column after the opening
+quote, instead of the same column.
 
 For example:
 >
