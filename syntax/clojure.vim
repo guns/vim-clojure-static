@@ -54,6 +54,7 @@ let s:radixChars = "0123456789abcdefghijklmnopqrstuvwxyz"
 for s:radix in range(2, 36)
     execute 'syntax match clojureNumber "\c\<-\?' . s:radix . 'r[' . strpart(s:radixChars, 0, s:radix) . ']\+\>"'
 endfor
+unlet! s:radixChars s:radix
 
 syntax match clojureNumber "\<-\=[0-9]\+\(\.[0-9]*\)\=\(M\|\([eE][-+]\?[0-9]\+\)\)\?\>"
 syntax match clojureNumber "\<-\=[0-9]\+N\?\>"

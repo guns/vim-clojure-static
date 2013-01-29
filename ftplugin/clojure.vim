@@ -70,8 +70,9 @@ if has("gui_win32") && !exists("b:browsefilter")
     let b:undo_ftplugin .= ' | unlet! b:browsefilter'
 endif
 
-delfunction s:escape_path_for_option
-
 let &cpo = s:cpo_save
+
+unlet! s:cpo_save s:compfile s:dir
+delfunction s:escape_path_for_option
 
 " vim:sts=4 sw=4 et:

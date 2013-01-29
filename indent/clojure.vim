@@ -105,7 +105,7 @@ if exists("*searchpairpos")
         return [pos[0], virtcol(pos)]
     endfunction
 
-    function! ClojureCheckForStringWorker()
+    function! s:ClojureCheckForStringWorker()
         " Check whether there is the last character of the previous line is
         " highlighted as a string. If so, we check whether it's a ". In this
         " case we have to check also the previous character. The " might be the
@@ -147,14 +147,14 @@ if exists("*searchpairpos")
     function! s:CheckForString()
         let pos = s:SavePosition()
         try
-            let val = ClojureCheckForStringWorker()
+            let val = s:ClojureCheckForStringWorker()
         finally
             call s:RestorePosition(pos)
         endtry
         return val
     endfunction
 
-    function! ClojureIsMethodSpecialCaseWorker(position)
+    function! s:ClojureIsMethodSpecialCaseWorker(position)
         " Find the next enclosing form.
         call search('\S', 'Wb')
 
@@ -183,7 +183,7 @@ if exists("*searchpairpos")
     function! s:IsMethodSpecialCase(position)
         let pos = s:SavePosition()
         try
-            let val = ClojureIsMethodSpecialCaseWorker(a:position)
+            let val = s:ClojureIsMethodSpecialCaseWorker(a:position)
         finally
             call s:RestorePosition(pos)
         endtry
@@ -323,8 +323,6 @@ endif
 " The arglists for these functions are generally in the form of [x & body];
 " Functions that accept a flat list of forms do not treat the first argument
 " specially and hence are not indented specially.
-"
-" We make an exception for exception handling, since it is exceptional. :)
 
 " Definitions
 setlocal lispwords=
@@ -395,5 +393,6 @@ setlocal lispwords+=catch
 setlocal lispwords+=try " For aesthetics when enclosing single line
 
 let &cpo = s:save_cpo
+unlet! s:save_cpo
 
 " vim:sts=4 sw=4 et:
