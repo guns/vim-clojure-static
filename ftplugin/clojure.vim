@@ -39,9 +39,7 @@ function! s:escape_path_for_option(path)
 endfunction
 
 " Provide insert mode completions for special forms and clojure.core
-for s:compfile in split(globpath(&rtp, "ftplugin/clojure/*.dict"), '\n')
-    execute 'setlocal complete+=k' . s:escape_path_for_option(s:compfile)
-endfor
+execute 'setlocal complete+=k' . s:escape_path_for_option(expand('$VIMRUNTIME/ftplugin/clojure.dict'))
 
 " Take all directories of the CLOJURE_SOURCE_DIRS environment variable
 " and add them to the path option.
