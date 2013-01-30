@@ -53,22 +53,16 @@
          (clojure.string/join \newline definitions))))
 
 (def core-dictionary
-  "Newline delimited string of public vars in clojure.core. Intended for use
-   as a dictionary file for Vim insert mode completion."
+  "Newline delimited string of special forms and public vars in clojure.core.
+   Intended for use as a dictionary file for Vim insert mode completion."
   (->> `clojure.core
        ns-publics
        keys
-       (map str)
-       sort
-       (clojure.string/join \newline)))
-
-(def special-forms-dictionary
-  (->> special-forms
+       (concat special-forms)
        (map str)
        sort
        (clojure.string/join \newline)))
 
 (comment
   (do (spit "/tmp/clojure-keywords.vim" syntax-keywords)
-      (spit "/home/guns/src/vim-clojure-static/ftplugin/clojure/clojure.core.dict" core-dictionary)
-      (spit "/home/guns/src/vim-clojure-static/ftplugin/clojure/special-forms.dict" special-forms-dictionary)))
+      (spit "/home/guns/src/vim-clojure-static/ftplugin/clojure.dict" core-dictionary)))

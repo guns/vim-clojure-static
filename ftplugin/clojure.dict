@@ -45,6 +45,7 @@
 ->VecSeq
 -cache-protocol-fn
 -reset-methods
+.
 ..
 /
 <
@@ -122,6 +123,7 @@ byte-array
 bytes
 case
 cast
+catch
 char
 char-array
 char-escape-string
@@ -169,6 +171,7 @@ dec
 dec'
 decimal?
 declare
+def
 default-data-readers
 definline
 definterface
@@ -196,6 +199,7 @@ dissoc
 dissoc!
 distinct
 distinct?
+do
 doall
 dorun
 doseq
@@ -230,6 +234,7 @@ ffirst
 file-seq
 filter
 filterv
+finally
 find
 find-keyword
 find-ns
@@ -243,6 +248,7 @@ float-array
 float?
 floats
 flush
+fn
 fn
 fn?
 fnext
@@ -273,6 +279,7 @@ hash-map
 hash-set
 identical?
 identity
+if
 if-let
 if-not
 ifn?
@@ -306,6 +313,7 @@ last
 lazy-cat
 lazy-seq
 let
+let
 letfn
 line-seq
 list
@@ -320,6 +328,7 @@ locking
 long
 long-array
 longs
+loop
 loop
 macroexpand
 macroexpand-1
@@ -342,11 +351,14 @@ methods
 min
 min-key
 mod
+monitor-enter
+monitor-exit
 munge
 name
 namespace
 namespace-munge
 neg?
+new
 newline
 next
 nfirst
@@ -415,6 +427,7 @@ proxy-super
 push-thread-bindings
 pvalues
 quot
+quote
 rand
 rand-int
 rand-nth
@@ -432,6 +445,7 @@ read
 read-line
 read-string
 realized?
+recur
 reduce
 reduce-kv
 reduced
@@ -479,6 +493,7 @@ seque
 sequence
 sequential?
 set
+set!
 set-agent-send-executor!
 set-agent-send-off-executor!
 set-error-handler!
@@ -525,6 +540,7 @@ take-while
 test
 the-ns
 thread-bound?
+throw
 time
 to-array
 to-array-2d
@@ -532,6 +548,7 @@ trampoline
 transient
 tree-seq
 true?
+try
 type
 unchecked-add
 unchecked-add-int
@@ -562,6 +579,7 @@ update-proxy
 use
 val
 vals
+var
 var-get
 var-set
 var?

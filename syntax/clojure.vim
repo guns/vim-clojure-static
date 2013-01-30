@@ -21,7 +21,7 @@ setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:,$
 syntax match clojureError "]\|}\|)"
 
 " Generated from vim_clojure_static.clj
-" Clojure 1.5.0-RC3
+" Clojure 1.5.0-RC4
 syntax keyword clojureConstant nil
 syntax keyword clojureBoolean false true
 syntax keyword clojureSpecial . catch clojure.core/fn clojure.core/let clojure.core/loop def do finally fn if let loop monitor-enter monitor-exit new quote recur set! throw try var
