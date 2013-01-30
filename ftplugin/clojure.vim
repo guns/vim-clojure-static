@@ -5,7 +5,7 @@
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
-" Last Change:  28 January 2013
+" Last Change:  30 January 2013
 
 " Only do this when not done yet for this buffer
 if exists("b:did_ftplugin")

@@ -7,7 +7,7 @@
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
-" Last Change:  28 January 2013
+" Last Change:  30 January 2013
 
 if version < 600
     syntax clear
@@ -20,7 +20,7 @@ setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:,$
 " Highlight superfluous closing parens, brackets and braces.
 syntax match clojureError "]\|}\|)"
 
-" Generated from vim_clojure_static.clj
+" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-001/vim_clojure_static.clj
 " Clojure 1.5.0-RC4
 syntax keyword clojureConstant nil
 syntax keyword clojureBoolean false true

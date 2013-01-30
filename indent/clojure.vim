@@ -6,7 +6,7 @@
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
-" Last Change:  28 January 2013
+" Last Change:  30 January 2013
 
 " Only load this indent file when no other was loaded.
 if exists("b:did_indent")
