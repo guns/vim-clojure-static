@@ -5,7 +5,8 @@
 ;; Copy this file to a project running the latest Clojure release and generate
 ;; updated Vimscript definitions.
 
-(ns vim-clojure-static)
+(ns vim-clojure-static
+  (:require clojure.string clojure.java.shell))
 
 (def generation-message
   (str "\" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-001/vim_clojure_static.clj"
@@ -69,5 +70,22 @@
                     sort
                     (clojure.string/join \,)))))
 
+(defn update-vim!
+  "Update runtime files in dir/runtime"
+  [src dst]
+  (let [join (fn [& args] (clojure.string/join \/ args))
+        indent-file (join dst "runtime/doc/indent.txt")
+        indent-buf (slurp indent-file)
+        indent-match (re-find #"(?ms)^CLOJURE.*?(?=^[ \p{Lu}]+\t*\*)" indent-buf)
+        indent-doc (re-find #"(?ms)^CLOJURE.*(?=^ABOUT)" (slurp (join src "doc/clojure.txt")))]
+    ;; Insert indentation documentation
+    (spit indent-file (clojure.string/replace-first indent-buf
+                                                    indent-match
+                                                    (str indent-doc \newline)))
+    ;; Copy runtime files
+    (doseq [file ["autoload/clojurecomplete.vim" "ftplugin/clojure.vim" "indent/clojure.vim" "syntax/clojure.vim"]]
+      (println (clojure.java.shell/sh "cp" (join src file) (join dst "runtime" file))))))
+
 (comment
-  (spit "/tmp/clojure-defs.vim" (str syntax-keywords "\n\n" completion-words)))
+  (spit "/tmp/clojure-defs.vim" (str syntax-keywords "\n\n" completion-words))
+  (update-vim! "/home/guns/src/vim-clojure-static" "/home/guns/src/vim"))
