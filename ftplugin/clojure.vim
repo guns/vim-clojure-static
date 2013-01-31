@@ -35,7 +35,7 @@ setlocal commentstring=;\ %s
 " 'completefunc' so that the user has some form of completion available when
 " 'omnifunc' is set and no REPL connection exists.
 for s:setting in ['omnifunc', 'completefunc']
-    if exists('&' . s:setting)
+    if exists('&' . s:setting) && empty(eval('&' . s:setting))
         execute 'setlocal ' . s:setting . '=clojurecomplete#Complete'
         let b:undo_ftplugin .= ' | setlocal ' . s:setting . '<'
     endif
