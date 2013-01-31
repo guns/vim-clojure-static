@@ -111,12 +111,14 @@ https://github.com/guns/vim-clojure-static
 
 Distributed under the Vim license. See |license|.
 
-syntax/clojure.vim:
+syntax/clojure.vim
 
 	Copyright 2007-2008 (c) Toralf Wittner <toralf.wittner@gmail.com>
 	Copyright 2008-2012 (c) Meikel Brandmeyer <mb@kotka.de>
 
-All other files:
+ftdetect/clojure.vim
+ftplugin/clojure.vim
+indent/clojure.vim
 
 	Copyright 2008-2012 (c) Meikel Brandmeyer <mb@kotka.de>
 

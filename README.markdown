@@ -70,9 +70,13 @@ Differences from VimClojure
   [`rainbow_parentheses.vim`](https://github.com/kien/rainbow_parentheses.vim)
   is an excellent replacement.
 
-* Insert mode completion is provided for special forms and public vars in
-  `clojure.core`. If you are looking for more comprehensive completions,
-  please consider using an interactive development plugin listed below.
+* Basic insert mode completion is provided for special forms and public vars
+  in `clojure.core`. It is bound to both the `'omnifunc'` and `'completefunc'`
+  options, which can be invoked with the insert mode mappings `<C-X><C-O>` and
+  `<C-X><C-U>` respectively.
+
+  For more comprehensive completions, consider using an interactive
+  development plugin listed below.
 
 Interactive Clojure Development Plugins
 =======================================
@@ -105,8 +109,8 @@ By Eric Van Dewoestine.
 Try <https://github.com/guns/screen> for better window handling if you are
 running tmux 1.5 or higher.
 
-Options
-=======
+Indent Options
+==============
 
 Clojure indentation differs somewhat from traditional Lisps, due in part to
 the use of square and curly brackets, and otherwise by community convention.
@@ -216,12 +220,14 @@ making Vim a first class Clojure editor.
 
 Thanks to [Tim Pope](https://github.com/tpope/) for advice in #vim.
 
-syntax/clojure.vim:
+`syntax/clojure.vim`
 
 * Copyright 2007-2008 (c) Toralf Wittner <toralf.wittner@gmail.com>
 * Copyright 2008-2012 (c) Meikel Brandmeyer <mb@kotka.de>
 
-All other files:
+`ftdetect/clojure.vim`<br>
+`ftplugin/clojure.vim`<br>
+`indent/clojure.vim`
 
 * Copyright 2008-2012 (c) Meikel Brandmeyer <mb@kotka.de>
 
