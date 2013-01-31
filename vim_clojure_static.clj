@@ -61,7 +61,8 @@
   "Vimscript literal list of special forms and public vars in clojure.core."
   (str generation-message
        (format "let s:words = [%s]"
-               (->> (ns-publics `clojure.core)
+               (->> `clojure.core
+                    ns-publics
                     keys
                     (concat special-forms)
                     (map #(str \" % \"))
