@@ -16,7 +16,7 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
-let b:undo_ftplugin = 'setlocal define< formatoptions< comments< commentstring< complete<'
+let b:undo_ftplugin = 'setlocal define< formatoptions< comments< commentstring<'
 
 " There will be false positives, but this is better than missing the whole set
 " of user-defined def* definitions.
@@ -30,16 +30,16 @@ setlocal formatoptions-=t formatoptions+=croql
 setlocal comments=n:;
 setlocal commentstring=;\ %s
 
-function! s:escape_path_for_option(path)
-    let path = fnameescape(a:path)
-    " Whitespace escaping for Windows
-    let path = substitute(path, '\', '\\\\', 'g')
-    let path = substitute(path, '\ ', '\\ ', 'g')
-    return path
-endfunction
-
-" Provide insert mode completions for special forms and clojure.core
-execute 'setlocal complete+=k' . s:escape_path_for_option(expand('$VIMRUNTIME/ftplugin/clojure.dict'))
+" Provide insert mode completions for special forms and clojure.core. As
+" 'omnifunc' is set by popular Clojure REPL client plugins, we also set
+" 'completefunc' so that the user has some form of completion available when
+" 'omnifunc' is set and no REPL connection exists.
+for s:setting in ['omnifunc', 'completefunc']
+    if exists('&' . s:setting)
+        execute 'setlocal ' . s:setting . '=clojurecomplete#Complete'
+        let b:undo_ftplugin .= ' | setlocal ' . s:setting . '<'
+    endif
+endfor
 
 " Take all directories of the CLOJURE_SOURCE_DIRS environment variable
 " and add them to the path option.
@@ -47,7 +47,11 @@ execute 'setlocal complete+=k' . s:escape_path_for_option(expand('$VIMRUNTIME/ft
 " This is a legacy option for VimClojure users.
 if exists('$CLOJURE_SOURCE_DIRS')
     for s:dir in split($CLOJURE_SOURCE_DIRS, (has("win32") || has("win64")) ? ';' : ':')
-        execute "setlocal path+=" . s:escape_path_for_option(s:dir . "/**")
+        let s:dir = fnameescape(s:dir)
+        " Whitespace escaping for Windows
+        let s:dir = substitute(s:dir, '\', '\\\\', 'g')
+        let s:dir = substitute(s:dir, '\ ', '\\ ', 'g')
+        execute "setlocal path+=" . s:dir . "/**"
     endfor
     let b:undo_ftplugin .= ' | setlocal path<'
 endif
@@ -70,7 +74,6 @@ endif
 
 let &cpo = s:cpo_save
 
-unlet! s:cpo_save s:compfile s:dir
-delfunction s:escape_path_for_option
+unlet! s:cpo_save s:setting s:dir
 
 " vim:sts=4 sw=4 et:

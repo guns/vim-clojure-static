@@ -7,6 +7,12 @@
 
 (ns vim-clojure-static)
 
+(def generation-message
+  (str "\" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-001/vim_clojure_static.clj"
+       \newline
+       "\" Clojure " (clojure-version)
+       \newline))
+
 (def special-forms
   "http://clojure.org/special_forms"
   '[def if do let quote var fn loop recur throw try catch finally
@@ -49,20 +55,18 @@
                            (str "syntax keyword clojure" group \space
                                 (clojure.string/join \space (sort (names keywords)))))
                          builtins)]
-    (str "\" Clojure " (clojure-version) \newline
-         (clojure.string/join \newline definitions))))
+    (str generation-message (clojure.string/join \newline definitions))))
 
-(def core-dictionary
-  "Newline delimited string of special forms and public vars in clojure.core.
-   Intended for use as a dictionary file for Vim insert mode completion."
-  (->> `clojure.core
-       ns-publics
-       keys
-       (concat special-forms)
-       (map str)
-       sort
-       (clojure.string/join \newline)))
+(def completion-words
+  "Vimscript literal list of special forms and public vars in clojure.core."
+  (str generation-message
+       (format "let s:words = [%s]"
+               (->> (ns-publics `clojure.core)
+                    keys
+                    (concat special-forms)
+                    (map #(str \" % \"))
+                    sort
+                    (clojure.string/join \,)))))
 
 (comment
-  (do (spit "/tmp/clojure-keywords.vim" syntax-keywords)
-      (spit "/home/guns/src/vim-clojure-static/ftplugin/clojure.dict" core-dictionary)))
+  (spit "/tmp/clojure-defs.vim" (str syntax-keywords "\n\n" completion-words)))
