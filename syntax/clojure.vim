@@ -112,13 +112,13 @@ HiLink clojureMacro     Macro
 HiLink clojureRepeat    Repeat
 
 HiLink clojureSpecial   Special
-HiLink clojureQuote     Special
-HiLink clojureUnquote   Special
-HiLink clojureMeta      Special
-HiLink clojureDeref     Special
-HiLink clojureAnonArg   Special
-HiLink clojureDispatch  Special
 HiLink clojureVarArg    Special
+HiLink clojureQuote     SpecialChar
+HiLink clojureUnquote   SpecialChar
+HiLink clojureMeta      SpecialChar
+HiLink clojureDeref     SpecialChar
+HiLink clojureAnonArg   SpecialChar
+HiLink clojureDispatch  SpecialChar
 
 HiLink clojureComment   Comment
 HiLink clojureTodo      Todo
