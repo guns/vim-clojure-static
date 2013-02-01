@@ -41,7 +41,7 @@ syntax match clojureKeyword "\c:\{1,2}[a-z0-9?!\-_+*.=<>#$]\+\(/[a-z0-9?!\-_+*.=
 syntax region clojureString start=/L\="/ skip=/\\\\\|\\"/ end=/"/
 
 syntax match clojureCharacter "\\."
-syntax match clojureCharacter "\\[0-7]\{3\}"
+syntax match clojureCharacter "\\o[0-7]\{3\}"
 syntax match clojureCharacter "\\u[0-9]\{4\}"
 syntax match clojureCharacter "\\space"
 syntax match clojureCharacter "\\tab"
