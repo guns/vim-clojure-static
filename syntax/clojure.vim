@@ -17,9 +17,6 @@ endif
 
 setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:,$
 
-" Highlight superfluous closing parens, brackets and braces.
-syntax match clojureError "]\|}\|)"
-
 " Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-001/vim_clojure_static.clj
 " Clojure 1.5.0-RC4
 syntax keyword clojureConstant nil
@@ -64,13 +61,16 @@ syntax match clojureNumber "\<-\=[0-9]\+N\?\>"
 syntax match clojureNumber "\<-\=0x[0-9a-fA-F]\+\>"
 syntax match clojureNumber "\<-\=[0-9]\+/[0-9]\+\>"
 
-syntax match clojureQuote "\('\|`\)"
-syntax match clojureUnquote "\(\~@\|\~\)"
-syntax match clojureDispatch "\(#^\|#'\)"
-syntax match clojureDispatch "\^"
-
-syntax match clojureAnonArg "%\(\d\|&\)\?"
 syntax match clojureVarArg "&"
+
+syntax match clojureQuote "'"
+syntax match clojureQuote "`"
+syntax match clojureUnquote "\~"
+syntax match clojureUnquote "\~@"
+syntax match clojureMeta "\^"
+syntax match clojureDeref "@"
+syntax match clojureAnonArg "%\(\d\|&\)\?"
+syntax match clojureDispatch "\v#[\^\'\=\<]?"
 
 syntax region clojureRegexp start=/L\=\#"/ skip=/\\\\\|\\"/ end=/"/
 
@@ -84,6 +84,9 @@ syntax region clojureSexp   matchgroup=clojureParen start="("  matchgroup=clojur
 syntax region clojureVector matchgroup=clojureParen start="\[" matchgroup=clojureParen end="\]" contains=TOP,@Spell
 syntax region clojureMap    matchgroup=clojureParen start="{"  matchgroup=clojureParen end="}"  contains=TOP,@Spell
 
+" Highlight superfluous closing parens, brackets and braces.
+syntax match clojureError "]\|}\|)"
+
 syntax sync fromstart
 
 if version >= 600
@@ -95,7 +98,7 @@ endif
 HiLink clojureConstant  Constant
 HiLink clojureBoolean   Boolean
 HiLink clojureCharacter Character
-HiLink clojureKeyword   Operator
+HiLink clojureKeyword   Keyword
 HiLink clojureNumber    Number
 HiLink clojureString    String
 HiLink clojureRegexp    Constant
@@ -108,12 +111,14 @@ HiLink clojureFunc      Function
 HiLink clojureMacro     Macro
 HiLink clojureRepeat    Repeat
 
+HiLink clojureSpecial   Special
 HiLink clojureQuote     Special
 HiLink clojureUnquote   Special
-HiLink clojureDispatch  Special
+HiLink clojureMeta      Special
+HiLink clojureDeref     Special
 HiLink clojureAnonArg   Special
+HiLink clojureDispatch  Special
 HiLink clojureVarArg    Special
-HiLink clojureSpecial   Special
 
 HiLink clojureComment   Comment
 HiLink clojureTodo      Todo
