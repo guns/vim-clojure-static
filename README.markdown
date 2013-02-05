@@ -163,7 +163,7 @@ let g:clojure_fuzzy_indent_patterns = 'with.*,def.*,let.*'
 `g:clojure_fuzzy_indent_patterns` and `g:clojure_fuzzy_indent_blacklist` are
 lists of patterns that will be matched against the unqualified symbol at the
 head of a list. This means that a pattern like `"^foo"` will match all these
-candidates: `"foobar"`, `"my.ns/foobar"`, and `"#'foobar"`.
+candidates: `foobar`, `my.ns/foobar`, and `#'foobar`.
 
 Each candidate word is tested for special treatment in this order:
 
