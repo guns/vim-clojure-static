@@ -6,7 +6,7 @@
 ;; updated Vimscript definitions.
 
 (ns vim-clojure-static
-  (:require clojure.string clojure.java.shell))
+  (:require clojure.string clojure.set clojure.java.shell))
 
 (def generation-message
   (str "\" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-002/vim_clojure_static.clj"
