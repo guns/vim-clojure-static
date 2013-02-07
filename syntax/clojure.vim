@@ -13,8 +13,6 @@ if exists("b:current_syntax")
     finish
 endif
 
-setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:,$
-
 " Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-002/vim_clojure_static.clj
 " Clojure 1.5.0-RC6
 syntax keyword clojureConstant nil
