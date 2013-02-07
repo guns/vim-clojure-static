@@ -9,13 +9,9 @@
 " License:      Same as Vim
 " Last Change:  05 February 2013
 
-if version < 600
-    syntax clear
-elseif exists("b:current_syntax")
+if exists("b:current_syntax")
     finish
 endif
-
-setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:,$
 
 " Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-002/vim_clojure_static.clj
 " Clojure 1.5.0-RC6
@@ -89,45 +85,37 @@ syntax match clojureError "]\|}\|)"
 
 syntax sync fromstart
 
-if version >= 600
-    command -nargs=+ HiLink highlight default link <args>
-else
-    command -nargs=+ HiLink highlight link <args>
-endif
+highlight default link clojureConstant  Constant
+highlight default link clojureBoolean   Boolean
+highlight default link clojureCharacter Character
+highlight default link clojureKeyword   Keyword
+highlight default link clojureNumber    Number
+highlight default link clojureString    String
+highlight default link clojureRegexp    Constant
 
-HiLink clojureConstant  Constant
-HiLink clojureBoolean   Boolean
-HiLink clojureCharacter Character
-HiLink clojureKeyword   Keyword
-HiLink clojureNumber    Number
-HiLink clojureString    String
-HiLink clojureRegexp    Constant
+highlight default link clojureVariable  Identifier
+highlight default link clojureCond      Conditional
+highlight default link clojureDefine    Define
+highlight default link clojureException Exception
+highlight default link clojureFunc      Function
+highlight default link clojureMacro     Macro
+highlight default link clojureRepeat    Repeat
 
-HiLink clojureVariable  Identifier
-HiLink clojureCond      Conditional
-HiLink clojureDefine    Define
-HiLink clojureException Exception
-HiLink clojureFunc      Function
-HiLink clojureMacro     Macro
-HiLink clojureRepeat    Repeat
+highlight default link clojureSpecial   Special
+highlight default link clojureVarArg    Special
+highlight default link clojureQuote     SpecialChar
+highlight default link clojureUnquote   SpecialChar
+highlight default link clojureMeta      SpecialChar
+highlight default link clojureDeref     SpecialChar
+highlight default link clojureAnonArg   SpecialChar
+highlight default link clojureDispatch  SpecialChar
 
-HiLink clojureSpecial   Special
-HiLink clojureVarArg    Special
-HiLink clojureQuote     SpecialChar
-HiLink clojureUnquote   SpecialChar
-HiLink clojureMeta      SpecialChar
-HiLink clojureDeref     SpecialChar
-HiLink clojureAnonArg   SpecialChar
-HiLink clojureDispatch  SpecialChar
+highlight default link clojureComment   Comment
+highlight default link clojureTodo      Todo
 
-HiLink clojureComment   Comment
-HiLink clojureTodo      Todo
+highlight default link clojureError     Error
 
-HiLink clojureError     Error
-
-HiLink clojureParen     Delimiter
-
-delcommand HiLink
+highlight default link clojureParen     Delimiter
 
 let b:current_syntax = "clojure"
 
