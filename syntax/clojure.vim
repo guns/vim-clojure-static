@@ -66,13 +66,12 @@ syntax match clojureUnquote "\~@"
 syntax match clojureMeta "\^"
 syntax match clojureDeref "@"
 syntax match clojureAnonArg "%\(\d\|&\)\?"
-syntax match clojureDispatch "\v#[\^\'\=\<]?"
+syntax match clojureDispatch "\v#[\^'=<_]?"
 
 syntax region clojureRegexp start=/L\=\#"/ skip=/\\\\\|\\"/ end=/"/
 
 syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
 syntax match clojureComment "#!.*$"
-syntax match clojureComment "#_"
 
 syntax keyword clojureTodo contained FIXME XXX TODO FIXME: XXX: TODO:
 
