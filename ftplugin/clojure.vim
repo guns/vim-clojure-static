@@ -7,7 +7,6 @@
 " License:      Same as Vim
 " Last Change:  06 February 2013
 
-" Only do this when not done yet for this buffer
 if exists("b:did_ftplugin")
     finish
 endif
