@@ -256,9 +256,9 @@ if exists("*searchpairpos")
         endif
 
         " In case after the paren is a whitespace, we search for the next word.
-        normal! l
+        call cursor(0, col('.') + 1)
         if s:CurrentChar() == ' '
-            normal! w
+            call search('\v\S', 'W')
         endif
 
         " If we moved to another line, there is no word after the (. We
@@ -290,12 +290,13 @@ if exists("*searchpairpos")
             return paren[1] + &shiftwidth - 1
         endif
 
-        normal! W
+        call search('\v\s|\n', 'cW')
+        call search('\v\S', 'W')
         if paren[0] < line(".")
             return paren[1] + &shiftwidth - 1
         endif
 
-        normal! ge
+        call search('\v\S', 'bW')
         return virtcol(".") + 1
     endfunction
 
