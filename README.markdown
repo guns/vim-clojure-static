@@ -114,6 +114,8 @@ running tmux 1.5 or higher.
 Like `screen` above, an asynchronous REPL plugin that uses GNU screen and
 tmux. Not Clojure specific.
 
+By Jonathan Palardy.
+
 Installation
 ============
 
