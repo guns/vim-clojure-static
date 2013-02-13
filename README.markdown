@@ -109,7 +109,7 @@ By Eric Van Dewoestine.
 Try <https://github.com/guns/screen> for better window handling if you are
 running tmux 1.5 or higher.
 
-### [vim-slime](git://github.com/jpalardy/vim-slime.git)
+### [vim-slime](https://github.com/jpalardy/vim-slime)
 
 Like `screen` above, an asynchronous REPL plugin that uses GNU screen and
 tmux. Not Clojure specific.
