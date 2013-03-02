@@ -7,14 +7,14 @@
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
-" Last Change:  06 February 2013
+" Last Change:  02 March 2013
 
 if exists("b:current_syntax")
     finish
 endif
 
-" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-002/vim_clojure_static.clj
-" Clojure 1.5.0-RC14
+" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/vim_clojure_static.clj
+" Clojure 1.5.0
 syntax keyword clojureConstant nil
 syntax keyword clojureBoolean false true
 syntax keyword clojureSpecial . catch clojure.core/fn clojure.core/let clojure.core/loop def do finally fn if let loop monitor-enter monitor-exit new quote recur set! throw try var
