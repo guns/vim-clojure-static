@@ -276,7 +276,7 @@ if exists("*searchpairpos")
             return paren[1] + &shiftwidth - 1
         endif
 
-        call search('\v\s|\n', 'cW')
+        call search('\v\_s', 'cW')
         call search('\v\S', 'W')
         if paren[0] < line(".")
             return paren[1] + &shiftwidth - 1
