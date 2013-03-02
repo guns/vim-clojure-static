@@ -77,20 +77,6 @@ if exists("*searchpairpos")
         endfor
     endfunction
 
-    function! s:SavePosition()
-        let [ _b, l, c, _o ] = getpos(".")
-        let b = bufnr("%")
-        return [b, l, c]
-    endfunction
-
-    function! s:RestorePosition(value)
-        let [b, l, c] = a:value
-        if bufnr("%") != b
-            execute b "buffer!"
-        endif
-        call setpos(".", [0, l, c, 0])
-    endfunction
-
     function! s:MatchPairs(open, close, stopat)
         " Stop only on vector and map [ resp. {. Ignore the ones in strings and
         " comments.
@@ -144,11 +130,11 @@ if exists("*searchpairpos")
     endfunction
 
     function! s:CheckForString()
-        let pos = s:SavePosition()
+        let pos = getpos('.')
         try
             let val = s:ClojureCheckForStringWorker()
         finally
-            call s:RestorePosition(pos)
+            call setpos('.', pos)
         endtry
         return val
     endfunction
@@ -180,11 +166,11 @@ if exists("*searchpairpos")
     endfunction
 
     function! s:IsMethodSpecialCase(position)
-        let pos = s:SavePosition()
+        let pos = getpos('.')
         try
             let val = s:ClojureIsMethodSpecialCaseWorker(a:position)
         finally
-            call s:RestorePosition(pos)
+            call setpos('.', pos)
         endtry
         return val
     endfunction
