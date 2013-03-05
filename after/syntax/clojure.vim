@@ -9,10 +9,10 @@
 "   Vim 7.3 or Vim compiled with conceal patch.
 "
 
-syntax clear clojureConcealLambda
+"syntax clear clojureConcealLambda
 
 if !exists('g:clojure_lambda_conceal') || !has('conceal') || &enc != 'utf-8'
-    finish
+  finish
 endif
 
 syntax keyword clojureConcealLambda defn defn- fn letfn conceal cchar=λ
@@ -22,3 +22,4 @@ hi link clojureConcealLambda Define
 hi! link Conceal Define
 
 setlocal conceallevel=2
+
