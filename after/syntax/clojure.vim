@@ -11,7 +11,7 @@
 
 syntax clear clojureConcealLambda
 
-if !exists('g:clojure_conceal_lambda') || !has('conceal') || &enc != 'utf-8'
+if !exists('g:clojure_lambda_conceal') || !has('conceal') || &enc != 'utf-8'
     finish
 endif
 
@@ -20,4 +20,5 @@ syntax match clojureConcealLambda /\v#\(/me=e-1 conceal cchar=λ
 
 hi link clojureConcealLambda Define
 hi! link Conceal Define
+
 setlocal conceallevel=2
