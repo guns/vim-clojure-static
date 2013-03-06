@@ -52,6 +52,10 @@ for s:radix in range(2, 36)
 endfor
 unlet! s:radixChars s:radix
 
+let s:idChars = "a-zA-Z0-9.$!*_+=#<>-\\'"
+execute 'syntax match clojureSymbol "\v[a-zA-Z.$!*_+=<>-]+(:['. s:idChars . ']+|[' . s:idChars .'])*"'
+unlet! s:idChars
+
 syntax match clojureNumber "\<-\=[0-9]\+\(\.[0-9]*\)\=\(M\|\([eE][-+]\?[0-9]\+\)\)\?\>"
 syntax match clojureNumber "\<-\=[0-9]\+N\?\>"
 syntax match clojureNumber "\<-\=0x[0-9a-fA-F]\+\>"
