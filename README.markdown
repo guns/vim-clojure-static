@@ -240,17 +240,19 @@ unicode lambda symbol.
 For example:
 
 ```clojure
-(fn [x] (* x x)
+(defn double [x]
+  (* x x))
 ```
 
 becomes:
 
 ```clojure
-(λ [x] (* x x)
+(λ double [x]
+  (* x x))
 ```
 
 This option is not set by default. Set it to `1` to enable it. It requires at
-least Vim 7.3 and a unicode font 
+least Vim 7.3 and a unicode font.
 
 License and Acknowledgements
 ============================

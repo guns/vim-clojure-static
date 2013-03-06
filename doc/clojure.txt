@@ -104,6 +104,29 @@ This option is off by default.
 	let g:clojure_align_multiline_strings = 0
 <
 
+
+					*g:clojure_lambda_conceal*
+
+Enabling this option changes 'fn', 'defn', 'defn-', 'letfn', and '#()' to the
+unicode lambda symbol. 
+
+For example:
+>
+	clojure
+	(defn double [x]
+	  (* x x))
+<
+becomes:
+>
+	clojure
+	(λ double [x]
+	  (* x x))
+<
+
+This option is not set by default. Set it to '1' to enable it. It requires at
+least Vim 7.3 and a unicode font.
+
+
 ABOUT							*clojure-about*
 
 This document and associated runtime files are maintained at:
