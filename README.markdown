@@ -231,6 +231,27 @@ This option is off by default.
 let g:clojure_align_multiline_strings = 0
 ```
 
+
+### `g:clojure_lambda_conceal`
+
+Enabling this option changes `fn`, `defn`, `defn-`, `letfn`, and `#()` to the
+unicode lambda symbol. 
+
+For example:
+
+```clojure
+(fn [x] (* x x)
+```
+
+becomes:
+
+```clojure
+(λ [x] (* x x)
+```
+
+This option is not set by default. Set it to `1` to enable it. It requires at
+least Vim 7.3 and a unicode font 
+
 License and Acknowledgements
 ============================
 
