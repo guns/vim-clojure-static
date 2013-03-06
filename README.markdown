@@ -240,14 +240,14 @@ unicode lambda symbol.
 For example:
 
 ```clojure
-(defn double [x]
+(defn square [x]
   (* x x))
 ```
 
 becomes:
 
 ```clojure
-(λ double [x]
+(λ square [x]
   (* x x))
 ```
 
