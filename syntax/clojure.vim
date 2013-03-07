@@ -32,7 +32,7 @@ syntax keyword clojureVariable *1 *2 *3 *agent* *allow-unresolved-vars* *assert*
 "   * Must not end in a : or /
 "   * Must not have two adjacent colons except at the beginning
 "   * Must not contain any reader metacharacters except for ' and #
-syntax match clojureKeyword "\v:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\t()\[\]{}";@^`~\\%/]+:@<!"
+syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\t()\[\]{}";@^`~\\%/]+:@<!>"
 
 syntax region clojureString start=/L\="/ skip=/\\\\\|\\"/ end=/"/
 
@@ -51,10 +51,6 @@ for s:radix in range(2, 36)
     execute 'syntax match clojureNumber "\c\<-\?' . s:radix . 'r[' . strpart(s:radixChars, 0, s:radix) . ']\+\>"'
 endfor
 unlet! s:radixChars s:radix
-
-let s:idChars = "a-zA-Z0-9.$!*_+=#<>-\\'"
-execute 'syntax match clojureSymbol "\v[a-zA-Z.$!*_+=<>-]+(:['. s:idChars . ']+|[' . s:idChars .'])*"'
-unlet! s:idChars
 
 syntax match clojureNumber "\<-\=[0-9]\+\(\.[0-9]*\)\=\(M\|\([eE][-+]\?[0-9]\+\)\)\?\>"
 syntax match clojureNumber "\<-\=[0-9]\+N\?\>"
