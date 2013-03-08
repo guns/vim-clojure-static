@@ -32,7 +32,7 @@ syntax keyword clojureVariable *1 *2 *3 *agent* *allow-unresolved-vars* *assert*
 "   * Must not end in a : or /
 "   * Must not have two adjacent colons except at the beginning
 "   * Must not contain any reader metacharacters except for ' and #
-syntax match clojureKeyword "\v:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\t()\[\]{}";@^`~\\%/]+:@<!"
+syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\t()\[\]{}";@^`~\\%/]+:@<!>"
 
 syntax region clojureString start=/L\="/ skip=/\\\\\|\\"/ end=/"/
 
@@ -65,8 +65,12 @@ syntax match clojureUnquote "\~"
 syntax match clojureUnquote "\~@"
 syntax match clojureMeta "\^"
 syntax match clojureDeref "@"
-syntax match clojureAnonArg "%\(\d\|&\)\?"
+
+" Clojure permits no more than 20 params.
+syntax match clojureAnonArg "%\([12][0-9]\|[1-9]\|&\)\?"
 syntax match clojureDispatch "\v#[\^'=<_]?"
+
+syntax match clojureSymbol "\v([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+(:?([a-zA-Z0-9!#$&*_+=|'<.>?-]|[^\x00-\x7F]))*[#:]@<!"
 
 syntax region clojureRegexp start=/L\=\#"/ skip=/\\\\\|\\"/ end=/"/
 
