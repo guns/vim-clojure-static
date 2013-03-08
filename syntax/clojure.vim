@@ -46,11 +46,11 @@ syntax match clojureCharacter "\\return"
 syntax match clojureCharacter "\\backspace"
 syntax match clojureCharacter "\\formfeed"
 
-let s:radixChars = "0123456789abcdefghijklmnopqrstuvwxyz"
+let s:radix_chars = "0123456789abcdefghijklmnopqrstuvwxyz"
 for s:radix in range(2, 36)
-    execute 'syntax match clojureNumber "\c\<-\?' . s:radix . 'r[' . strpart(s:radixChars, 0, s:radix) . ']\+\>"'
+    execute 'syntax match clojureNumber "\c\<-\?' . s:radix . 'r[' . strpart(s:radix_chars, 0, s:radix) . ']\+\>"'
 endfor
-unlet! s:radixChars s:radix
+unlet! s:radix_chars s:radix
 
 syntax match clojureNumber "\<-\=\d\+\(\.\d*\)\=\(M\|\([eE][-+]\?\d\+\)\)\?\>"
 syntax match clojureNumber "\<-\=\d\+N\?\>"
