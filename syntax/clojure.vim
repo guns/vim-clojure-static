@@ -70,7 +70,7 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-syntax match clojureSymbol "\v([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+(:?([a-zA-Z0-9!#$&*_+=|'<.>?-]|[^\x00-\x7F]))*[#:]@<!"
+syntax match clojureSymbol "\v([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+(:?([a-zA-Z0-9!#$%&*_+=|'<.>?-]|[^\x00-\x7F]))*[#:]@<!"
 
 syntax region clojureRegexp start=/L\=\#"/ skip=/\\\\\|\\"/ end=/"/
 
