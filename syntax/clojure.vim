@@ -37,8 +37,8 @@ syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\
 syntax region clojureString start=/L\="/ skip=/\\\\\|\\"/ end=/"/
 
 syntax match clojureCharacter "\\."
-syntax match clojureCharacter "\\o[0-7]\{3\}"
-syntax match clojureCharacter "\\u[0-9]\{4\}"
+syntax match clojureCharacter "\\o\o\{3\}"
+syntax match clojureCharacter "\\u\d\{4\}"
 syntax match clojureCharacter "\\space"
 syntax match clojureCharacter "\\tab"
 syntax match clojureCharacter "\\newline"
@@ -52,10 +52,10 @@ for s:radix in range(2, 36)
 endfor
 unlet! s:radixChars s:radix
 
-syntax match clojureNumber "\<-\=[0-9]\+\(\.[0-9]*\)\=\(M\|\([eE][-+]\?[0-9]\+\)\)\?\>"
-syntax match clojureNumber "\<-\=[0-9]\+N\?\>"
-syntax match clojureNumber "\<-\=0x[0-9a-fA-F]\+\>"
-syntax match clojureNumber "\<-\=[0-9]\+/[0-9]\+\>"
+syntax match clojureNumber "\<-\=\d\+\(\.\d*\)\=\(M\|\([eE][-+]\?\d\+\)\)\?\>"
+syntax match clojureNumber "\<-\=\d\+N\?\>"
+syntax match clojureNumber "\<-\=0x\x\+\>"
+syntax match clojureNumber "\<-\=\d\+/\d\+\>"
 
 syntax match clojureVarArg "&"
 
@@ -68,7 +68,7 @@ syntax match clojureDeref "@"
 syntax match clojureDispatch "\v#[\^'=<_]?"
 
 " Clojure permits no more than 20 params.
-syntax match clojureAnonArg "%\(20\|1[0-9]\|[1-9]\|&\)\?"
+syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
 syntax match clojureSymbol "\v([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+(:?([a-zA-Z0-9!#$&*_+=|'<.>?-]|[^\x00-\x7F]))*[#:]@<!"
 
