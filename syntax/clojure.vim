@@ -65,10 +65,10 @@ syntax match clojureUnquote "\~"
 syntax match clojureUnquote "\~@"
 syntax match clojureMeta "\^"
 syntax match clojureDeref "@"
+syntax match clojureDispatch "\v#[\^'=<_]?"
 
 " Clojure permits no more than 20 params.
-syntax match clojureAnonArg "%\([12][0-9]\|[1-9]\|&\)\?"
-syntax match clojureDispatch "\v#[\^'=<_]?"
+syntax match clojureAnonArg "%\(20\|1[0-9]\|[1-9]\|&\)\?"
 
 syntax match clojureSymbol "\v([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+(:?([a-zA-Z0-9!#$&*_+=|'<.>?-]|[^\x00-\x7F]))*[#:]@<!"
 
