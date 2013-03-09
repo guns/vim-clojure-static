@@ -57,7 +57,7 @@ unlet! s:radix_chars s:radix
 syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
 
 syntax match clojureNumber "\v<[-+]?\d+%(\.\d*)?%(M|[eE][-+]?\d+)?>"
-syntax match clojureNumber "\v<[-+]?\d\+N?>"
+syntax match clojureNumber "\v<[-+]?\d+N?>"
 syntax match clojureNumber "\v<[-+]?0x\x+>"
 syntax match clojureNumber "\v<[-+]?\d+/\d+>"
 
