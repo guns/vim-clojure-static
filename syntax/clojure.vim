@@ -34,10 +34,13 @@ syntax keyword clojureVariable *1 *2 *3 *agent* *allow-unresolved-vars* *assert*
 "   * Must not contain any reader metacharacters except for ' and #
 syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\t()\[\]{}";@^`~\\%/]+:@<!>"
 
-syntax region clojureString start=/L\="/ skip=/\\\\\|\\"/ end=/"/
+syntax match clojureStringEscape "\\\\\|\\[btnfr"]\|\\u[0-9a-fA-F]\{4\}" contained
+
+syntax region clojureString start=/L\="/ skip=/\\\\\|\\"/ end=/"/ contains=clojureStringEscape
 
 syntax match clojureCharacter "\\."
 syntax match clojureCharacter "\\o\o\{3\}"
+syntax match clojureCharacter "\\u[0-9a-fA-F]\{4\}"
 syntax match clojureCharacter "\\u\d\{4\}"
 syntax match clojureCharacter "\\space"
 syntax match clojureCharacter "\\tab"
@@ -88,13 +91,14 @@ syntax match clojureError "]\|}\|)"
 
 syntax sync fromstart
 
-highlight default link clojureConstant  Constant
-highlight default link clojureBoolean   Boolean
-highlight default link clojureCharacter Character
-highlight default link clojureKeyword   Keyword
-highlight default link clojureNumber    Number
-highlight default link clojureString    String
-highlight default link clojureRegexp    Constant
+highlight default link clojureConstant     Constant
+highlight default link clojureBoolean      Boolean
+highlight default link clojureCharacter    Character
+highlight default link clojureKeyword      Keyword
+highlight default link clojureNumber       Number
+highlight default link clojureString       String
+highlight default link clojureStringEscape Character
+highlight default link clojureRegexp       Constant
 
 highlight default link clojureVariable  Identifier
 highlight default link clojureCond      Conditional
