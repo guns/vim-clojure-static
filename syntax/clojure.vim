@@ -36,7 +36,8 @@ syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\
 
 syntax match clojureStringEscape "\\[\\btnfr"]\|\\u\x\{4\}" contained
 
-syntax region clojureString start=/L\="/ skip=/\\\\\|\\"/ end=/"/ contains=clojureStringEscape
+syntax region clojureString start=/"/   skip=/\\"/ end=/"/ contains=clojureStringEscape
+syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/
 
 syntax match clojureCharacter "\\."
 syntax match clojureCharacter "\\o\o\{3\}"
@@ -73,8 +74,6 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
 syntax match clojureSymbol "\v([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+(:?([a-zA-Z0-9!#$%&*_+=|'<.>?-]|[^\x00-\x7F]))*[#:]@<!"
-
-syntax region clojureRegexp start=/L\=\#"/ skip=/\\\\\|\\"/ end=/"/
 
 syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
 syntax match clojureComment "#!.*$"
