@@ -34,7 +34,7 @@ syntax keyword clojureVariable *1 *2 *3 *agent* *allow-unresolved-vars* *assert*
 "   * Must not contain any reader metacharacters except for ' and #
 syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\t()\[\]{}";@^`~\\%/]+:@<!>"
 
-syntax match clojureStringEscape "\\[\\btnfr"]\|\\u\x\{4\}" contained
+syntax match clojureStringEscape "\v\\%([\\btnfr"]|u\x{4}|[0-3]\o{2}|\o{1,2})" contained
 
 syntax region clojureString start=/"/   skip=/\\"/ end=/"/ contains=clojureStringEscape
 syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/
