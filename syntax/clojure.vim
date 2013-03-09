@@ -37,7 +37,6 @@ syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\
 syntax match clojureStringEscape "\v\\%([\\btnfr"]|u\x{4}|[0-3]\o{2}|\o{1,2})" contained
 
 syntax region clojureString start=/"/   skip=/\\"/ end=/"/ contains=clojureStringEscape
-syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/
 
 syntax match clojureCharacter "\\."
 syntax match clojureCharacter "\\o\%([0-3]\o\{2\}\|\o\{1,2\}\)"
@@ -74,6 +73,8 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
+
+syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/
 
 syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
 syntax match clojureComment "#!.*$"
