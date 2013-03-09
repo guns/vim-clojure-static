@@ -40,7 +40,7 @@ syntax region clojureString start=/"/   skip=/\\"/ end=/"/ contains=clojureStrin
 syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/
 
 syntax match clojureCharacter "\\."
-syntax match clojureCharacter "\\o\o\{3\}"
+syntax match clojureCharacter "\\o\%([0-3]\o\{2\}\|\o\{1,2\}\)"
 syntax match clojureCharacter "\\u\x\{4\}"
 syntax match clojureCharacter "\\space"
 syntax match clojureCharacter "\\tab"
