@@ -56,10 +56,10 @@ unlet! s:radix_chars s:radix
 
 syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
 
-syntax match clojureNumber "\v<[-+]?\d+%(\.\d*)?%(M|[eE][-+]?\d+)?>"
-syntax match clojureNumber "\v<[-+]?\d+N?>"
+syntax match clojureNumber "\v<[-+]?%(0\o*|[1-9]\d*|%(0|[1-9]\d*)\.\d*)%(M|[eE][-+]?\d+)?>"
+syntax match clojureNumber "\v<[-+]?%(0\o*|[1-9]\d*)N>"
 syntax match clojureNumber "\v<[-+]?0x\x+>"
-syntax match clojureNumber "\v<[-+]?\d+/\d+>"
+syntax match clojureNumber "\v<[-+]?%(0|[1-9]\d*)/%(0|[1-9]\d*)>"
 
 syntax match clojureVarArg "&"
 
