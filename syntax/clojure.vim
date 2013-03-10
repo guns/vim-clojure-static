@@ -4,10 +4,12 @@
 "               modified by Meikel Brandmeyer <mb@kotka.de>
 " URL:          http://kotka.de/projects/clojure/vimclojure.html
 "
+" Contributors: Joel Holdbrooks <cjholdbrooks@gmail.com> (Regexp support, bug fixes)
+"
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
-" Last Change:  02 March 2013
+" Last Change:  09 March 2013
 
 if exists("b:current_syntax")
     finish
