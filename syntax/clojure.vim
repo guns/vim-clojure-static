@@ -84,7 +84,7 @@ syntax region clojureRegexpCharClass start="\\\@<!\[" end="\\\@<!\]" contained c
 syntax cluster clojureRegexpCharClasses contains=clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass,clojureRegexpCharClass
 " Boundary
 syntax match clojureRegexpBoundary "\v\\[bBAGZz]" contained
-syntax match clojureRegexpBoundary "\v\\<@![^$]" contained
+syntax match clojureRegexpBoundary "\v\<@![\^$]" contained
 " Quantification
 syntax match clojureRegexpQuantifier "\v\\@<![?*+]\??" contained
 syntax match clojureRegexpQuantifier "\v\\@<!\{\d+%(,|,\d+)?}\??" contained
