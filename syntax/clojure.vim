@@ -34,14 +34,13 @@ syntax keyword clojureVariable *1 *2 *3 *agent* *allow-unresolved-vars* *assert*
 "   * Must not contain any reader metacharacters except for ' and #
 syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\t()\[\]{}";@^`~\\%/]+:@<!>"
 
-syntax match clojureStringEscape "\\\\\|\\[btnfr"]\|\\u[0-9a-fA-F]\{4\}" contained
+syntax match clojureStringEscape "\v\\%([\\btnfr"]|u\x{4}|[0-3]\o{2}|\o{1,2})" contained
 
-syntax region clojureString start=/L\="/ skip=/\\\\\|\\"/ end=/"/ contains=clojureStringEscape
+syntax region clojureString start=/"/   skip=/\\"/ end=/"/ contains=clojureStringEscape
 
 syntax match clojureCharacter "\\."
-syntax match clojureCharacter "\\o\o\{3\}"
-syntax match clojureCharacter "\\u[0-9a-fA-F]\{4\}"
-syntax match clojureCharacter "\\u\d\{4\}"
+syntax match clojureCharacter "\\o\%([0-3]\o\{2\}\|\o\{1,2\}\)"
+syntax match clojureCharacter "\\u\x\{4\}"
 syntax match clojureCharacter "\\space"
 syntax match clojureCharacter "\\tab"
 syntax match clojureCharacter "\\newline"
@@ -55,10 +54,12 @@ for s:radix in range(2, 36)
 endfor
 unlet! s:radix_chars s:radix
 
-syntax match clojureNumber "\<-\=\d\+\(\.\d*\)\=\(M\|\([eE][-+]\?\d\+\)\)\?\>"
-syntax match clojureNumber "\<-\=\d\+N\?\>"
-syntax match clojureNumber "\<-\=0x\x\+\>"
-syntax match clojureNumber "\<-\=\d\+/\d\+\>"
+syntax match clojureSymbol "\v([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+(:?([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
+
+syntax match clojureNumber "\<[-+]\=\d\+\(\.\d*\)\=\(M\|\([eE][-+]\?\d\+\)\)\?\>"
+syntax match clojureNumber "\<[-+]\=\d\+N\?\>"
+syntax match clojureNumber "\<[-+]\=0x\x\+\>"
+syntax match clojureNumber "\<[-+]\=\d\+/\d\+\>"
 
 syntax match clojureVarArg "&"
 
@@ -73,7 +74,31 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-syntax match clojureSymbol "\v([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+(:?([a-zA-Z0-9!#$%&*_+=|'<.>?-]|[^\x00-\x7F]))*[#:]@<!"
+syntax match clojureRegexpChar "\\." contained
+syntax match clojureRegexpSpecialChar "\v\\{2}|\\%([tnrfae]|c.|0%([0-7]{1,2}|[0-3][0-7]{2})|x\x{2}|u\x{4})" contained
+syntax cluster clojureRegexpChars contains=clojureRegexpChar,clojureRegexpSpecialChar
+" Charactar classes
+syntax match clojureRegexpPredefinedCharClass "\\[dDsSwW]" contained
+syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Lower|Upper|ASCII|Alpha|Digit|Alnum|Punct|Graph|Print|Blank|Cntrl|XDigit|Space|IsLatin|InGreek|Lu|IsAlphabetic|Sc|java%(LowerCase|UpperCase|Whitespace|Mirrored))\}" contained
+syntax region clojureRegexpCharClass start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpCharClasses,@clojureRegexpChars
+syntax cluster clojureRegexpCharClasses contains=clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass,clojureRegexpCharClass
+" Boundary
+syntax match clojureRegexpBoundary "\v\\[bBAGZz]" contained
+syntax match clojureRegexpBoundary "\v\\<@![^$]" contained
+" Quantification
+syntax match clojureRegexpQuantifier "\v\\@<![?*+]\??" contained
+syntax match clojureRegexpQuantifier "\v\\@<!\{\d+%(,|,\d+)?}\??" contained
+syntax match clojureRegexpOr "\v\<@!\|" contained
+" Back references
+syntax match clojureRegexpBackRef "\v\\%(\d+|k\<[a-zA-z]+\>)" contained
+" Mode modifiers, mode-modified spans, lookaround, regular and atomic
+" grouping, and named-capturing.
+syntax match clojureRegexpMod "\v\(@<=\?[xdsmiu]?:?" contained
+syntax match clojureRegexpMod "\v\(@<=\?[=!>]" contained
+syntax match clojureRegexpMod "\v\(@<=\?\<[a-zA-Z]+\>" contained
+
+syntax region clojureRegexpGroup start="\\\@<!(" matchgroup=clojureRegexpGroup end="\\\@<!)" contained contains=clojureRegexpMod,@clojureRegexpCharClasses
+syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/ contains=@clojureRegexpChars,@clojureRegexpCharClasses,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup
 
 syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
 syntax match clojureComment "#!.*$"
@@ -97,6 +122,17 @@ highlight default link clojureNumber       Number
 highlight default link clojureString       String
 highlight default link clojureStringEscape Character
 highlight default link clojureRegexp       Constant
+
+highlight default link clojureRegexpChar                Character
+highlight default link clojureRegexpSpecialChar         Character
+highlight default link clojureRegexpCharClass           Special
+highlight default link clojureRegexpPosixCharClass      Special
+highlight default link clojureRegexpPredefinedCharClass Special
+highlight default link clojureRegexpBoundary            Special
+highlight default link clojureRegexpMod                 Special
+highlight default link clojureRegexpOr                  Special
+highlight default link clojureRegexpBackRef             Special
+highlight default link clojureRegexpGroup               clojureRegexp
 
 highlight default link clojureVariable  Identifier
 highlight default link clojureCond      Conditional
