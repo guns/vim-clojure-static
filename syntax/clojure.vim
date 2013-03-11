@@ -127,13 +127,13 @@ highlight default link clojureRegexp       Constant
 
 highlight default link clojureRegexpChar                Character
 highlight default link clojureRegexpSpecialChar         Character
-highlight default link clojureRegexpCharClass           Special
-highlight default link clojureRegexpPosixCharClass      Special
-highlight default link clojureRegexpPredefinedCharClass Special
-highlight default link clojureRegexpBoundary            Special
-highlight default link clojureRegexpMod                 Special
-highlight default link clojureRegexpOr                  Special
-highlight default link clojureRegexpBackRef             Special
+highlight default link clojureRegexpCharClass           SpecialChar
+highlight default link clojureRegexpPosixCharClass      SpecialChar
+highlight default link clojureRegexpPredefinedCharClass SpecialChar
+highlight default link clojureRegexpBoundary            SpecialChar
+highlight default link clojureRegexpMod                 SpecialChar
+highlight default link clojureRegexpOr                  SpecialChar
+highlight default link clojureRegexpBackRef             SpecialChar
 highlight default link clojureRegexpGroup               clojureRegexp
 
 highlight default link clojureVariable  Identifier
