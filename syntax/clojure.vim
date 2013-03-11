@@ -76,9 +76,7 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-syntax match clojureRegexpChar "\\." contained
 syntax match clojureRegexpSpecialChar "\v\\{2}|\\%([tnrfae]|c[A-Z]|0%([0-7]{1,2}|[0-3][0-7]{2})|x\x{2}|u\x{4})" contained
-syntax cluster clojureRegexpChars contains=clojureRegexpChar,clojureRegexpSpecialChar
 " Charactar classes
 syntax match clojureRegexpPredefinedCharClass "\\[dDsSwW]" contained
 syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Lower|Upper|ASCII|Alpha|Digit|Alnum|Punct|Graph|Print|Blank|Cntrl|XDigit|Space|IsLatin|InGreek|Lu|IsAlphabetic|Sc|java%(LowerCase|UpperCase|Whitespace|Mirrored))\}" contained
@@ -100,7 +98,7 @@ syntax match clojureRegexpMod "\v\(@<=\?[=!>]" contained
 syntax match clojureRegexpMod "\v\(@<=\?\<[a-zA-Z]+\>" contained
 
 syntax region clojureRegexpGroup start="\\\@<!(" matchgroup=clojureRegexpGroup end="\\\@<!)" contained contains=clojureRegexpMod,@clojureRegexpCharClasses
-syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/ contains=@clojureRegexpChars,@clojureRegexpCharClasses,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup
+syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/ contains=clojureRegexpSpecialChar,@clojureRegexpCharClasses,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup
 
 syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
 syntax match clojureComment "#!.*$"
@@ -125,7 +123,6 @@ highlight default link clojureString       String
 highlight default link clojureStringEscape Character
 highlight default link clojureRegexp       Constant
 
-highlight default link clojureRegexpChar                Character
 highlight default link clojureRegexpSpecialChar         Character
 highlight default link clojureRegexpCharClass           SpecialChar
 highlight default link clojureRegexpPosixCharClass      SpecialChar
