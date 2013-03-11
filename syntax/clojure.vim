@@ -95,7 +95,7 @@ syntax match clojureRegexpOr "\v\<@!\|" contained
 syntax match clojureRegexpBackRef "\v\\%(\d+|k\<[a-zA-z]+\>)" contained
 " Mode modifiers, mode-modified spans, lookaround, regular and atomic
 " grouping, and named-capturing.
-syntax match clojureRegexpMod "\v\(@<=\?(-?[xdsmiu])*:?" contained
+syntax match clojureRegexpMod "\v\(@<=\?[xdsmiu]*%(-[xdsmiu]*)?:?" contained
 syntax match clojureRegexpMod "\v\(@<=\?[=!>]" contained
 syntax match clojureRegexpMod "\v\(@<=\?\<[a-zA-Z]+\>" contained
 
