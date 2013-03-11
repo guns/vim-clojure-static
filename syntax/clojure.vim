@@ -77,7 +77,7 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
 syntax match clojureRegexpChar "\\." contained
-syntax match clojureRegexpSpecialChar "\v\\{2}|\\%([tnrfae]|c.|0%([0-7]{1,2}|[0-3][0-7]{2})|x\x{2}|u\x{4})" contained
+syntax match clojureRegexpSpecialChar "\v\\{2}|\\%([tnrfae]|c[A-Z]|0%([0-7]{1,2}|[0-3][0-7]{2})|x\x{2}|u\x{4})" contained
 syntax cluster clojureRegexpChars contains=clojureRegexpChar,clojureRegexpSpecialChar
 " Charactar classes
 syntax match clojureRegexpPredefinedCharClass "\\[dDsSwW]" contained
