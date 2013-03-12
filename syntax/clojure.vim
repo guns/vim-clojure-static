@@ -80,7 +80,7 @@ syntax match clojureRegexpSpecialChar "\v\\{2}|\\%([tnrfae]|c[A-Z]|0%([0-7]{1,2}
 " Charactar classes
 syntax match clojureRegexpPredefinedCharClass "\\[dDsSwW]" contained
 syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Lower|Upper|ASCII|Alpha|Digit|Alnum|Punct|Graph|Print|Blank|Cntrl|XDigit|Space|IsLatin|InGreek|Lu|IsAlphabetic|Sc|java%(LowerCase|UpperCase|Whitespace|Mirrored))\}" contained
-syntax region clojureRegexpCharClass start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpCharClasses,@clojureRegexpChars
+syntax region clojureRegexpCharClass start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpSpecialChar,clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass
 syntax cluster clojureRegexpCharClasses contains=clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass,clojureRegexpCharClass
 " Boundary
 syntax match clojureRegexpBoundary "\v\\[bBAGZz]" contained
