@@ -20,7 +20,7 @@
     "0x09abcdef" number "+0xf"  number "-0xf"  number ; Hexadecimal
     "0x0"        number "+0x0"  number "-0x0"  number ; Hexadecimal zero
     "3/2"        number "+3/2"  number "-3/2"  number ; Rational
-    "0/0"        number "+0/0"  number "-0/0"  number ; Rational zero (not a syntax error)
+    "0/0"        number "+0/0"  number "-0/0"  number ; Rational (not a syntax error)
     "2r1"        number "+2r1"  number "-2r1"  number ; Radix
     "36R1"       number "+36R1" number "-36R1" number ; Radix
 
@@ -73,7 +73,7 @@
   (with-format "#\"%s\""
     ;; Characters
     ;; x          The character x
-    "x" regexp
+    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" regexp
     ;; \\         The backslash character
     "\\\\" regexp-escape
     ;; \0n        The character with octal value 0n (0 <= n <= 7)
