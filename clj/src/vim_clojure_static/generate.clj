@@ -1,15 +1,13 @@
-;; Copyright (c) 2012 Sung Pae <self@sungpae.com>
+;; Copyright (c) 2013 Sung Pae <self@sungpae.com>
 ;; Distributed under the MIT license.
 ;; http://www.opensource.org/licenses/mit-license.php
-;;
-;; Copy this file to a project running the latest Clojure release and generate
-;; updated Vimscript definitions.
 
-(ns vim-clojure-static
-  (:require clojure.string clojure.set clojure.java.shell))
+(ns vim-clojure-static.generate
+  (:require [clojure.string :as string]
+            [clojure.set :as set]))
 
 (def generation-message
-  (str "\" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/vim_clojure_static.clj"
+  (str "\" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/clj/src/vim_clojure_static/generate.clj"
        \newline
        "\" Clojure " (clojure-version)
        \newline))
@@ -34,7 +32,7 @@
         declared (atom (set (filter symbol? (mapcat peek builtins))))
         coresyms (keys (ns-publics `clojure.core))
         select! (fn [pred]
-                  (let [xs (clojure.set/difference (set (filter pred coresyms)) @declared)]
+                  (let [xs (set/difference (set (filter pred coresyms)) @declared)]
                     (swap! declared into xs)
                     xs))
         builtins (conj builtins
@@ -54,9 +52,9 @@
                         [] coll))
         definitions (map (fn [[group keywords]]
                            (str "syntax keyword clojure" group \space
-                                (clojure.string/join \space (sort (names keywords)))))
+                                (string/join \space (sort (names keywords)))))
                          builtins)]
-    (str generation-message (clojure.string/join \newline definitions))))
+    (str generation-message (string/join \newline definitions))))
 
 (def completion-words
   "Vimscript literal list of special forms and public vars in clojure.core."
@@ -68,24 +66,7 @@
                     (concat special-forms)
                     (map #(str \" % \"))
                     sort
-                    (clojure.string/join \,)))))
-
-(defn update-vim!
-  "Update runtime files in dir/runtime"
-  [src dst]
-  (let [join (fn [& args] (clojure.string/join \/ args))
-        indent-file (join dst "runtime/doc/indent.txt")
-        indent-buf (slurp indent-file)
-        indent-match (re-find #"(?ms)^CLOJURE.*?(?=^[ \p{Lu}]+\t*\*)" indent-buf)
-        indent-doc (re-find #"(?ms)^CLOJURE.*(?=^ABOUT)" (slurp (join src "doc/clojure.txt")))]
-    ;; Insert indentation documentation
-    (spit indent-file (clojure.string/replace-first indent-buf
-                                                    indent-match
-                                                    (str indent-doc \newline)))
-    ;; Copy runtime files
-    (doseq [file ["autoload/clojurecomplete.vim" "ftplugin/clojure.vim" "indent/clojure.vim" "syntax/clojure.vim"]]
-      (println (clojure.java.shell/sh "cp" (join src file) (join dst "runtime" file))))))
+                    (string/join \,)))))
 
 (comment
-  (spit "/tmp/clojure-defs.vim" (str syntax-keywords "\n\n" completion-words))
-  (update-vim! "/home/guns/src/vim-clojure-static" "/home/guns/src/vim"))
+  (spit "/tmp/clojure-defs.vim" (str syntax-keywords "\n\n" completion-words)))
