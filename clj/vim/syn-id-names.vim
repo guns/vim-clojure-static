@@ -1,4 +1,5 @@
 execute 'set rtp=' . expand('%:p:h:h:h') . ',$VIMRUNTIME'
+filetype plugin on
 syntax on
 setfiletype clojure
 
