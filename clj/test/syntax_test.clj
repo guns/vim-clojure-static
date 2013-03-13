@@ -139,6 +139,7 @@
     ;; \cx        The control character corresponding to x
     "\\cA" regexp-escape
     "\\c1" !regexp-escape
+    "\\c" !regexp-escape
     ;; Additional escape sequences not mentioned in the official documenation.
     "\\." regexp-escape
     "\\*" regexp-escape
