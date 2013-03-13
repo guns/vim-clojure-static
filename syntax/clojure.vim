@@ -50,17 +50,16 @@ syntax match clojureCharacter "\\return"
 syntax match clojureCharacter "\\backspace"
 syntax match clojureCharacter "\\formfeed"
 
+syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
+
 let s:radix_chars = "0123456789abcdefghijklmnopqrstuvwxyz"
 for s:radix in range(2, 36)
-    execute 'syntax match clojureNumber "\c\<-\?' . s:radix . 'r[' . strpart(s:radix_chars, 0, s:radix) . ']\+\>"'
+    execute 'syntax match clojureNumber "\v\c<[-+]?' . s:radix . 'r[' . strpart(s:radix_chars, 0, s:radix) . ']+>"'
 endfor
 unlet! s:radix_chars s:radix
 
-syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
-
-syntax match clojureNumber "\v<[-+]?%(0\o*|[1-9]\d*|%(0|[1-9]\d*)\.\d*)%(M|[eE][-+]?\d+)?>"
-syntax match clojureNumber "\v<[-+]?%(0\o*|[1-9]\d*)N>"
-syntax match clojureNumber "\v<[-+]?0x\x+>"
+syntax match clojureNumber "\v<[-+]?%(0\o*|0x\x+|[1-9]\d*)N?>"
+syntax match clojureNumber "\v<[-+]?%(0|[1-9]\d*|%(0|[1-9]\d*)\.\d*)%(M|[eE][-+]?\d+)?>"
 syntax match clojureNumber "\v<[-+]?%(0|[1-9]\d*)/%(0|[1-9]\d*)>"
 
 syntax match clojureVarArg "&"
@@ -76,7 +75,7 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-syntax match clojureRegexpSpecialChar "\v\\{2}|\\%([tnrfae]|c[A-Z]|0%([0-7]{1,2}|[0-3][0-7]{2})|x\x{2}|u\x{4})" contained
+syntax match clojureRegexpEscape "\v\\{2}|\\%([tnrfae]|c[A-Z]|0%([0-7]{1,2}|[0-3][0-7]{2})|x\x{2}|u\x{4})" contained
 " Charactar classes
 syntax match clojureRegexpPredefinedCharClass "\\[dDsSwW]" contained
 syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Lower|Upper|ASCII|Alpha|Digit|Alnum|Punct|Graph|Print|Blank|Cntrl|XDigit|Space|IsLatin|InGreek|Lu|IsAlphabetic|Sc|java%(LowerCase|UpperCase|Whitespace|Mirrored))\}" contained
@@ -121,9 +120,9 @@ highlight default link clojureKeyword      Keyword
 highlight default link clojureNumber       Number
 highlight default link clojureString       String
 highlight default link clojureStringEscape Character
-highlight default link clojureRegexp       Constant
 
-highlight default link clojureRegexpSpecialChar         Character
+highlight default link clojureRegexp                    Constant
+highlight default link clojureRegexpEscape              Character
 highlight default link clojureRegexpCharClass           SpecialChar
 highlight default link clojureRegexpPosixCharClass      SpecialChar
 highlight default link clojureRegexpPredefinedCharClass SpecialChar
