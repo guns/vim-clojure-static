@@ -75,7 +75,7 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-syntax match clojureRegexpEscape "\v\\{2}|\\%([tnrfae]|c[A-Z]|0%([0-7]{1,2}|[0-3][0-7]{2})|x\x{2}|u\x{4})" contained
+syntax match clojureRegexpEscape "\v\\%([tnrfae]|c[A-Z]|0[0-3]?[0-7]{1,2}|x\x{2}|u\x{4})?" contained
 " Charactar classes
 syntax match clojureRegexpPredefinedCharClass "\\[dDsSwW]" contained
 syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Lower|Upper|ASCII|Alpha|Digit|Alnum|Punct|Graph|Print|Blank|Cntrl|XDigit|Space|IsLatin|InGreek|Lu|IsAlphabetic|Sc|java%(LowerCase|UpperCase|Whitespace|Mirrored))\}" contained
@@ -89,7 +89,7 @@ syntax match clojureRegexpQuantifier "\v\\@<![?*+]\??" contained
 syntax match clojureRegexpQuantifier "\v\\@<!\{\d+%(,|,\d+)?}\??" contained
 syntax match clojureRegexpOr "\v\<@!\|" contained
 " Back references
-syntax match clojureRegexpBackRef "\v\\%(\d+|k\<[a-zA-z]+\>)" contained
+syntax match clojureRegexpBackRef "\v\\%([1-9]\d*|k\<[a-zA-z]+\>)" contained
 " Mode modifiers, mode-modified spans, lookaround, regular and atomic
 " grouping, and named-capturing.
 syntax match clojureRegexpMod "\v\(@<=\?[xdsmiu]*%(-[xdsmiu]*)?:?" contained
@@ -97,7 +97,7 @@ syntax match clojureRegexpMod "\v\(@<=\?[=!>]" contained
 syntax match clojureRegexpMod "\v\(@<=\?\<[a-zA-Z]+\>" contained
 
 syntax region clojureRegexpGroup start="\\\@<!(" matchgroup=clojureRegexpGroup end="\\\@<!)" contained contains=clojureRegexpMod,clojureRegexpQuantifier,@clojureRegexpCharClasses
-syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/ contains=clojureRegexpSpecialChar,@clojureRegexpCharClasses,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup
+syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/ contains=clojureRegexpEscape,@clojureRegexpCharClasses,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup
 
 syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
 syntax match clojureComment "#!.*$"
