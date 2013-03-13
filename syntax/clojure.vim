@@ -131,6 +131,7 @@ highlight default link clojureStringEscape Character
 
 highlight default link clojureRegexp                    Constant
 highlight default link clojureRegexpEscape              Character
+highlight default link clojureRegexpQuote               Character
 highlight default link clojureRegexpCharClass           SpecialChar
 highlight default link clojureRegexpPosixCharClass      SpecialChar
 highlight default link clojureRegexpPredefinedCharClass SpecialChar
