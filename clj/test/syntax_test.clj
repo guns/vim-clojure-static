@@ -4,9 +4,10 @@
 (defn all [kw] (partial every? (partial = kw)))
 (def number (all :clojureNumber))
 (def !number (complement number))
-(def character (all :clojureCharacter))
 (def regexp (all :clojureRegexp))
+(def !regexp (complement regexp))
 (def regexp-escape (all :clojureRegexpEscape))
+(def !regexp-escape (complement regexp-escape))
 
 (defsyntaxtest number-literals-test
   (with-format "%s"
@@ -74,36 +75,48 @@
     ;;
     ;; Characters
     ;; x          The character x
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" regexp
+    " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" regexp
     "λ❤" regexp
     ;; \\         The backslash character
     "\\\\" regexp-escape
     ;; \0n        The character with octal value 0n (0 <= n <= 7)
     "\\07" regexp-escape
+    "\\08" !regexp-escape
     ;; \0nn       The character with octal value 0nn (0 <= n <= 7)
     "\\077" regexp-escape
+    "\\078" !regexp-escape
     ;; \0mnn      The character with octal value 0mnn (0 <= m <= 3, 0 <= n <= 7)
     "\\0377" regexp-escape
+    "\\0378" !regexp-escape
+    "\\0400" !regexp-escape
     ;; \xhh       The character with hexadecimal value 0xhh
     "\\xff" regexp-escape
+    "\\xfg" !regexp-escape
+    "\\xfff" !regexp-escape
     ;; \uhhhh     The character with hexadecimal value 0xhhhh
     "\\uffff" regexp-escape
+    "\\ufff" !regexp-escape
+    "\\ufffff" !regexp-escape
     ;; \x{h...h}  The character with hexadecimal value 0xh...h (Character.MIN_CODE_POINT  <= 0xh...h <=  Character.MAX_CODE_POINT)
-    "\\x{ffff}" regexp-escape
     ;; \t         The tab character ('\u0009')
     "\\t" regexp-escape
+    "\\T" !regexp-escape
     ;; \n         The newline (line feed) character ('\u000A')
     "\\n" regexp-escape
+    "\\N" !regexp-escape
     ;; \r         The carriage-return character ('\u000D')
     "\\r" regexp-escape
+    "\\R" !regexp-escape
     ;; \f         The form-feed character ('\u000C')
     "\\f" regexp-escape
+    "\\F" !regexp-escape
     ;; \a         The alert (bell) character ('\u0007')
     "\\a" regexp-escape
+    "\\A" !regexp-escape
     ;; \e         The escape character ('\u001B')
     "\\e" regexp-escape
+    "\\E" !regexp-escape
     ;; \cx        The control character corresponding to x
-    "\\cF" regexp-escape
     ;;
     ;; Character classes
     ;; [abc]            a, b, or c (simple class)
