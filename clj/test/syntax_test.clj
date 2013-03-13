@@ -1,12 +1,14 @@
 (ns syntax-test
   (:require [vim-clojure-static.test :as test :refer [defsyntaxtest]]))
 
-(defn all [kw] (partial every? (partial = kw)))
-(def number (all :clojureNumber))
+(defn all-fn [kw] (partial every? (partial = kw)))
+(def number (all-fn :clojureNumber))
 (def !number (complement number))
-(def regexp (all :clojureRegexp))
+(def kw (all-fn :clojureKeyword))
+(def !kw (complement kw))
+(def regexp (all-fn :clojureRegexp))
 (def !regexp (complement regexp))
-(def regexp-escape (all :clojureRegexpEscape))
+(def regexp-escape (all-fn :clojureRegexpEscape))
 (def !regexp-escape (complement regexp-escape))
 
 (defsyntaxtest number-literals-test
