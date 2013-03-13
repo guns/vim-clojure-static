@@ -75,9 +75,16 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-syntax match clojureRegexpEscape "\v\\%([tnrfae]|c[A-Z]|0[0-3]?[0-7]{1,2}|x\x{2}|u\x{4})?" contained
+" Note: Although not mentioned in the official documenation prefixing the
+" characters ".", "+", "*", "?", "{", "}", "[", "]", "(", and ")" with a "\"
+" forms a legal escape sequence.
+syntax match clojureRegexpEscape "\v\\%(\\|[tnrfae]|c[A-Z]|0[0-3]?[0-7]{1,2}|x\x{2}|u\x{4}|[.+*?{}[\]()])" contained
+syntax region clojureRegexpQuote start="\v\<@!\\Q" end="\\E"
+syntax cluster clojureRegexpEscapes contains=clojureRegexpEscape,clojureRegexpQuote
 " Charactar classes
-syntax match clojureRegexpPredefinedCharClass "\\[dDsSwW]" contained
+syntax match clojureRegexpPredefinedCharClass "\v%(\\[dDsSwW]|\.)" contained
+" XXX: Should we distinguish between posix, java, and unicode character
+" classes as in the documenation?
 syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Lower|Upper|ASCII|Alpha|Digit|Alnum|Punct|Graph|Print|Blank|Cntrl|XDigit|Space|IsLatin|InGreek|Lu|IsAlphabetic|Sc|java%(LowerCase|UpperCase|Whitespace|Mirrored))\}" contained
 syntax region clojureRegexpCharClass start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpSpecialChar,clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass
 syntax cluster clojureRegexpCharClasses contains=clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass,clojureRegexpCharClass
@@ -92,12 +99,13 @@ syntax match clojureRegexpOr "\v\<@!\|" contained
 syntax match clojureRegexpBackRef "\v\\%([1-9]\d*|k\<[a-zA-z]+\>)" contained
 " Mode modifiers, mode-modified spans, lookaround, regular and atomic
 " grouping, and named-capturing.
-syntax match clojureRegexpMod "\v\(@<=\?[xdsmiu]*%(-[xdsmiu]*)?:?" contained
-syntax match clojureRegexpMod "\v\(@<=\?[=!>]" contained
+syntax match clojureRegexpMod "\v\(@<=\?:" contained
+syntax match clojureRegexpMod "\v\(@<=\?[xdsmiuU]*-?[xdsmiuU]+:?" contained
+syntax match clojureRegexpMod "\v\(@<=\?%(\<?[=!]|\>)" contained
 syntax match clojureRegexpMod "\v\(@<=\?\<[a-zA-Z]+\>" contained
 
 syntax region clojureRegexpGroup start="\\\@<!(" matchgroup=clojureRegexpGroup end="\\\@<!)" contained contains=clojureRegexpMod,clojureRegexpQuantifier,@clojureRegexpCharClasses
-syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/ contains=clojureRegexpEscape,@clojureRegexpCharClasses,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup
+syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/ contains=@clojureRegexpEscapes,@clojureRegexpCharClasses,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup
 
 syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
 syntax match clojureComment "#!.*$"
