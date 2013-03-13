@@ -38,7 +38,7 @@ syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\
 
 syntax match clojureStringEscape "\v\\%([\\btnfr"]|u\x{4}|[0-3]\o{2}|\o{1,2})" contained
 
-syntax region clojureString start=/"/   skip=/\\"/ end=/"/ contains=clojureStringEscape
+syntax region clojureString start=/"/ skip=/\\\\\|\\"/ end=/"/ contains=clojureStringEscape
 
 syntax match clojureCharacter "\\."
 syntax match clojureCharacter "\\o\%([0-3]\o\{2\}\|\o\{1,2\}\)"
@@ -79,8 +79,8 @@ syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 " characters ".", "+", "*", "?", "{", "}", "[", "]", "(", and ")" with a "\"
 " forms a legal escape sequence.
 syntax match clojureRegexpEscape "\v\\%(\\|[tnrfae]|c[A-Z]|0[0-3]?[0-7]{1,2}|x\x{2}|u\x{4}|[.+*?{}[\]()])" contained
-syntax region clojureRegexpQuote start="\v\<@!\\Q" end="\\E"
-syntax cluster clojureRegexpEscapes contains=clojureRegexpEscape,clojureRegexpQuote
+syntax region clojureRegexpQuoted start=/\v\<@!\\Q/ms=e+1 skip=/\v\\\\|\\"/ end=/\\E/me=s-1 end=/"/me=s-1 contained
+syntax region clojureRegexpQuote  start=/\v\<@!\\Q/       skip=/\v\\\\|\\"/ end=/\\E/       end=/"/me=s-1 contains=clojureRegexpQuoted keepend contained
 " Charactar classes
 syntax match clojureRegexpPredefinedCharClass "\v%(\\[dDsSwW]|\.)" contained
 " XXX: Should we distinguish between posix, java, and unicode character
@@ -104,8 +104,8 @@ syntax match clojureRegexpMod "\v\(@<=\?[xdsmiuU]*-?[xdsmiuU]+:?" contained
 syntax match clojureRegexpMod "\v\(@<=\?%(\<?[=!]|\>)" contained
 syntax match clojureRegexpMod "\v\(@<=\?\<[a-zA-Z]+\>" contained
 
-syntax region clojureRegexpGroup start="\\\@<!(" matchgroup=clojureRegexpGroup end="\\\@<!)" contained contains=clojureRegexpMod,clojureRegexpQuantifier,clojureRegexpBoundary,@clojureRegexpEscapes,@clojureRegexpCharClasses
-syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/ contains=@clojureRegexpEscapes,@clojureRegexpCharClasses,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup
+syntax region clojureRegexpGroup start="\\\@<!(" matchgroup=clojureRegexpGroup end="\\\@<!)" contained contains=clojureRegexpMod,clojureRegexpQuantifier,clojureRegexpBoundary,clojureRegexpEscape,@clojureRegexpCharClasses
+syntax region clojureRegexp start=/\#"/ skip=/\\\\\|\\"/ end=/"/ contains=@clojureRegexpCharClasses,clojureRegexpEscape,clojureRegexpQuote,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup keepend
 
 syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
 syntax match clojureComment "#!.*$"
@@ -131,7 +131,6 @@ highlight default link clojureStringEscape Character
 
 highlight default link clojureRegexp                    Constant
 highlight default link clojureRegexpEscape              Character
-highlight default link clojureRegexpQuote               Character
 highlight default link clojureRegexpCharClass           SpecialChar
 highlight default link clojureRegexpPosixCharClass      SpecialChar
 highlight default link clojureRegexpPredefinedCharClass SpecialChar
@@ -141,6 +140,8 @@ highlight default link clojureRegexpMod                 SpecialChar
 highlight default link clojureRegexpOr                  SpecialChar
 highlight default link clojureRegexpBackRef             SpecialChar
 highlight default link clojureRegexpGroup               clojureRegexp
+highlight default link clojureRegexpQuoted              clojureRegexp
+highlight default link clojureRegexpQuote               clojureRegexpEscape
 
 highlight default link clojureVariable  Identifier
 highlight default link clojureCond      Conditional
