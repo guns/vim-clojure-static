@@ -75,16 +75,16 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-" Note: Although not mentioned in the official documenation prefixing the
+" Note: Although not mentioned in the official documentation prefixing the
 " characters ".", "+", "*", "?", "{", "}", "[", "]", "(", and ")" with a "\"
 " forms a legal escape sequence.
 syntax match clojureRegexpEscape "\v\\%(\\|[tnrfae]|c[A-Z]|0[0-3]?[0-7]{1,2}|x\x{2}|u\x{4}|[.+*?{}[\]()])" contained
 syntax region clojureRegexpQuoted start=/\v\<@!\\Q/ms=e+1 skip=/\v\\\\|\\"/ end=/\\E/me=s-1 end=/"/me=s-1 contained
 syntax region clojureRegexpQuote  start=/\v\<@!\\Q/       skip=/\v\\\\|\\"/ end=/\\E/       end=/"/me=s-1 contains=clojureRegexpQuoted keepend contained
-" Charactar classes
+" Character classes
 syntax match clojureRegexpPredefinedCharClass "\v%(\\[dDsSwW]|\.)" contained
 " XXX: Should we distinguish between posix, java, and unicode character
-" classes as in the documenation?
+" classes as in the documentation?
 syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Lower|Upper|ASCII|Alpha|Digit|Alnum|Punct|Graph|Print|Blank|Cntrl|XDigit|Space|IsLatin|InGreek|Lu|IsAlphabetic|Sc|java%(LowerCase|UpperCase|Whitespace|Mirrored))\}" contained
 syntax region clojureRegexpCharClass start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpSpecialChar,clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass
 syntax cluster clojureRegexpCharClasses contains=clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass,clojureRegexpCharClass
