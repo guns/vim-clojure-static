@@ -68,12 +68,14 @@
 
 ;; (test #'number-literals-test)
 
-;; http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
 (defsyntaxtest java-regexp-literals-test
   (with-format "#\"%s\""
+    ;; http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
+    ;;
     ;; Characters
     ;; x          The character x
     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" regexp
+    "λ❤" regexp
     ;; \\         The backslash character
     "\\\\" regexp-escape
     ;; \0n        The character with octal value 0n (0 <= n <= 7)
