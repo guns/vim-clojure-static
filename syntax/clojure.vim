@@ -104,7 +104,7 @@ syntax match clojureRegexpMod "\v\(@<=\?[xdsmiuU]*-?[xdsmiuU]+:?" contained
 syntax match clojureRegexpMod "\v\(@<=\?%(\<?[=!]|\>)" contained
 syntax match clojureRegexpMod "\v\(@<=\?\<[a-zA-Z]+\>" contained
 
-syntax region clojureRegexpGroup start="\\\@<!(" matchgroup=clojureRegexpGroup end="\\\@<!)" contained contains=clojureRegexpMod,clojureRegexpQuantifier,@clojureRegexpCharClasses
+syntax region clojureRegexpGroup start="\\\@<!(" matchgroup=clojureRegexpGroup end="\\\@<!)" contained contains=clojureRegexpMod,clojureRegexpQuantifier,clojureRegexpBoundary,@clojureRegexpEscapes,@clojureRegexpCharClasses
 syntax region clojureRegexp start=/\#"/ skip=/\\"/ end=/"/ contains=@clojureRegexpEscapes,@clojureRegexpCharClasses,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup
 
 syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
