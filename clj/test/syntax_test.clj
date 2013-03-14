@@ -20,8 +20,6 @@
 (def !regexp-quantifier (complement regexp-quantifier))
 (def regexp-back-ref  (all :clojureRegexpBackRef))
 (def !regexp-back-ref (complement regexp-back-ref))
-(def regexp-quote  (all :clojureRegexpQuote))
-(def !regexp-quote (complement regexp-quote))
 (def regexp-or  (all :clojureRegexpOr))
 (def !regexp-or (complement regexp-or))
 (def regexp-group  (all :clojureRegexpGroup))
@@ -339,8 +337,9 @@
 
     ;; \Q       Nothing, but quotes all characters until \E
     ;; \E       Nothing, but ends quoting started by \Q
-    "\\Qabc\\E" regexp-quote
-    "\\qabc\\E" !regexp-quote
+    "\\Qa\\E"  (partial = [:clojureRegexpQuote :clojureRegexpQuote :clojureRegexpQuoted :clojureRegexpQuote :clojureRegexpQuote])
+    "\\Qa\\\"" (partial = [:clojureRegexpQuote :clojureRegexpQuote :clojureRegexpQuoted :clojureRegexpQuoted :clojureRegexpQuoted])
+    "\\qa\\E"  (partial not-any? #{:clojureRegexpQuote :clojureRegexpQuoted})
 
     ;;;; Special constructs (named-capturing and non-capturing)
     ;; (?<name>X)         X, as a named-capturing group
