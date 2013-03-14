@@ -81,7 +81,7 @@ Differences from VimClojure
 Interactive Clojure Development Plugins
 =======================================
 
-### [vim-foreplay](https://github.com/tpope/vim-foreplay)
+### [vim-fireplace](https://github.com/tpope/vim-fireplace)
 
 New nREPL client by Tim Pope.
 
