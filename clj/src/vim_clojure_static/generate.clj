@@ -4,7 +4,8 @@
 
 (ns vim-clojure-static.generate
   (:require [clojure.string :as string]
-            [clojure.set :as set]))
+            [clojure.set :as set]
+            [clojure.reflect :as r]))
 
 (def generation-message
   (str "\" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/clj/src/vim_clojure_static/generate.clj"
@@ -67,6 +68,27 @@
                     (map #(str \" % \"))
                     sort
                     (string/join \,)))))
+
+(def java-char-class-names
+  "Returns a list of valid java character class names (excluding the \"java\"
+   prefix) for use in a regular expression literal."
+  ;; java.lang.Character/is* methods.
+  (let [is-ms (->> java.lang.Character
+                   r/reflect
+                   :members
+                   (map (comp name :name))
+                   (filter #(.startsWith % "is"))
+                   sort
+                   set)]
+    (reduce
+      (fn [pats is-m]
+        (let [c-name (second (s/split is-m #"is" 2))]
+          (try
+            (re-pattern (format "\\p{java%s}" c-name))
+            (conj pats c-name)
+            (catch java.util.regex.PatternSyntaxException e pats))))
+      []
+      is-ms)))
 
 (comment
   (spit "/tmp/clojure-defs.vim" (str syntax-keywords "\n\n" completion-words)))
