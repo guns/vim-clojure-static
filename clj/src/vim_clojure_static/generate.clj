@@ -82,7 +82,7 @@
                    sort)]
     (reduce
       (fn [pats is-m]
-        (let [c-name (second (s/split is-m #"is" 2))]
+        (let [c-name (second (string/split is-m #"is" 2))]
           (try
             (re-pattern (format "\\p{java%s}" c-name))
             (conj pats c-name)
