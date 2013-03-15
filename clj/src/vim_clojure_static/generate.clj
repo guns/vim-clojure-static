@@ -78,8 +78,8 @@
                    :members
                    (map (comp name :name))
                    (filter #(.startsWith % "is"))
-                   sort
-                   set)]
+                   set
+                   sort)]
     (reduce
       (fn [pats is-m]
         (let [c-name (second (s/split is-m #"is" 2))]
