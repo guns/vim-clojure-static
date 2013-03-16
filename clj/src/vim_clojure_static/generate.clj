@@ -69,26 +69,74 @@
                     sort
                     (string/join \,)))))
 
-(def java-char-class-names
-  "Returns a list of valid java character class names (excluding the \"java\"
-   prefix) for use in a regular expression literal."
-  ;; java.lang.Character/is* methods.
-  (let [is-ms (->> java.lang.Character
-                   r/reflect
-                   :members
-                   (map (comp name :name))
-                   (filter #(.startsWith % "is"))
-                   set
-                   sort)]
-    (reduce
-      (fn [pats is-m]
-        (let [c-name (second (string/split is-m #"is" 2))]
-          (try
-            (re-pattern (format "\\p{java%s}" c-name))
-            (conj pats c-name)
-            (catch java.util.regex.PatternSyntaxException e pats))))
-      []
-      is-ms)))
+;; Helper functions (should probably be moved to a util ns).
+
+(defn syntax-match [group pattern contained?]
+  "Returns a Vimscript literal `syntax match` statement. The content of pattern
+   is automatically wrapped in quotes."
+  (let [parts ["syntax match" (name group) (format "\"%s\"" pattern)]
+        parts (if contained?
+                (conj parts "contained")
+                parts)]
+    (string/join \space parts)))
+
+(defn re-pattern? [s]
+  "Returns true if s is a valid regular expression pattern, false otherwiese."
+  (try
+    (re-pattern s)
+    true
+    (catch java.util.regex.PatternSyntaxException _ false)))
+
+(defn pipe-join [ss]
+  (string/join \| ss))
+
+;;;; clojureRegex*CharClass generation ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn bracket-char-class? [s]
+  "Returns true if s is a valid posix, java, or unicode character class."
+  (re-pattern? (format "\\p{%s}" s)))
+
+;; This helps cut down on line noise.
+(defn unicode-char-class-pattern [s]
+  (format "\\v\\\\[pP]\\{%s\\}" s))
+
+(def unicode-char-classes
+  "Vimscript literal syntax match for unicode regex character classes."
+  (delay ;; Since we need to hit the network.
+    (let [page (slurp "http://www.regular-expressions.info/unicode.html")
+          cs (loop [m (re-matcher #"\\p\{([a-zA-Z_]+)\}" page)
+                    v (transient [])]
+               (if-let [[_ t] (re-find m)]
+                 (do
+                   (conj! v t)
+                   (recur m v))
+                 (sort (distinct (persistent! v)))))
+          cs (filter bracket-char-class? cs)
+          ;; This complicates things mildly but apparently not every unicode
+          ;; class can be prefixed with "Is".
+          {cs1 true cs2 false} (group-by #(bracket-char-class? (str "Is" %)) cs)]
+      (syntax-match
+        :clojureRegexpUnicodeCharClass
+        (unicode-char-class-pattern (format "%%(%%(Is)?%%(%s)|%%(%s))" (pipe-join cs1) (pipe-join cs2)))
+        true))))
+
+(def java-char-classes
+  "Vimscript literal syntax match for (Is)java* regex character classes."
+  (let [is-methods (->> java.lang.Character
+                        r/reflect
+                        :members
+                        (map (comp name :name))
+                        (filter #(.startsWith % "is"))
+                        distinct
+                        sort)
+        cs (filter #(bracket-char-class? (str "java" %))
+                   (map #(second (string/split % #"is" 2)) is-methods))
+        {cs1 true cs2 false} (group-by #(bracket-char-class? (str "Is" %)) cs)]
+    (syntax-match
+      :clojureRegexpJavaCharClass
+      (unicode-char-class-pattern (format "%%(%%(Is)?java%%(%s)|java%%(%s))" (pipe-join cs1) (pipe-join cs2)))
+      true)))
 
 (comment
-  (spit "/tmp/clojure-defs.vim" (str syntax-keywords "\n\n" completion-words)))
+  (spit "/tmp/clojure-defs.vim" (str syntax-keywords "\n\n" completion-words))
+  (spit "/tmp/clojure-char-classes.vim" (str java-char-classes "\n" @unicode-char-classes)))

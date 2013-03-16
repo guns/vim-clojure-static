@@ -79,13 +79,14 @@ syntax match clojureRegexpEscape "\v\\%(\\|[tnrfae]|c[A-Z]|0[0-3]?[0-7]{1,2}|x\x
 syntax region clojureRegexpQuoted start=/\v\<@!\\Q/ms=e+1 skip=/\v\\\\|\\"/ end=/\\E/me=s-1 end=/"/me=s-1 contained
 syntax region clojureRegexpQuote  start=/\v\<@!\\Q/       skip=/\v\\\\|\\"/ end=/\\E/       end=/"/me=s-1 contains=clojureRegexpQuoted keepend contained
 syntax cluster clojureRegexpEscapes contains=clojureRegexpEscape,clojureRegexpQuote
-" Character classes
+" Character classes and bracket expressions.
 syntax match clojureRegexpPredefinedCharClass "\v%(\\[dDsSwW]|\.)" contained
 syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Lower|Upper|ASCII|Alpha|Digit|Alnum|Punct|Graph|Print|Blank|Cntrl|XDigit|Space|IsLatin|InGreek|Lu|IsAlphabetic|Sc)\}" contained
-syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Is)?%(Cn|Cc|Cf|Co|Cs|Lu|Ll|Lt|Lm|Lo|Mn|Me|Mc|Nd|Nl|No|Pd|Ps|Pe|Pc|Pi|Pf|Po|Sm|Sc|Sk|So|Zs|Zl|Zp)\}"
-syntax match clojureRegexpPosixCharClass "\v\\[pP]\{java%(Defined|Digit|ISOControl|IdentifierIgnorable|JavaIdentifierPart|JavaIdentifierStart|Letter|LetterOrDigit|LowerCase|Mirrored|SpaceChar|TitleCase|UnicodeIdentifierPart|UnicodeIdentifierStart|UpperCase|Whitespace)\}" contained
-syntax region clojureRegexpCharClass start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpSpecialChar,clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass
-syntax cluster clojureRegexpCharClasses contains=clojureRegexpPredefinedCharClass,clojureRegexpPosixCharClass,clojureRegexpCharClass
+syntax match clojureRegexpJavaCharClass "\v\\[pP]\{%(%(Is)?java%(Alphabetic|Digit|Ideographic|Letter|LowerCase|TitleCase|UpperCase|Whitespace)|java%(Defined|ISOControl|IdentifierIgnorable|JavaIdentifierPart|JavaIdentifierStart|LetterOrDigit|Mirrored|SpaceChar|UnicodeIdentifierPart|UnicodeIdentifierStart))\}" contained
+syntax match clojureRegexpUnicodeCharClass "\v\\[pP]\{%(%(Is)?%(C|Cc|Cf|Cn|Co|Cs|L|Ll|Lm|Lo|Lt|Lu|M|Mc|Me|Mn|N|Nd|Nl|No|P|Pc|Pd|Pe|Pf|Pi|Po|Ps|S|Sc|Sk|Sm|So|Z|Zl|Zp|Zs)|%(InAlphabetic_Presentation_Forms|InArabic|InArmenian|InArrows|InBasic_Latin|InBengali|InBlock_Elements|InBopomofo|InBopomofo_Extended|InBox_Drawing|InBraille_Patterns|InBuhid|InCJK_Compatibility|InCJK_Compatibility_Forms|InCJK_Compatibility_Ideographs|InCJK_Radicals_Supplement|InCJK_Symbols_and_Punctuation|InCJK_Unified_Ideographs|InCJK_Unified_Ideographs_Extension_A|InCherokee|InCombining_Diacritical_Marks|InCombining_Half_Marks|InControl_Pictures|InCurrency_Symbols|InCyrillic|InCyrillic_Supplementary|InDevanagari|InDingbats|InEnclosed_Alphanumerics|InEnclosed_CJK_Letters_and_Months|InEthiopic|InGeneral_Punctuation|InGeometric_Shapes|InGeorgian|InGreek_Extended|InGujarati|InGurmukhi|InHalfwidth_and_Fullwidth_Forms|InHangul_Compatibility_Jamo|InHangul_Jamo|InHangul_Syllables|InHanunoo|InHebrew|InHigh_Private_Use_Surrogates|InHigh_Surrogates|InHiragana|InIPA_Extensions|InIdeographic_Description_Characters|InKanbun|InKangxi_Radicals|InKannada|InKatakana|InKatakana_Phonetic_Extensions|InKhmer|InKhmer_Symbols|InLao|InLatin_Extended_Additional|InLetterlike_Symbols|InLimbu|InLow_Surrogates|InMalayalam|InMathematical_Operators|InMiscellaneous_Symbols|InMiscellaneous_Symbols_and_Arrows|InMiscellaneous_Technical|InMongolian|InMyanmar|InNumber_Forms|InOgham|InOptical_Character_Recognition|InOriya|InPhonetic_Extensions|InPrivate_Use_Area|InRunic|InSinhala|InSmall_Form_Variants|InSpacing_Modifier_Letters|InSpecials|InSuperscripts_and_Subscripts|InSupplemental_Mathematical_Operators|InSyriac|InTagalog|InTagbanwa|InTai_Le|InTamil|InTelugu|InThaana|InThai|InTibetan|InUnified_Canadian_Aboriginal_Syllabics|InVariation_Selectors|InYi_Radicals|InYi_Syllables|InYijing_Hexagram_Symbols|IsL|IsLatin))\}" contained
+syntax cluster clojureRegexpBracketExp contains=clojureRegexpPosixCharClass,clojureRegexpUnicodeCharClass,clojureRegexpJavaCharClass
+syntax cluster clojureRegexpCharClasses contains=clojureRegexpPredefinedCharClass,clojureRegexpCharClass,@clojureRegexpBracketExp
+syntax region clojureRegexpCharClass start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpSpecialChar,clojureRegexpPredefinedCharClass,@clojureRegexpBracketExp
 " Boundary
 syntax match clojureRegexpBoundary "\v\\[bBAGZz]" contained
 syntax match clojureRegexpBoundary "\v\<@![\^$]" contained
@@ -131,6 +132,8 @@ highlight default link clojureRegexp                    Constant
 highlight default link clojureRegexpEscape              Character
 highlight default link clojureRegexpCharClass           SpecialChar
 highlight default link clojureRegexpPosixCharClass      SpecialChar
+highlight default link clojureRegexpJavaCharClass       SpecialChar
+highlight default link clojureRegexpUnicodeCharClass    SpecialChar
 highlight default link clojureRegexpPredefinedCharClass SpecialChar
 highlight default link clojureRegexpBoundary            SpecialChar
 highlight default link clojureRegexpQuantifier          SpecialChar
