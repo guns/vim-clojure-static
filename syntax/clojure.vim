@@ -76,10 +76,10 @@ syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
 syntax region clojureRegexp start=/\#"/ skip=/\\\\\|\\"/ end=/"/
 
-syntax match clojureComment ";.*$" contains=clojureTodo,@Spell
-syntax match clojureComment "#!.*$"
+syntax keyword clojureCommentTodo contained FIXME XXX TODO FIXME: XXX: TODO:
 
-syntax keyword clojureTodo contained FIXME XXX TODO FIXME: XXX: TODO:
+syntax match clojureComment ";.*$" contains=clojureCommentTodo,@Spell
+syntax match clojureComment "#!.*$"
 
 syntax region clojureSexp   matchgroup=clojureParen start="("  matchgroup=clojureParen end=")"  contains=TOP,@Spell
 syntax region clojureVector matchgroup=clojureParen start="\[" matchgroup=clojureParen end="\]" contains=TOP,@Spell
@@ -116,8 +116,8 @@ highlight default link clojureDeref     SpecialChar
 highlight default link clojureAnonArg   SpecialChar
 highlight default link clojureDispatch  SpecialChar
 
-highlight default link clojureComment   Comment
-highlight default link clojureTodo      Todo
+highlight default link clojureComment     Comment
+highlight default link clojureCommentTodo Todo
 
 highlight default link clojureError     Error
 
