@@ -97,7 +97,7 @@
   (re-pattern? (format "\\p{%s}" s)))
 
 ;; This helps cut down on line noise.
-(defn unicode-char-class-pattern [s]
+(defn bracket-char-class-pattern [s]
   (format "\\v\\\\[pP]\\{%s\\}" s))
 
 (def unicode-char-classes
@@ -117,7 +117,7 @@
           {cs1 true cs2 false} (group-by #(bracket-char-class? (str "Is" %)) cs)]
       (syntax-match
         :clojureRegexpUnicodeCharClass
-        (unicode-char-class-pattern (format "%%(%%(Is)?%%(%s)|%%(%s))" (pipe-join cs1) (pipe-join cs2)))
+        (bracket-char-class-pattern (format "%%(%%(Is)?%%(%s)|%%(%s))" (pipe-join cs1) (pipe-join cs2)))
         true))))
 
 (def java-char-classes
@@ -134,7 +134,7 @@
         {cs1 true cs2 false} (group-by #(bracket-char-class? (str "Is" %)) cs)]
     (syntax-match
       :clojureRegexpJavaCharClass
-      (unicode-char-class-pattern (format "%%(%%(Is)?java%%(%s)|java%%(%s))" (pipe-join cs1) (pipe-join cs2)))
+      (bracket-char-class-pattern (format "%%(%%(Is)?java%%(%s)|java%%(%s))" (pipe-join cs1) (pipe-join cs2)))
       true)))
 
 (comment
