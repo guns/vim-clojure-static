@@ -39,10 +39,10 @@
   "Create a new testing var with tests in the format:
 
    (defsyntaxtest example
-   (with-format \"#\\\"%s\\\"\"
-     \"123\" #(every? (partial = :clojureRegexp) %)
-     …)
-   (with-format …))
+     (with-format \"#\\\"%s\\\"\"
+       \"123\" #(every? (partial = :clojureRegexp) %)
+       …)
+     (with-format …))
 
    At runtime the syn-id-names of the strings (which are placed in the format
    spec) are passed to their associated predicates. The format spec should
