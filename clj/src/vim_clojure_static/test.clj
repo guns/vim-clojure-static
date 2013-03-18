@@ -56,13 +56,14 @@
                                            ss (map #(format fmt %) ss)]
                                        [(concat strings ss)
                                         (conj contexts {:fmt fmt :ss ss :λs λs})]))
-                                   [[] []] body)]
+                                   [[] []] body)
+        syntable (gensym "syntable")]
     `(test/deftest ~name
        ;; Shellout to vim should happen at runtime
-       (let [~'synids (syn-id-names (str "tmp/" ~(str name) ".clj") ~@strings)]
+       (let [~syntable (syn-id-names (str "tmp/" ~(str name) ".clj") ~@strings)]
          ~@(map (fn [{:keys [fmt ss λs]}]
                   `(test/testing ~fmt
-                     ~@(map (fn [s λ] `(test/is (~λ (subfmt ~fmt (get ~'synids ~s)))))
+                     ~@(map (fn [s λ] `(test/is (~λ (subfmt ~fmt (get ~syntable ~s)))))
                             ss λs)))
                 contexts)))))
 
