@@ -75,7 +75,7 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-syntax match clojureRegexpEscape "\v\\%(\\|[tnrfae]|c[A-Z]|0[0-3]?[0-7]{1,2}|x\x{2}|u\x{4}|.)" contained
+syntax match clojureRegexpEscape "\v\\%(\\|[tnrfae]|c\u|0[0-3]?\o{1,2}|x%(\x{2}|\{\x{1,9}\})|u\x{4}|.)" contained
 syntax region clojureRegexpQuoted start=/\v\<@!\\Q/ms=e+1 skip=/\v\\\\|\\"/ end=/\\E/me=s-1 end=/"/me=s-1 contained
 syntax region clojureRegexpQuote  start=/\v\<@!\\Q/       skip=/\v\\\\|\\"/ end=/\\E/       end=/"/me=s-1 contains=clojureRegexpQuoted keepend contained
 syntax cluster clojureRegexpEscapes contains=clojureRegexpEscape,clojureRegexpQuote
