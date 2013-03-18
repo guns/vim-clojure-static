@@ -92,33 +92,34 @@
 
 ;;;; clojureRegex*CharClass generation ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn bracket-char-class? [s]
-  "Returns true if s is a valid posix, java, or unicode character class."
+(defn bracket-class? [s]
+  "Returns true if s can be used in a bracket character class."
   (re-pattern? (format "\\p{%s}" s)))
 
 ;; This helps cut down on line noise.
-(defn bracket-char-class-pattern [s]
+(defn bracket-class [s]
+  "Vimscript very magic regular expression for a bracket character class."
   (format "\\v\\\\[pP]\\{%s\\}" s))
 
 (def unicode-char-classes
   "Vimscript literal syntax match for unicode regex character classes."
   (delay ;; Since we need to hit the network.
-    (let [page (slurp "http://www.regular-expressions.info/unicode.html")
-          cs (loop [m (re-matcher #"\\p\{([a-zA-Z_]+)\}" page)
-                    v (transient [])]
-               (if-let [[_ t] (re-find m)]
-                 (do
-                   (conj! v t)
-                   (recur m v))
-                 (sort (distinct (persistent! v)))))
-          cs (filter bracket-char-class? cs)
-          ;; This complicates things mildly but apparently not every unicode
-          ;; class can be prefixed with "Is".
-          {cs1 true cs2 false} (group-by #(bracket-char-class? (str "Is" %)) cs)]
-      (syntax-match
-        :clojureRegexpUnicodeCharClass
-        (bracket-char-class-pattern (format "%%(%%(Is)?%%(%s)|%%(%s))" (pipe-join cs1) (pipe-join cs2)))
-        true))))
+    (let [block-data (slurp "http://www.unicode.org/Public/UNIDATA/Blocks.txt")
+          block-names (re-seq #"[A-F0-9]{4,6}\.\.[A-F0-9]{4,6}; (.+)" block-data)
+          bs1 (map #(string/replace (second %) #" " "") block-names)
+          bs2 (map #(string/replace (second %) #"[ -]" "_") block-names)
+          bs (sort (distinct (apply conj bs1 bs2)))
+          is-bs (filter #(bracket-class? (str "Is" %)) bs)
+          in-bs (filter #(bracket-class? (str "In" %)) bs)
+          is-cs (syntax-match
+                  :clojureRegexpUnicodeCharClass
+                  (bracket-class (format "Is%%(%s)" (pipe-join is-bs)))
+                  true)
+          in-cs (syntax-match
+                  :clojureRegexpUnicodeCharClass
+                  (bracket-class (format "In%%(%s)" (pipe-join in-bs)))
+                  true)]
+      (str is-cs "\n" in-cs))))
 
 (def java-char-classes
   "Vimscript literal syntax match for (Is)java* regex character classes."
@@ -129,12 +130,12 @@
                         (filter #(.startsWith % "is"))
                         distinct
                         sort)
-        cs (filter #(bracket-char-class? (str "java" %))
+        cs (filter #(bracket-class? (str "java" %))
                    (map #(second (string/split % #"is" 2)) is-methods))
-        {cs1 true cs2 false} (group-by #(bracket-char-class? (str "Is" %)) cs)]
+        {cs1 true cs2 false} (group-by #(bracket-class? (str "Is" %)) cs)]
     (syntax-match
       :clojureRegexpJavaCharClass
-      (bracket-char-class-pattern (format "%%(%%(Is)?java%%(%s)|java%%(%s))" (pipe-join cs1) (pipe-join cs2)))
+      (bracket-class (format "%%(%%(Is)?java%%(%s)|java%%(%s))" (pipe-join cs1) (pipe-join cs2)))
       true)))
 
 (comment
