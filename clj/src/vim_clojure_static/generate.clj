@@ -1,6 +1,5 @@
-;; Copyright (c) 2013 Sung Pae <self@sungpae.com>
-;; Distributed under the MIT license.
-;; http://www.opensource.org/licenses/mit-license.php
+;; Authors: Sung Pae <self@sungpae.com>
+;;          Joel Holdbrooks <cjholdbrooks@gmail.com>
 
 (ns vim-clojure-static.generate
   (:require [clojure.string :as string]

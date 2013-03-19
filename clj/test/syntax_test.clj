@@ -1,3 +1,6 @@
+;; Authors: Sung Pae <self@sungpae.com>
+;;          Joel Holdbrooks <cjholdbrooks@gmail.com>
+
 (ns syntax-test
   (:require [vim-clojure-static.test :as test :refer [defsyntaxtest]]))
 

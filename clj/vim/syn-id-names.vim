@@ -1,3 +1,5 @@
+" Authors: Sung Pae <self@sungpae.com>
+
 execute 'set rtp=' . expand('%:p:h:h:h') . ',$VIMRUNTIME'
 filetype plugin on
 syntax on
