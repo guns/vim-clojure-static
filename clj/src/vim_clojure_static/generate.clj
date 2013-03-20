@@ -69,7 +69,7 @@
         select! (fn [pred]
                   (let [xs (set/difference (set (filter pred coresyms)) @declared)]
                     (swap! declared into xs)
-                    xs))]
+                    (vec xs)))]
     (conj builtins
           ;; Clojure devs are fastidious about accurate metadata
           ["Define" (select! #(re-seq #"\Adef(?!ault)" (str %)))]
