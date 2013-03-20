@@ -3,8 +3,7 @@
 
 (ns vim-clojure-static.generate
   (:require [clojure.string :as string]
-            [clojure.set :as set]
-            [clojure.reflect :as reflect]))
+            [clojure.set :as set]))
 
 ;;
 ;; Helpers
@@ -27,6 +26,13 @@
   "Vimscript very magic pattern for a character property class."
   [s]
   (format "\\v\\\\[pP]\\{%s\\}" s))
+
+(defn get-private-field
+  "Violate encapsulation and get the value of a private field."
+  [cls fieldname]
+  (let [field (first (filter #(= fieldname (.getName %)) (.getDeclaredFields cls)))]
+    (.setAccessible field true)
+    (.get field field)))
 
 ;;
 ;; Definitions
@@ -71,17 +77,34 @@
           ["Func" (select! #(:arglists (meta (resolve %))))]
           ["Variable" (select! identity)])))
 
-(def java-property-classes
-  "java.lang.Character boolean isMethods as valid regular expression property
-   class names."
-  (->> java.lang.Character
-       reflect/reflect
-       :members
-       (map (comp name :name))
-       (filter #(.startsWith % "is"))
-       distinct
-       (map #(string/replace % #"\Ais" "java"))
-       (filter valid-property-class?)))
+(def character-properties
+  "Character property names derived via reflection."
+  (let [props (map (fn [[p typ]] [p (string/replace (.getName (type typ)) #".*\$(.+)" "$1")])
+                   (get-private-field java.util.regex.Pattern$CharPropertyNames "map"))
+        props (map (fn [[typ ps]] [typ (map first ps)])
+                   (group-by peek props))
+        props (into {} props)
+        binary (concat (map #(. % name) (get-private-field java.util.regex.UnicodeProp "$VALUES"))
+                       (keys (get-private-field java.util.regex.UnicodeProp "aliases")))
+        script (concat (map #(. % name) (java.lang.Character$UnicodeScript/values))
+                       (keys (get-private-field java.lang.Character$UnicodeScript "aliases")))
+        block (keys (get-private-field java.lang.Character$UnicodeBlock "map"))]
+    ;;
+    ;; * The keys "1"…"5" reflect the order of CharPropertyFactory
+    ;;   declarations in Pattern.java!
+    ;;
+    ;; * The "L1" (Latin-1) category is not defined by Unicode and exists
+    ;;   merely as an alias for the first 8 bits of code points.
+    ;;
+    ;; * The "all" category is the Unicode "Any" category by a different name,
+    ;;   and thus excluded.
+    ;;
+    {:posix    (disj (set (mapcat (partial get props) ["2" "3"])) "L1")
+     :java     (set (get props "4"))
+     :binary   (set binary)
+     :category (set (get props "1"))
+     :script   (set script)
+     :block    (set block)}))
 
 ;;
 ;; Vimscript literals
@@ -120,7 +143,7 @@
 
 (def vim-java-char-classes
   "Vimscript literal `syntax match` for \\p{javaMethod} property classes."
-  (let [ps (sort (map #(string/replace % #"\Ajava" "") java-property-classes))
+  (let [ps (sort (map #(string/replace % #"\Ajava" "") (:java character-properties)))
         vimpat (property-pattern (format "java%%(%s)" (string/join \| ps)))]
     (str java-version-comment
          (format "syntax match clojureRegexpJavaCharClass \"%s\" contained display" vimpat))))
