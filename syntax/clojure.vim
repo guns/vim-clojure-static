@@ -94,7 +94,7 @@ syntax match clojureRegexpUnicodeCharClass "\v\\[pP]\{\c%(In|blk\=|block\=)%(aeg
 syntax match   clojureRegexpPredefinedCharClass "\v%(\\[dDsSwW]|\.)" contained display
 syntax cluster clojureRegexpCharPropertyClasses contains=clojureRegexpPosixCharClass,clojureRegexpJavaCharClass,clojureRegexpUnicodeCharClass
 syntax cluster clojureRegexpCharClasses         contains=clojureRegexpPredefinedCharClass,clojureRegexpCharClass,@clojureRegexpCharPropertyClasses
-syntax region  clojureRegexpCharClass           start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpSpecialChar,clojureRegexpPredefinedCharClass,@clojureRegexpCharPropertyClasses
+syntax region  clojureRegexpCharClass           start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpPredefinedCharClass,@clojureRegexpCharPropertyClasses
 syntax match   clojureRegexpBoundary            "\\[bBAGZz]"   contained display
 syntax match   clojureRegexpBoundary            "[$^]"         contained display
 syntax match   clojureRegexpQuantifier          "[?*+][?+]\="  contained display
