@@ -174,4 +174,4 @@ highlight default link clojureParen     Delimiter
 
 let b:current_syntax = "clojure"
 
-" vim:sts=4:sw=4:ts=4:et:smc=3000
+" vim:sts=4:sw=4:ts=4:et:smc=20000
