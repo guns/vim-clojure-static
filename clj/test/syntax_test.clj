@@ -5,13 +5,15 @@
   (:require [vim-clojure-static.test :as test :refer [defsyntaxtest]]))
 
 (defmacro defbooleantest
-  "Create two complementary test functions `sym` and `!sym` which test if all
-   members of a passed collection are equal to `kw`"
+  "Create two complementary test function vars `sym` and `!sym` which test if
+   all members of a passed collection are equal to `kw`"
   [sym kw]
-  `(do (def ~sym ~(format "All elements in coll equal to %s ?" (name kw))
-         (partial every? (partial = ~kw)))
-       (def ~(symbol (str \! sym)) ~(format "All elements in coll not equal to %s ?" (name kw))
-         (complement ~sym))))
+  (let [!sym (symbol (str \! sym))]
+    `(do (def ~sym ~(format "All elements in coll equal to %s ?" kw)
+           (partial every? (partial = ~kw)))
+         (def ~!sym ~(format "All elements in coll not equal to %s ?" kw)
+           (complement ~sym))
+         [#'~sym #'~!sym])))
 
 (defbooleantest number :clojureNumber)
 (defbooleantest kw :clojureKeyword)
