@@ -141,16 +141,6 @@
     "\\cA" regexp-escape
     "\\c1" !regexp-escape
     "\\c" !regexp-escape
-    ;; Additional escape sequences not mentioned in the official documenation.
-    "\\." regexp-escape
-    "\\*" regexp-escape
-    "\\?" regexp-escape
-    "\\{" regexp-escape
-    "\\}" regexp-escape
-    "\\[" regexp-escape
-    "\\]" regexp-escape
-    "\\(" regexp-escape
-    "\\)" regexp-escape
 
     ;;;; Character classes
 
@@ -213,28 +203,28 @@
     ;;;; java.lang.Character classes (simple java character type)
 
     ;; \p{javaLowerCase}        Equivalent to java.lang.Character.isLowerCase()
-    "\\p{javaLowerCase}" regexp-posix-char-class
+    "\\p{javaLowerCase}" regexp-java-char-class
     ;; \p{javaUpperCase}        Equivalent to java.lang.Character.isUpperCase()
-    "\\p{javaUpperCase}" regexp-posix-char-class
+    "\\p{javaUpperCase}" regexp-java-char-class
     ;; \p{javaWhitespace}       Equivalent to java.lang.Character.isWhitespace()
-    "\\p{javaWhitespace}" regexp-posix-char-class
+    "\\p{javaWhitespace}" regexp-java-char-class
     ;; \p{javaMirrored}         Equivalent to java.lang.Character.isMirrored()
-    "\\p{javaMirrored}" regexp-posix-char-class
+    "\\p{javaMirrored}" regexp-java-char-class
 
     ;;;; Classes for Unicode scripts, blocks, categories and binary properties
 
     ;; \p{IsLatin}        A Latin script character (script)
-    "\\p{IsLatin}" regexp-posix-char-class
+    "\\p{IsLatin}" regexp-unicode-char-class
     ;; \p{InGreek}        A character in the Greek block (block)
-    "\\p{InGreek}" regexp-posix-char-class
+    "\\p{InGreek}" regexp-unicode-char-class
     ;; \p{Lu}             An uppercase letter (category)
-    "\\p{Lu}" regexp-posix-char-class
+    "\\p{Lu}" regexp-unicode-char-class
     ;; \p{IsAlphabetic}   An alphabetic character (binary property)
-    "\\p{IsAlphabetic}" regexp-posix-char-class
+    "\\p{IsAlphabetic}" regexp-unicode-char-class
     ;; \p{Sc}             A currency symbol
-    "\\p{Sc}" regexp-posix-char-class
+    "\\p{Sc}" regexp-unicode-char-class
     ;; \P{InGreek}        Any character except one in the Greek block (negation)
-    "\\P{InGreek}" regexp-posix-char-class
+    "\\P{InGreek}" regexp-unicode-char-class
     ;; [\p{L}&&[^\p{Lu}]] Any letter except an uppercase letter (subtraction)
 
     ;;;; Invalid classes

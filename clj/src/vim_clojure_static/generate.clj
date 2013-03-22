@@ -154,9 +154,11 @@
 
 (def vim-unicode-binary-char-classes
   "Vimscript literal `syntax match` for Unicode Binary properties."
+  ;; Though the docs do not mention it, the property name is matched case
+  ;; insensitively like the other Unicode properties.
   (syntax-match-properties
     :clojureRegexpUnicodeCharClass
-    "Is%%(%s)"
+    "\\cIs%%(%s)"
     (map string/lower-case (:binary character-properties))))
 
 (def vim-unicode-category-char-classes
