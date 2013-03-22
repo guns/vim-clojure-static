@@ -137,18 +137,18 @@ highlight default link clojureStringEscape Character
 highlight default link clojureRegexp                    Constant
 highlight default link clojureRegexpEscape              Character
 highlight default link clojureRegexpCharClass           SpecialChar
-highlight default link clojureRegexpPosixCharClass      SpecialChar
-highlight default link clojureRegexpJavaCharClass       SpecialChar
-highlight default link clojureRegexpUnicodeCharClass    SpecialChar
-highlight default link clojureRegexpPredefinedCharClass SpecialChar
+highlight default link clojureRegexpPosixCharClass      clojureRegexpCharClass
+highlight default link clojureRegexpJavaCharClass       clojureRegexpCharClass
+highlight default link clojureRegexpUnicodeCharClass    clojureRegexpCharClass
+highlight default link clojureRegexpPredefinedCharClass clojureRegexpCharClass
 highlight default link clojureRegexpBoundary            SpecialChar
 highlight default link clojureRegexpQuantifier          SpecialChar
 highlight default link clojureRegexpMod                 SpecialChar
 highlight default link clojureRegexpOr                  SpecialChar
 highlight default link clojureRegexpBackRef             SpecialChar
 highlight default link clojureRegexpGroup               clojureRegexp
-highlight default link clojureRegexpQuoted              clojureRegexp
-highlight default link clojureRegexpQuote               clojureRegexpEscape
+highlight default link clojureRegexpQuoted              clojureString
+highlight default link clojureRegexpQuote               clojureRegexpBoundary
 
 highlight default link clojureVariable  Identifier
 highlight default link clojureCond      Conditional
