@@ -4,17 +4,19 @@
 "               modified by Meikel Brandmeyer <mb@kotka.de>
 " URL:          http://kotka.de/projects/clojure/vimclojure.html
 "
+" Contributors: Joel Holdbrooks <cjholdbrooks@gmail.com> (Regexp support, bug fixes)
+"
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
-" Last Change:  02 March 2013
+" Last Change:  09 March 2013
 
 if exists("b:current_syntax")
     finish
 endif
 
-" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/vim_clojure_static.clj
-" Clojure 1.5.0
+" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/clj/src/vim_clojure_static/generate.clj
+" Clojure version 1.5.1
 syntax keyword clojureConstant nil
 syntax keyword clojureBoolean false true
 syntax keyword clojureSpecial . catch clojure.core/fn clojure.core/let clojure.core/loop def do finally fn if let loop monitor-enter monitor-exit new quote recur set! throw try var
@@ -48,17 +50,16 @@ syntax match clojureCharacter "\\return"
 syntax match clojureCharacter "\\backspace"
 syntax match clojureCharacter "\\formfeed"
 
+syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
+
 let s:radix_chars = "0123456789abcdefghijklmnopqrstuvwxyz"
 for s:radix in range(2, 36)
-    execute 'syntax match clojureNumber "\c\<-\?' . s:radix . 'r[' . strpart(s:radix_chars, 0, s:radix) . ']\+\>"'
+    execute 'syntax match clojureNumber "\v\c<[-+]?' . s:radix . 'r[' . strpart(s:radix_chars, 0, s:radix) . ']+>"'
 endfor
 unlet! s:radix_chars s:radix
 
-syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
-
-syntax match clojureNumber "\v<[-+]?%(0\o*|[1-9]\d*|%(0|[1-9]\d*)\.\d*)%(M|[eE][-+]?\d+)?>"
-syntax match clojureNumber "\v<[-+]?%(0\o*|[1-9]\d*)N>"
-syntax match clojureNumber "\v<[-+]?0x\x+>"
+syntax match clojureNumber "\v<[-+]?%(0\o*|0x\x+|[1-9]\d*)N?>"
+syntax match clojureNumber "\v<[-+]?%(0|[1-9]\d*|%(0|[1-9]\d*)\.\d*)%(M|[eE][-+]?\d+)?>"
 syntax match clojureNumber "\v<[-+]?%(0|[1-9]\d*)/%(0|[1-9]\d*)>"
 
 syntax match clojureVarArg "&"
@@ -74,7 +75,42 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-syntax region clojureRegexp start=/\#"/ skip=/\\\\\|\\"/ end=/"/
+syntax match   clojureRegexpEscape  "\v\\%(\\|[tnrfae]|c\u|0[0-3]?\o{1,2}|x%(\x{2}|\{\x{1,6}\})|u\x{4})" contained display
+syntax region  clojureRegexpQuoted  start=/\v\<@!\\Q/ms=e+1 skip=/\v\\\\|\\"/ end=/\\E/me=s-1 end=/"/me=s-1 contained
+syntax region  clojureRegexpQuote   start=/\v\<@!\\Q/       skip=/\v\\\\|\\"/ end=/\\E/       end=/"/me=s-1 contains=clojureRegexpQuoted keepend contained
+syntax cluster clojureRegexpEscapes contains=clojureRegexpEscape,clojureRegexpQuote
+
+" Character property classes
+" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/clj/src/vim_clojure_static/generate.clj
+" Java version 1.7.0_17
+syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(ASCII|Alnum|Alpha|Blank|Cntrl|Digit|Graph|Lower|Print|Punct|Space|Upper|XDigit)\}" contained display
+syntax match clojureRegexpJavaCharClass "\v\\[pP]\{java%(Alphabetic|Defined|Digit|ISOControl|IdentifierIgnorable|Ideographic|JavaIdentifierPart|JavaIdentifierStart|Letter|LetterOrDigit|LowerCase|Mirrored|SpaceChar|TitleCase|UnicodeIdentifierPart|UnicodeIdentifierStart|UpperCase|Whitespace)\}" contained display
+syntax match clojureRegexpUnicodeCharClass "\v\\[pP]\{\cIs%(alnum|alphabetic|assigned|blank|control|digit|graph|hex_digit|hexdigit|ideographic|letter|lowercase|noncharacter_code_point|noncharactercodepoint|print|punctuation|titlecase|uppercase|white_space|whitespace|word)\}" contained display
+syntax match clojureRegexpUnicodeCharClass "\v\\[pP]%(C|L|M|N|P|S|Z)" contained display
+syntax match clojureRegexpUnicodeCharClass "\v\\[pP]\{%(Is|gc\=|general_category\=)?%(C[cfnos]|L[CDlmotu]|M[cen]|N[dlo]|P[cdefios]|S[ckmo]|Z[lps])\}" contained display
+syntax match clojureRegexpUnicodeCharClass "\v\\[pP]\{\c%(Is|sc\=|script\=)%(arab|arabic|armenian|armi|armn|avestan|avst|bali|balinese|bamu|bamum|batak|batk|beng|bengali|bopo|bopomofo|brah|brahmi|brai|braille|bugi|buginese|buhd|buhid|canadian_aboriginal|cans|cari|carian|cham|cher|cherokee|common|copt|coptic|cprt|cuneiform|cypriot|cyrillic|cyrl|deseret|deva|devanagari|dsrt|egyp|egyptian_hieroglyphs|ethi|ethiopic|geor|georgian|glag|glagolitic|goth|gothic|greek|grek|gujarati|gujr|gurmukhi|guru|han|hang|hangul|hani|hano|hanunoo|hebr|hebrew|hira|hiragana|imperial_aramaic|inherited|inscriptional_pahlavi|inscriptional_parthian|ital|java|javanese|kaithi|kali|kana|kannada|katakana|kayah_li|khar|kharoshthi|khmer|khmr|knda|kthi|lana|lao|laoo|latin|latn|lepc|lepcha|limb|limbu|linb|linear_b|lisu|lyci|lycian|lydi|lydian|malayalam|mand|mandaic|meetei_mayek|mlym|mong|mongolian|mtei|myanmar|mymr|new_tai_lue|nko|nkoo|ogam|ogham|ol_chiki|olck|old_italic|old_persian|old_south_arabian|old_turkic|oriya|orkh|orya|osma|osmanya|phag|phags_pa|phli|phnx|phoenician|prti|rejang|rjng|runic|runr|samaritan|samr|sarb|saur|saurashtra|shavian|shaw|sinh|sinhala|sund|sundanese|sylo|syloti_nagri|syrc|syriac|tagalog|tagb|tagbanwa|tai_le|tai_tham|tai_viet|tale|talu|tamil|taml|tavt|telu|telugu|tfng|tglg|thaa|thaana|thai|tibetan|tibt|tifinagh|ugar|ugaritic|unknown|vai|vaii|xpeo|xsux|yi|yiii|zinh|zyyy|zzzz)\}" contained display
+syntax match clojureRegexpUnicodeCharClass "\v\\[pP]\{\c%(In|blk\=|block\=)%(aegean numbers|aegean_numbers|aegeannumbers|alchemical symbols|alchemical_symbols|alchemicalsymbols|alphabetic presentation forms|alphabetic_presentation_forms|alphabeticpresentationforms|ancient greek musical notation|ancient greek numbers|ancient symbols|ancient_greek_musical_notation|ancient_greek_numbers|ancient_symbols|ancientgreekmusicalnotation|ancientgreeknumbers|ancientsymbols|arabic|arabic presentation forms-a|arabic presentation forms-b|arabic supplement|arabic_presentation_forms_a|arabic_presentation_forms_b|arabic_supplement|arabicpresentationforms-a|arabicpresentationforms-b|arabicsupplement|armenian|arrows|avestan|balinese|bamum|bamum supplement|bamum_supplement|bamumsupplement|basic latin|basic_latin|basiclatin|batak|bengali|block elements|block_elements|blockelements|bopomofo|bopomofo extended|bopomofo_extended|bopomofoextended|box drawing|box_drawing|boxdrawing|brahmi|braille patterns|braille_patterns|braillepatterns|buginese|buhid|byzantine musical symbols|byzantine_musical_symbols|byzantinemusicalsymbols|carian|cham|cherokee|cjk compatibility|cjk compatibility forms|cjk compatibility ideographs|cjk compatibility ideographs supplement|cjk radicals supplement|cjk strokes|cjk symbols and punctuation|cjk unified ideographs|cjk unified ideographs extension a|cjk unified ideographs extension b|cjk unified ideographs extension c|cjk unified ideographs extension d|cjk_compatibility|cjk_compatibility_forms|cjk_compatibility_ideographs|cjk_compatibility_ideographs_supplement|cjk_radicals_supplement|cjk_strokes|cjk_symbols_and_punctuation|cjk_unified_ideographs|cjk_unified_ideographs_extension_a|cjk_unified_ideographs_extension_b|cjk_unified_ideographs_extension_c|cjk_unified_ideographs_extension_d|cjkcompatibility|cjkcompatibilityforms|cjkcompatibilityideographs|cjkcompatibilityideographssupplement|cjkradicalssupplement|cjkstrokes|cjksymbolsandpunctuation|cjkunifiedideographs|cjkunifiedideographsextensiona|cjkunifiedideographsextensionb|cjkunifiedideographsextensionc|cjkunifiedideographsextensiond|combining diacritical marks|combining diacritical marks for symbols|combining diacritical marks supplement|combining half marks|combining marks for symbols|combining_diacritical_marks|combining_diacritical_marks_supplement|combining_half_marks|combining_marks_for_symbols|combiningdiacriticalmarks|combiningdiacriticalmarksforsymbols|combiningdiacriticalmarkssupplement|combininghalfmarks|combiningmarksforsymbols|common indic number forms|common_indic_number_forms|commonindicnumberforms|control pictures|control_pictures|controlpictures|coptic|counting rod numerals|counting_rod_numerals|countingrodnumerals|cuneiform|cuneiform numbers and punctuation|cuneiform_numbers_and_punctuation|cuneiformnumbersandpunctuation|currency symbols|currency_symbols|currencysymbols|cypriot syllabary|cypriot_syllabary|cypriotsyllabary|cyrillic|cyrillic extended-a|cyrillic extended-b|cyrillic supplement|cyrillic supplementary|cyrillic_extended_a|cyrillic_extended_b|cyrillic_supplementary|cyrillicextended-a|cyrillicextended-b|cyrillicsupplement|cyrillicsupplementary|deseret|devanagari|devanagari extended|devanagari_extended|devanagariextended|dingbats|domino tiles|domino_tiles|dominotiles|egyptian hieroglyphs|egyptian_hieroglyphs|egyptianhieroglyphs|emoticons|enclosed alphanumeric supplement|enclosed alphanumerics|enclosed cjk letters and months|enclosed ideographic supplement|enclosed_alphanumeric_supplement|enclosed_alphanumerics|enclosed_cjk_letters_and_months|enclosed_ideographic_supplement|enclosedalphanumerics|enclosedalphanumericsupplement|enclosedcjklettersandmonths|enclosedideographicsupplement|ethiopic|ethiopic extended|ethiopic extended-a|ethiopic supplement|ethiopic_extended|ethiopic_extended_a|ethiopic_supplement|ethiopicextended|ethiopicextended-a|ethiopicsupplement|general punctuation|general_punctuation|generalpunctuation|geometric shapes|geometric_shapes|geometricshapes|georgian|georgian supplement|georgian_supplement|georgiansupplement|glagolitic|gothic|greek|greek and coptic|greek extended|greek_extended|greekandcoptic|greekextended|gujarati|gurmukhi|halfwidth and fullwidth forms|halfwidth_and_fullwidth_forms|halfwidthandfullwidthforms|hangul compatibility jamo|hangul jamo|hangul jamo extended-a|hangul jamo extended-b|hangul syllables|hangul_compatibility_jamo|hangul_jamo|hangul_jamo_extended_a|hangul_jamo_extended_b|hangul_syllables|hangulcompatibilityjamo|hanguljamo|hanguljamoextended-a|hanguljamoextended-b|hangulsyllables|hanunoo|hebrew|high private use surrogates|high surrogates|high_private_use_surrogates|high_surrogates|highprivateusesurrogates|highsurrogates|hiragana|ideographic description characters|ideographic_description_characters|ideographicdescriptioncharacters|imperial aramaic|imperial_aramaic|imperialaramaic|inscriptional pahlavi|inscriptional parthian|inscriptional_pahlavi|inscriptional_parthian|inscriptionalpahlavi|inscriptionalparthian|ipa extensions|ipa_extensions|ipaextensions|javanese|kaithi|kana supplement|kana_supplement|kanasupplement|kanbun|kangxi radicals|kangxi_radicals|kangxiradicals|kannada|katakana|katakana phonetic extensions|katakana_phonetic_extensions|katakanaphoneticextensions|kayah li|kayah_li|kayahli|kharoshthi|khmer|khmer symbols|khmer_symbols|khmersymbols|lao|latin extended additional|latin extended-a|latin extended-b|latin extended-c|latin extended-d|latin-1 supplement|latin-1supplement|latin_1_supplement|latin_extended_a|latin_extended_additional|latin_extended_b|latin_extended_c|latin_extended_d|latinextended-a|latinextended-b|latinextended-c|latinextended-d|latinextendedadditional|lepcha|letterlike symbols|letterlike_symbols|letterlikesymbols|limbu|linear b ideograms|linear b syllabary|linear_b_ideograms|linear_b_syllabary|linearbideograms|linearbsyllabary|lisu|low surrogates|low_surrogates|lowsurrogates|lycian|lydian|mahjong tiles|mahjong_tiles|mahjongtiles|malayalam|mandaic|mathematical alphanumeric symbols|mathematical operators|mathematical_alphanumeric_symbols|mathematical_operators|mathematicalalphanumericsymbols|mathematicaloperators|meetei mayek|meetei_mayek|meeteimayek|miscellaneous mathematical symbols-a|miscellaneous mathematical symbols-b|miscellaneous symbols|miscellaneous symbols and arrows|miscellaneous symbols and pictographs|miscellaneous technical|miscellaneous_mathematical_symbols_a|miscellaneous_mathematical_symbols_b|miscellaneous_symbols|miscellaneous_symbols_and_arrows|miscellaneous_symbols_and_pictographs|miscellaneous_technical|miscellaneousmathematicalsymbols-a|miscellaneousmathematicalsymbols-b|miscellaneoussymbols|miscellaneoussymbolsandarrows|miscellaneoussymbolsandpictographs|miscellaneoustechnical|modifier tone letters|modifier_tone_letters|modifiertoneletters|mongolian|musical symbols|musical_symbols|musicalsymbols|myanmar|myanmar extended-a|myanmar_extended_a|myanmarextended-a|new tai lue|new_tai_lue|newtailue|nko|number forms|number_forms|numberforms|ogham|ol chiki|ol_chiki|olchiki|old italic|old persian|old south arabian|old turkic|old_italic|old_persian|old_south_arabian|old_turkic|olditalic|oldpersian|oldsoutharabian|oldturkic|optical character recognition|optical_character_recognition|opticalcharacterrecognition|oriya|osmanya|phags-pa|phags_pa|phaistos disc|phaistos_disc|phaistosdisc|phoenician|phonetic extensions|phonetic extensions supplement|phonetic_extensions|phonetic_extensions_supplement|phoneticextensions|phoneticextensionssupplement|playing cards|playing_cards|playingcards|private use area|private_use_area|privateusearea|rejang|rumi numeral symbols|rumi_numeral_symbols|ruminumeralsymbols|runic|samaritan|saurashtra|shavian|sinhala|small form variants|small_form_variants|smallformvariants|spacing modifier letters|spacing_modifier_letters|spacingmodifierletters|specials|sundanese|superscripts and subscripts|superscripts_and_subscripts|superscriptsandsubscripts|supplemental arrows-a|supplemental arrows-b|supplemental mathematical operators|supplemental punctuation|supplemental_arrows_a|supplemental_arrows_b|supplemental_mathematical_operators|supplemental_punctuation|supplementalarrows-a|supplementalarrows-b|supplementalmathematicaloperators|supplementalpunctuation|supplementary private use area-a|supplementary private use area-b|supplementary_private_use_area_a|supplementary_private_use_area_b|supplementaryprivateusearea-a|supplementaryprivateusearea-b|surrogates_area|syloti nagri|syloti_nagri|sylotinagri|syriac|tagalog|tagbanwa|tags|tai le|tai tham|tai viet|tai xuan jing symbols|tai_le|tai_tham|tai_viet|tai_xuan_jing_symbols|taile|taitham|taiviet|taixuanjingsymbols|tamil|telugu|thaana|thai|tibetan|tifinagh|transport and map symbols|transport_and_map_symbols|transportandmapsymbols|ugaritic|unified canadian aboriginal syllabics|unified canadian aboriginal syllabics extended|unified_canadian_aboriginal_syllabics|unified_canadian_aboriginal_syllabics_extended|unifiedcanadianaboriginalsyllabics|unifiedcanadianaboriginalsyllabicsextended|vai|variation selectors|variation selectors supplement|variation_selectors|variation_selectors_supplement|variationselectors|variationselectorssupplement|vedic extensions|vedic_extensions|vedicextensions|vertical forms|vertical_forms|verticalforms|yi radicals|yi syllables|yi_radicals|yi_syllables|yijing hexagram symbols|yijing_hexagram_symbols|yijinghexagramsymbols|yiradicals|yisyllables)\}" contained display
+
+syntax match   clojureRegexpPredefinedCharClass "\v%(\\[dDsSwW]|\.)" contained display
+syntax cluster clojureRegexpCharPropertyClasses contains=clojureRegexpPosixCharClass,clojureRegexpJavaCharClass,clojureRegexpUnicodeCharClass
+syntax cluster clojureRegexpCharClasses         contains=clojureRegexpPredefinedCharClass,clojureRegexpCharClass,@clojureRegexpCharPropertyClasses
+syntax region  clojureRegexpCharClass           start="\\\@<!\[" end="\\\@<!\]" contained contains=clojureRegexpPredefinedCharClass,@clojureRegexpCharPropertyClasses
+syntax match   clojureRegexpBoundary            "\\[bBAGZz]"   contained display
+syntax match   clojureRegexpBoundary            "[$^]"         contained display
+syntax match   clojureRegexpQuantifier          "[?*+][?+]\="  contained display
+syntax match   clojureRegexpQuantifier          "\v\{\d+%(,|,\d+)?}\??" contained display
+syntax match   clojureRegexpOr                  "|" contained display
+syntax match   clojureRegexpBackRef             "\v\\%([1-9]\d*|k\<[a-zA-z]+\>)" contained display
+
+" Mode modifiers, mode-modified spans, lookaround, regular and atomic
+" grouping, and named-capturing.
+syntax match clojureRegexpMod "\v\(@<=\?:"                        contained display
+syntax match clojureRegexpMod "\v\(@<=\?[xdsmiuU]*-?[xdsmiuU]+:?" contained display
+syntax match clojureRegexpMod "\v\(@<=\?%(\<?[=!]|\>)"            contained display
+syntax match clojureRegexpMod "\v\(@<=\?\<[a-zA-Z]+\>"            contained display
+
+syntax region clojureRegexpGroup start="\\\@<!(" matchgroup=clojureRegexpGroup end="\\\@<!)" contained contains=clojureRegexpMod,clojureRegexpQuantifier,clojureRegexpBoundary,clojureRegexpEscape,@clojureRegexpCharClasses
+syntax region clojureRegexp start=/\#"/ skip=/\\\\\|\\"/ end=/"/ contains=@clojureRegexpCharClasses,clojureRegexpEscape,clojureRegexpQuote,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup keepend
 
 syntax keyword clojureCommentTodo contained FIXME XXX TODO FIXME: XXX: TODO:
 
@@ -97,7 +133,22 @@ highlight default link clojureKeyword      Keyword
 highlight default link clojureNumber       Number
 highlight default link clojureString       String
 highlight default link clojureStringEscape Character
-highlight default link clojureRegexp       Constant
+
+highlight default link clojureRegexp                    Constant
+highlight default link clojureRegexpEscape              Character
+highlight default link clojureRegexpCharClass           SpecialChar
+highlight default link clojureRegexpPosixCharClass      clojureRegexpCharClass
+highlight default link clojureRegexpJavaCharClass       clojureRegexpCharClass
+highlight default link clojureRegexpUnicodeCharClass    clojureRegexpCharClass
+highlight default link clojureRegexpPredefinedCharClass clojureRegexpCharClass
+highlight default link clojureRegexpBoundary            SpecialChar
+highlight default link clojureRegexpQuantifier          SpecialChar
+highlight default link clojureRegexpMod                 SpecialChar
+highlight default link clojureRegexpOr                  SpecialChar
+highlight default link clojureRegexpBackRef             SpecialChar
+highlight default link clojureRegexpGroup               clojureRegexp
+highlight default link clojureRegexpQuoted              clojureString
+highlight default link clojureRegexpQuote               clojureRegexpBoundary
 
 highlight default link clojureVariable  Identifier
 highlight default link clojureCond      Conditional
@@ -125,4 +176,4 @@ highlight default link clojureParen     Delimiter
 
 let b:current_syntax = "clojure"
 
-" vim:sts=4 sw=4 et:
+" vim:sts=4:sw=4:ts=4:et:smc=20000
