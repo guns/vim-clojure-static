@@ -62,7 +62,7 @@ if exists("*searchpairpos")
 
     function! s:IsParen()
         return s:CurrentChar() =~ '\v[\(\)\[\]\{\}]' &&
-             \ s:SynIdName() !~? '\vstring|regex|comment'
+             \ s:SynIdName() !~? '\vstring|regex|comment|character'
     endfunction
 
     " Returns 1 if string matches a pattern in 'patterns', which may be a
