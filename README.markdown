@@ -106,9 +106,6 @@ Send text to REPLs running in GNU Screen or tmux. Not Clojure specific.
 
 By Eric Van Dewoestine.
 
-Try <https://github.com/guns/screen> for better window handling if you are
-running tmux 1.5 or higher.
-
 ### [vim-slime](https://github.com/jpalardy/vim-slime)
 
 Like `screen` above, an asynchronous REPL plugin that uses GNU screen and
