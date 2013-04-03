@@ -33,8 +33,8 @@
 (def !regexp-mod (complement regexp-mod))
 
 (defsyntaxtest number-literals-test
-  (with-format "%s"
-    "1234567890" number "+1"    number "-1"    number ; Integer
+  ["%s"
+   ["1234567890" number "+1"    number "-1"    number ; Integer
     "0"          number "+0"    number "-0"    number ; Integer zero
     "0.12"       number "+0.12" number "-0.12" number ; Float
     "1."         number "+1."   number "-1."   number ; Float
@@ -88,13 +88,13 @@
     "08e1" !number
     "07e1" !number
     "0xfe-1" !number
-    "2r1e-1" !number))
+    "2r1e-1" !number]])
 
-;; (test #'number-literals-test)
+(comment (test #'number-literals-test))
 
 (defsyntaxtest java-regexp-literals-test
-  (with-format "#\"%s\""
-    ;; http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
+  ["#\"%s\""
+   [;; http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
     ;;
     ;; Characters
     ;; x          The character x
@@ -361,6 +361,6 @@
     "(?>X)" regexp-mod
 
     "(?X)" !regexp-mod
-    ))
+    ]])
 
-;; (test #'java-regexp-literals-test)
+(comment (test #'java-regexp-literals-test))

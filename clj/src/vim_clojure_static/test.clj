@@ -37,20 +37,24 @@
   "Create a new testing var with tests in the format:
 
    (defsyntaxtest example
-     (with-format \"#\\\"%s\\\"\"
-       \"123\" #(every? (partial = :clojureRegexp) %)
-       …)
-     (with-format …))
+     [format
+      [test-string test-predicate
+       …]]
+     [\"#\\\"%s\\\"\"
+      [\"123\" #(every? (partial = :clojureRegexp) %)
+       …]]
+     […])
 
    At runtime the syn-id-names of the strings (which are placed in the format
    spec) are passed to their associated predicates. The format spec should
    contain a single `%s`."
   [name & body]
-  (assert (every? #(= 'with-format (first %)) body))
-  (assert (every? #(string? (second %)) body))
-  (assert (every? #(even? (count %)) body))
-  (let [[strings contexts] (reduce (fn [[strings contexts] [_ fmt & forms]]
-                                     (let [[ss λs] (apply map list (partition 2 forms))
+  (assert (every? (fn [[fmt tests]] (and (string? fmt)
+                                         (coll? tests)
+                                         (even? (count tests))))
+                  body))
+  (let [[strings contexts] (reduce (fn [[strings contexts] [fmt tests]]
+                                     (let [[ss λs] (apply map list (partition 2 tests))
                                            ss (map #(format fmt %) ss)]
                                        [(concat strings ss)
                                         (conj contexts {:fmt fmt :ss ss :λs λs})]))
@@ -69,11 +73,11 @@
 
   (macroexpand-1
     '(defsyntaxtest number-literals-test
-       (with-format "%s"
-         "123" #(every? (partial = :clojureNumber) %)
-         "456" #(every? (partial = :clojureNumber) %))
-       (with-format "#\"%s\""
-         "^" #(= % [:clojureRegexpBoundary]))))
+       ["%s"
+        ["123" #(every? (partial = :clojureNumber) %)
+         "456" #(every? (partial = :clojureNumber) %)]]
+       ["#\"%s\""
+        ["^" #(= % [:clojureRegexpBoundary])]]))
   (test #'number-literals-test)
 
   )
