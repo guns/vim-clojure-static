@@ -376,7 +376,6 @@ setlocal lispwords+=while
 
 " Exception handling
 setlocal lispwords+=catch
-setlocal lispwords+=try " For aesthetics when enclosing single line
 
 let &cpo = s:save_cpo
 unlet! s:save_cpo
