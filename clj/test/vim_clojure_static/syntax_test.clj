@@ -1,7 +1,7 @@
 ;; Authors: Sung Pae <self@sungpae.com>
 ;;          Joel Holdbrooks <cjholdbrooks@gmail.com>
 
-(ns syntax-test
+(ns vim-clojure-static.syntax-test
   (:require [vim-clojure-static.test :as test :refer [defsyntaxtest]]))
 
 (defmacro defbooleantest
