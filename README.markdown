@@ -125,6 +125,13 @@ you don't have a favorite method for installing plugins,
 [Pathogen](https://github.com/tpope/vim-pathogen) or
 [Vundle](https://github.com/gmarik/vundle) are recommended.
 
+Please make sure that the following options are set in your .vimrc:
+
+    syntax on
+    filetype plugin indent on
+
+Otherwise the filetype is not activated.
+
 Indent Options
 ==============
 
