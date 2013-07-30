@@ -127,8 +127,10 @@ you don't have a favorite method for installing plugins,
 
 Please make sure that the following options are set in your .vimrc:
 
-    syntax on
-    filetype plugin indent on
+```vim
+syntax on
+filetype plugin indent on
+```
 
 Otherwise the filetype is not activated.
 
