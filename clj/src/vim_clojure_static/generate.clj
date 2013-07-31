@@ -3,11 +3,19 @@
 
 (ns vim-clojure-static.generate
   (:require [clojure.string :as string]
-            [clojure.set :as set]))
+            [clojure.set :as set]
+            [frak :as frak]))
 
 ;;
 ;; Helpers
 ;;
+
+(defn vim-frak-pattern
+  "Create a non-capturing regular expression pattern compatible with Vim."
+  [strs]
+  (-> (frak/pattern strs)
+      str
+      (string/replace #"\(\?:" "\\%\\(")))
 
 (defn property-pattern
   "Vimscript very magic pattern for a character property class."
@@ -22,7 +30,7 @@
   ([group fmt props braces?]
    (format "syntax match %s \"%s\" contained display\n"
            (name group)
-           (property-pattern (format fmt (string/join \| (sort props))) braces?))))
+           (property-pattern (format fmt (vim-frak-pattern props)) braces?))))
 
 (defn get-private-field
   "Violate encapsulation and get the value of a private field."
@@ -141,7 +149,7 @@
   ;; `IsPosix` works, but is undefined.
   (syntax-match-properties
     :clojureRegexpPosixCharClass
-    "%%(%s)"
+    "%s"
     (:posix character-properties)))
 
 (def vim-java-char-classes
@@ -149,7 +157,7 @@
   ;; `IsjavaMethod` works, but is undefined.
   (syntax-match-properties
     :clojureRegexpJavaCharClass
-    "java%%(%s)"
+    "java%s"
     (map #(string/replace % #"\Ajava" "") (:java character-properties))))
 
 (def vim-unicode-binary-char-classes
@@ -158,27 +166,23 @@
   ;; insensitively like the other Unicode properties.
   (syntax-match-properties
     :clojureRegexpUnicodeCharClass
-    "\\cIs%%(%s)"
+    "\\cIs%s"
     (map string/lower-case (:binary character-properties))))
 
-(def vim-unicode-category-char-classes
-  "Vimscript literal `syntax match` for Unicode General Category classes."
-  (let [cats (map seq (:category character-properties))
-        cats (map (fn [[c subcats]]
-                    (format "%s[%s]" c (apply str (sort (mapcat rest subcats)))))
-                  (group-by first cats))]
-    ;; gc= and general_category= can be case insensitive, but this is behavior
-    ;; is undefined.
-    (str
-      (syntax-match-properties
-        :clojureRegexpUnicodeCharClass
-        "%%(%s)"
-        (sort (filter #(= (count %) 1) (:category character-properties)))
-        false)
-      (syntax-match-properties
-        :clojureRegexpUnicodeCharClass
-        "%%(Is|gc\\=|general_category\\=)?%%(%s)"
-        cats))))
+(def ^{:doc "Vimscript literal `syntax match` for Unicode General Category classes."}
+  vim-unicode-category-char-classes
+  ;; gc= and general_category= can be case insensitive, but this is behavior
+  ;; is undefined.
+  (str
+   (syntax-match-properties
+    :clojureRegexpUnicodeCharClass
+    "%s"
+    (:category character-properties)
+    false)
+   (syntax-match-properties
+    :clojureRegexpUnicodeCharClass
+    "%%(Is|gc\\=|general_category\\=)?%s"
+    (:category character-properties))))
 
 (def vim-unicode-script-char-classes
   "Vimscript literal `syntax match` for Unicode Script properties."
@@ -189,7 +193,7 @@
   ;; InScriptName works, but is undefined.
   (syntax-match-properties
     :clojureRegexpUnicodeCharClass
-    "\\c%%(Is|sc\\=|script\\=)%%(%s)"
+    "\\c%%(Is|sc\\=|script\\=)%s"
     (map string/lower-case (:script character-properties))))
 
 (def vim-unicode-block-char-classes
@@ -198,7 +202,7 @@
   ;; of Is.
   (syntax-match-properties
     :clojureRegexpUnicodeCharClass
-    "\\c%%(In|blk\\=|block\\=)%%(%s)"
+    "\\c%%(In|blk\\=|block\\=)%s"
     (map string/lower-case (:block character-properties))))
 
 (comment
