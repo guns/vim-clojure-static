@@ -177,7 +177,7 @@
    (syntax-match-properties
     :clojureRegexpUnicodeCharClass
     "%s"
-    (:category character-properties)
+    (filter #(= (count %) 1) (:category character-properties))
     false)
    (syntax-match-properties
     :clojureRegexpUnicodeCharClass
