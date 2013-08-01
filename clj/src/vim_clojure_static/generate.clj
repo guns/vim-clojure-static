@@ -2,8 +2,9 @@
 ;;          Joel Holdbrooks <cjholdbrooks@gmail.com>
 
 (ns vim-clojure-static.generate
-  (:require [clojure.string :as string]
-            [clojure.set :as set]))
+  (:require [clojure.java.shell :as shell]
+            [clojure.set :as set]
+            [clojure.string :as string]))
 
 ;;
 ;; Helpers
@@ -221,7 +222,18 @@
                            (fmt "script=" :script)
                            (fmt "block=" :block)])))
 
+(defn vim-nfa-dump
+  "Run a patched version of Vim compiled with -DDEBUG on a new file containing
+   buffer, then move the NFA log to log-path. The patch is located at
+   vim/custom-nfa-log.patch"
+  [vim-path buffer log-path]
+  (let [file "tmp/nfa-test-file.clj"]
+    (spit file buffer)
+    (shell/sh vim-path "-u" "NONE" "-N" "-S" "vim/test-runtime.vim" file)
+    (shell/sh "mv" "nfa_regexp.log" log-path)))
+
 (comment
+  ;; Generate the vim literal definitions for pasting into the runtime files.
   (spit "tmp/clojure-defs.vim"
         (str generation-comment
              clojure-version-comment
@@ -239,6 +251,23 @@
              vim-unicode-category-char-classes
              vim-unicode-script-char-classes
              vim-unicode-block-char-classes))
-  (spit "tmp/clojure-regexp-properties.clj"
+  (spit "tmp/nfa-test-file.clj"
         comprehensive-clojure-character-property-regexps)
+  ;; Create regexp engine dump files and compare number of operations.
+  (let [syn-path "../syntax/clojure.vim"
+        orig-syn-buf (slurp syn-path)
+        vim-path (or (System/getenv "VIMDEBUG") "vim")
+        buf (format "#\"\\p{%s}\"\n" "Ll")
+        buf-hash (hash buf)]
+    (try
+      (mapv (fn [path]
+              (let [syn-buf (slurp path)
+                    syn-hash (hash syn-buf)
+                    log-path (format "tmp/debug:%d:%d.log" buf-hash syn-hash)]
+                (spit syn-path syn-buf)
+                (vim-nfa-dump vim-path buf log-path)
+                (count (re-seq #"\n" (slurp log-path)))))
+            ["../syntax/clojure.vim" "tmp/altsyntax.vim"])
+      (finally
+        (spit syn-path orig-syn-buf))))
   )

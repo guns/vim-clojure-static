@@ -17,7 +17,7 @@
   [file & lines]
   (io/make-parents file)
   (spit file (string/join \newline lines))
-  (shell/sh "vim" "-u" "NONE" "-N" "-S" "vim/syn-id-names.vim" file)
+  (shell/sh "vim" "-u" "NONE" "-N" "-S" "vim/test-runtime.vim" file)
   ;; The last line of the file will contain valid EDN
   (into {} (map (fn [l ids] [l (mapv keyword ids)])
                 lines
