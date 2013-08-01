@@ -12,9 +12,10 @@
 (defn property-pattern
   "Vimscript very magic pattern for a character property class."
   ([s] (property-pattern s true))
-  ([s braces?] (if braces?
-                 (format "\\v\\\\[pP]\\{%s\\}" s)
-                 (format "\\v\\\\[pP]%s" s))))
+  ([s braces?]
+   (if braces?
+     (format "\\v\\\\[pP]\\{%s\\}" s)
+     (format "\\v\\\\[pP]%s" s))))
 
 (defn syntax-match-properties
   "Vimscript literal `syntax match` for a character property class."
@@ -201,6 +202,21 @@
     "\\c%%(In|blk\\=|block\\=)%%(%s)"
     (map string/lower-case (:block character-properties))))
 
+(def comprehensive-clojure-character-property-regexps
+  "A string representing a Clojure literal vector of regular expressions
+   containing all possible property character classes. For testing Vimscript
+   syntax matching optimizations."
+  (let [fmt (fn [prefix prop-key]
+              (let [props (map (partial format "\\p{%s%s}" prefix)
+                               (sort (get character-properties prop-key)))]
+                (format "#\"%s\"" (string/join props))))]
+    (string/join \newline [(fmt "" :posix)
+                           (fmt "" :java)
+                           (fmt "Is" :binary)
+                           (fmt "general_category=" :category)
+                           (fmt "script=" :script)
+                           (fmt "block=" :block)])))
+
 (comment
   (spit "tmp/clojure-defs.vim"
         (str generation-comment
@@ -218,4 +234,7 @@
              vim-unicode-binary-char-classes
              vim-unicode-category-char-classes
              vim-unicode-script-char-classes
-             vim-unicode-block-char-classes)))
+             vim-unicode-block-char-classes))
+  (spit "tmp/clojure-regexp-properties.clj"
+        comprehensive-clojure-character-property-regexps)
+  )
