@@ -92,6 +92,28 @@
 
 (comment (test #'number-literals-test))
 
+;; TODO: Finish me! (this was in an old git stash)
+;; (defsyntaxtest keywords-test
+;;   (with-format "%s"
+;;     ":1" kw
+;;     ":A" kw
+;;     ":a" kw
+;;     ":αβγ" kw
+;;     "::a" kw
+;;     ":a/b" kw
+;;     ":a:b" kw
+;;     ":a:b/:c:b" kw
+;;     ":a/b/c/d" kw
+;;     "::a/b" !kw
+;;     "::" !kw
+;;     ":a:" !kw
+;;     ":a/" !kw
+;;     ":/" !kw
+;;     ":" !kw
+;;     ))
+;;
+;; (comment (test #'keywords-test))
+
 (defsyntaxtest java-regexp-literals-test
   ["#\"%s\""
    [;; http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
