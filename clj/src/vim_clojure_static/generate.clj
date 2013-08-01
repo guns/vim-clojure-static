@@ -164,22 +164,26 @@
 
 (def vim-unicode-category-char-classes
   "Vimscript literal `syntax match` for Unicode General Category classes."
-  (let [cats (map seq (:category character-properties))
-        cats (map (fn [[c subcats]]
-                    (format "%s[%s]" c (apply str (sort (mapcat rest subcats)))))
-                  (group-by first cats))]
+  (let [table (group-by first (map seq (:category character-properties)))
+        subcats (map (fn [[c sc]]
+                       (format "%s[%s]?" c (apply str (sort (mapcat rest sc)))))
+                     table)]
     ;; gc= and general_category= can be case insensitive, but this is behavior
     ;; is undefined.
     (str
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
         "%%(%s)"
-        (sort (filter #(= (count %) 1) (:category character-properties)))
+        (keys table)
         false)
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
+        "%%(%s)"
+        (keys table))
+      (syntax-match-properties
+        :clojureRegexpUnicodeCharClass
         "%%(Is|gc\\=|general_category\\=)?%%(%s)"
-        cats))))
+        subcats))))
 
 (def vim-unicode-script-char-classes
   "Vimscript literal `syntax match` for Unicode Script properties."

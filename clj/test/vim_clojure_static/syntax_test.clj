@@ -241,8 +241,6 @@
     "\\p{IsLatin}" regexp-unicode-char-class
     ;; \p{InGreek}        A character in the Greek block (block)
     "\\p{InGreek}" regexp-unicode-char-class
-    ;; \p{Lu}             An uppercase letter (category)
-    "\\p{Lu}" regexp-unicode-char-class
     ;; \p{IsAlphabetic}   An alphabetic character (binary property)
     "\\p{IsAlphabetic}" regexp-unicode-char-class
     ;; \p{Sc}             A currency symbol
@@ -250,6 +248,13 @@
     ;; \P{InGreek}        Any character except one in the Greek block (negation)
     "\\P{InGreek}" regexp-unicode-char-class
     ;; [\p{L}&&[^\p{Lu}]] Any letter except an uppercase letter (subtraction)
+
+    ;; Abbreviated categories
+    "\\pL" regexp-unicode-char-class
+    "\\p{L}" regexp-unicode-char-class
+    "\\p{Lu}" regexp-unicode-char-class
+    "\\p{gc=L}" regexp-unicode-char-class
+    "\\p{IsLu}" regexp-unicode-char-class
 
     ;;;; Invalid classes
 
