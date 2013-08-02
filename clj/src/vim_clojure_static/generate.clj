@@ -173,6 +173,7 @@
 (def vim-unicode-category-char-classes
   "Vimscript literal `syntax match` for Unicode General Category classes."
   (let [table (group-by first (map seq (:category character-properties)))
+        cats (map str (keys table))
         subcats (map (fn [[c sc]]
                        (format "%s[%s]?" c (apply str (sort (mapcat rest sc)))))
                      table)]
@@ -182,12 +183,12 @@
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
         "%s"
-        (keys table)
+        cats
         false)
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
         "%s"
-        (keys table))
+        cats)
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
         "%%(Is|gc\\=|general_category\\=)?%s"
