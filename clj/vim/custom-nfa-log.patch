@@ -1,6 +1,6 @@
-commit 4f385fb359c5d51bd4a079ffd35bbcc1c6676c4a (HEAD, github/custom-nfa-log, custom-nfa-log)
+commit 09b1321fd7fa91e5a8e36ebc2d858079969adca4 (HEAD, github/custom-nfa-log, custom-nfa-log)
 Author: guns <self@sungpae.com>
-Date:   9 hours ago
+Date:   Thu, 1 Aug 2013 10:56:19 -0500
 
     Add custom NFA logging to nfa_regexp.log
     
@@ -22,7 +22,7 @@ Date:   9 hours ago
  1 file changed, 17 insertions(+), 3 deletions(-)
 
 diff --git a/src/regexp_nfa.c b/src/regexp_nfa.c
-index 738ac3b..c39f94d 100644
+index 738ac3b..bea9d50 100644
 --- a/src/regexp_nfa.c
 +++ b/src/regexp_nfa.c
 @@ -24,9 +24,18 @@
@@ -33,9 +33,9 @@ index 738ac3b..c39f94d 100644
 -# define NFA_REGEXP_RUN_LOG	"nfa_regexp_run.log"
 -# define NFA_REGEXP_DEBUG_LOG	"nfa_regexp_debug.log"
 +# ifdef INCLUDE_NFA_DUMP
-+#  define NFA_REGEXP_DUMP_LOG	"/dev/null"
-+# else
 +#  define NFA_REGEXP_DUMP_LOG	"nfa_regexp.log"
++# else
++#  define NFA_REGEXP_DUMP_LOG	"/dev/null"
 +# endif
 +# define NFA_REGEXP_RUN_LOG	"/dev/null"
 +# define NFA_REGEXP_DEBUG_LOG	"/dev/null"
