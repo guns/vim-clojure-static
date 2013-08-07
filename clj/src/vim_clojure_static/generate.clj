@@ -4,7 +4,7 @@
 (ns vim-clojure-static.generate
   (:require [clojure.string :as string]
             [clojure.set :as set]
-            [frak :as frak]))
+            [frak]))
 
 ;;
 ;; Helpers
@@ -13,8 +13,7 @@
 (defn vim-frak-pattern
   "Create a non-capturing regular expression pattern compatible with Vim."
   [strs]
-  (-> (frak/pattern strs)
-      str
+  (-> (str (frak/pattern strs))
       (string/replace #"\(\?:" "\\%\\(")))
 
 (defn property-pattern
