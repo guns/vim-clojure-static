@@ -361,6 +361,11 @@
     "(?>X)" regexp-mod
 
     "(?X)" !regexp-mod
-    ]])
+    ]]
+  ["#%s"
+   [;; Backslashes with character classes
+    "\"[\\\\]\"" (partial = [:clojureRegexp :clojureRegexpCharClass :clojureRegexpCharClass :clojureRegexpCharClass :clojureRegexpCharClass :clojureRegexp])
+    "\"\\[]\"" (partial = [:clojureRegexp :clojureRegexpEscape :clojureRegexpEscape :clojureRegexp :clojureRegexp])
+    "\"\\\\[]\"" (partial = [:clojureRegexp :clojureRegexpEscape :clojureRegexpEscape :clojureRegexpCharClass :clojureRegexpCharClass :clojureRegexp])]])
 
 (comment (test #'java-regexp-literals-test))
