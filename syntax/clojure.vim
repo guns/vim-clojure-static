@@ -96,7 +96,7 @@ syntax cluster clojureRegexpCharPropertyClasses contains=clojureRegexpPosixCharC
 syntax cluster clojureRegexpCharClasses         contains=clojureRegexpPredefinedCharClass,clojureRegexpCharClass,@clojureRegexpCharPropertyClasses
 syntax region  clojureRegexpCharClass           start="\[" skip=/\\\\\|\\]/ end="]" contained contains=clojureRegexpPredefinedCharClass,@clojureRegexpCharPropertyClasses
 syntax match   clojureRegexpBoundary            "\\[bBAGZz]"   contained display
-syntax match   clojureRegexpBoundary            "\\\@<![$^]"   contained display
+syntax match   clojureRegexpBoundary            "[$^]"         contained display
 syntax match   clojureRegexpQuantifier          "[?*+][?+]\="  contained display
 syntax match   clojureRegexpQuantifier          "\v\{\d+%(,|,\d+)?}\??" contained display
 syntax match   clojureRegexpOr                  "|" contained display
