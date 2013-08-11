@@ -143,6 +143,8 @@
     "\\cA" regexp-escape
     "\\c1" !regexp-escape
     "\\c" !regexp-escape
+    ;; Special character escapes
+    "\\(\\)\\[\\]\\{\\}\\^\\$\\*\\?\\+" regexp-escape
 
     ;;;; Character classes
 
