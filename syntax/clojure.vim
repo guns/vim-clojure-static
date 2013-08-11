@@ -75,10 +75,9 @@ syntax match clojureDispatch "\v#[\^'=<_]?"
 " Clojure permits no more than 20 params.
 syntax match clojureAnonArg "%\(20\|1\d\|[1-9]\|&\)\?"
 
-syntax match   clojureRegexpEscape  "\v\\%([\\tnrfae()\[\]{}^$*?+]|c\u|0[0-3]?\o{1,2}|x%(\x{2}|\{\x{1,6}\})|u\x{4})" contained display
-syntax region  clojureRegexpQuoted  start=/\v\<@!\\Q/ms=e+1 skip=/\v\\\\|\\"/ end=/\\E/me=s-1 end=/"/me=s-1 contained
-syntax region  clojureRegexpQuote   start=/\v\<@!\\Q/       skip=/\v\\\\|\\"/ end=/\\E/       end=/"/me=s-1 contains=clojureRegexpQuoted keepend contained
-syntax cluster clojureRegexpEscapes contains=clojureRegexpEscape,clojureRegexpQuote
+syntax match  clojureRegexpEscape "\v\\%([\\tnrfae()\[\]{}^$*?+]|c\u|0[0-3]?\o{1,2}|x%(\x{2}|\{\x{1,6}\})|u\x{4})" contained display
+syntax region clojureRegexpQuoted start=/\v\<@!\\Q/ms=e+1 skip=/\v\\\\|\\"/ end=/\\E/me=s-1 end=/"/me=s-1 contained
+syntax region clojureRegexpQuote  start=/\v\<@!\\Q/       skip=/\v\\\\|\\"/ end=/\\E/       end=/"/me=s-1 contains=clojureRegexpQuoted keepend contained
 
 " Character property classes
 " Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/clj/src/vim_clojure_static/generate.clj
@@ -117,9 +116,9 @@ syntax keyword clojureCommentTodo contained FIXME XXX TODO FIXME: XXX: TODO:
 syntax match clojureComment ";.*$" contains=clojureCommentTodo,@Spell
 syntax match clojureComment "#!.*$"
 
-syntax region clojureSexp   matchgroup=clojureParen start="("  matchgroup=clojureParen end=")"  contains=TOP,@Spell
-syntax region clojureVector matchgroup=clojureParen start="\[" matchgroup=clojureParen end="\]" contains=TOP,@Spell
-syntax region clojureMap    matchgroup=clojureParen start="{"  matchgroup=clojureParen end="}"  contains=TOP,@Spell
+syntax region clojureSexp   matchgroup=clojureParen start="("  matchgroup=clojureParen end=")" contains=TOP,@Spell
+syntax region clojureVector matchgroup=clojureParen start="\[" matchgroup=clojureParen end="]" contains=TOP,@Spell
+syntax region clojureMap    matchgroup=clojureParen start="{"  matchgroup=clojureParen end="}" contains=TOP,@Spell
 
 " Highlight superfluous closing parens, brackets and braces.
 syntax match clojureError "]\|}\|)"
