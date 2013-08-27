@@ -79,6 +79,16 @@ default list below.
 	   \ 'deftype,defrecord,reify,proxy,extend-type,extend-protocol,letfn'
 <
 
+					*g:clojure_highlight_extra_defs*
+
+Some words in Clojure are highlighted as keywords.  If you have a custom
+construct that should be highlighted similarly, you can add your symbols to
+|g:clojure_highlight_extra_defs|:
+>
+	" Example
+	let g:clojure_highlight_extra_defs = ['defproject', 'defroutes']
+<
+
 					*g:clojure_align_multiline_strings*
 
 Align subsequent lines in multiline strings to the column after the opening
