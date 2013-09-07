@@ -182,16 +182,16 @@
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
         "%s"
-        cats
+        (:category character-properties)
         false)
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
         "%s"
-        cats)
+        (:category character-properties))
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
         "%%(Is|gc\\=|general_category\\=)?%s"
-        subcats))))
+        (:category character-properties)))))
 
 (def vim-unicode-script-char-classes
   "Vimscript literal `syntax match` for Unicode Script properties."
@@ -229,26 +229,26 @@
                            (fmt "script=" :script)
                            (fmt "block=" :block)])))
 
-(comment
-  ;; Generate the vim literal definitions for pasting into the runtime files.
-  (spit "tmp/clojure-defs.vim"
-        (str generation-comment
-             clojure-version-comment
-             vim-syntax-keywords
-             \newline
-             generation-comment
-             clojure-version-comment
-             vim-completion-words
-             \newline
-             generation-comment
-             java-version-comment
-             vim-posix-char-classes
-             vim-java-char-classes
-             vim-unicode-binary-char-classes
-             vim-unicode-category-char-classes
-             vim-unicode-script-char-classes
-             vim-unicode-block-char-classes))
-  ;; Generate an example file with all possible character property literals.
-  (spit "tmp/all-char-props.clj"
-        comprehensive-clojure-character-property-regexps)
-  )
+;;comment
+;; Generate the vim literal definitions for pasting into the runtime files.
+(spit "tmp/clojure-defs.vim"
+      (str generation-comment
+           clojure-version-comment
+           vim-syntax-keywords
+           \newline
+           generation-comment
+           clojure-version-comment
+           vim-completion-words
+           \newline
+           generation-comment
+           java-version-comment
+           vim-posix-char-classes
+           vim-java-char-classes
+           vim-unicode-binary-char-classes
+           vim-unicode-category-char-classes
+           vim-unicode-script-char-classes
+           vim-unicode-block-char-classes))
+;; Generate an example file with all possible character property literals.
+(spit "tmp/all-char-props.clj"
+      comprehensive-clojure-character-property-regexps)
+
