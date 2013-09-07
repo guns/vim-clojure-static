@@ -92,6 +92,28 @@
 
 (comment (test #'number-literals-test))
 
+;; TODO: Finish me! (this was in an old git stash)
+;; (defsyntaxtest keywords-test
+;;   (with-format "%s"
+;;     ":1" kw
+;;     ":A" kw
+;;     ":a" kw
+;;     ":αβγ" kw
+;;     "::a" kw
+;;     ":a/b" kw
+;;     ":a:b" kw
+;;     ":a:b/:c:b" kw
+;;     ":a/b/c/d" kw
+;;     "::a/b" !kw
+;;     "::" !kw
+;;     ":a:" !kw
+;;     ":a/" !kw
+;;     ":/" !kw
+;;     ":" !kw
+;;     ))
+;;
+;; (comment (test #'keywords-test))
+
 (defsyntaxtest java-regexp-literals-test
   ["#\"%s\""
    [;; http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
@@ -221,8 +243,6 @@
     "\\p{IsLatin}" regexp-unicode-char-class
     ;; \p{InGreek}        A character in the Greek block (block)
     "\\p{InGreek}" regexp-unicode-char-class
-    ;; \p{Lu}             An uppercase letter (category)
-    "\\p{Lu}" regexp-unicode-char-class
     ;; \p{IsAlphabetic}   An alphabetic character (binary property)
     "\\p{IsAlphabetic}" regexp-unicode-char-class
     ;; \p{Sc}             A currency symbol
@@ -230,6 +250,13 @@
     ;; \P{InGreek}        Any character except one in the Greek block (negation)
     "\\P{InGreek}" regexp-unicode-char-class
     ;; [\p{L}&&[^\p{Lu}]] Any letter except an uppercase letter (subtraction)
+
+    ;; Abbreviated categories
+    "\\pL" regexp-unicode-char-class
+    "\\p{L}" regexp-unicode-char-class
+    "\\p{Lu}" regexp-unicode-char-class
+    "\\p{gc=L}" regexp-unicode-char-class
+    "\\p{IsLu}" regexp-unicode-char-class
 
     ;;;; Invalid classes
 

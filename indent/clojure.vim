@@ -8,6 +8,11 @@
 " License:      Same as Vim
 " Last Change:  30 January 2013
 
+" TODO: Indenting after multibyte characters is broken:
+"       (let [Δ (if foo
+"                bar    ; Indent error
+"                baz)])
+
 if exists("b:did_indent")
     finish
 endif
