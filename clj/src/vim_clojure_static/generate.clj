@@ -171,11 +171,12 @@
 
 (def vim-unicode-category-char-classes
   "Vimscript literal `syntax match` for Unicode General Category classes."
-  (let [cats (:category character-properties)
+  (let [cats (sort (:category character-properties))
         chrs (->> (map seq cats)
                   (group-by first)
                   (keys)
-                  (map str))]
+                  (map str)
+                  (sort))]
     ;; gc= and general_category= can be case insensitive, but this is behavior
     ;; is undefined.
     (str
