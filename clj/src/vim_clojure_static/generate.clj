@@ -44,7 +44,7 @@
 ;;
 
 (def generation-comment
-  "\" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/clj/src/vim_clojure_static/generate.clj\n")
+  "\" Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj\n")
 
 (def clojure-version-comment
   (format "\" Clojure version %s\n" (clojure-version)))
@@ -251,5 +251,5 @@
              vim-unicode-block-char-classes))
   ;; Generate an example file with all possible character property literals.
   (spit "tmp/all-char-props.clj"
-        comprehensive-clojure-character-property-regexps))
-
+        comprehensive-clojure-character-property-regexps)
+  )

@@ -9,13 +9,13 @@
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
-" Last Change:  09 March 2013
+" Last Change:  %%RELEASE_DATE%%
 
 if exists("b:current_syntax")
     finish
 endif
 
-" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/clj/src/vim_clojure_static/generate.clj
+" Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
 " Clojure version 1.5.1
 syntax keyword clojureConstant nil
 syntax keyword clojureBoolean false true
@@ -80,8 +80,8 @@ syntax region clojureRegexpQuoted start=/\\Q/ms=e+1 skip=/\\\\\|\\"/ end=/\\E/me
 syntax region clojureRegexpQuote  start=/\\Q/       skip=/\\\\\|\\"/ end=/\\E/       end=/"/me=s-1 contains=clojureRegexpQuoted keepend contained
 
 " Character property classes
-" Generated from https://github.com/guns/vim-clojure-static/blob/vim-release-004/clj/src/vim_clojure_static/generate.clj
-" Java version 1.7.0_17
+" Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
+" Java version 1.7.0_40
 syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Blank|P%(unct|rint)|Digit|Graph|A%(l%(pha|num)|SCII)|XDigit|Space|Upper|Lower|Cntrl)\}" contained display
 syntax match clojureRegexpJavaCharClass "\v\\[pP]\{java%(U%(pperCase|nicodeIdentifier%(Start|Part))|Mirrored|Alphabetic|SpaceChar|D%(efined|igit)|Whitespace|L%(etter%(OrDigit)?|owerCase)|TitleCase|I%(de%(ographic|ntifierIgnorable)|SOControl)|JavaIdentifier%(Start|Part))\}" contained display
 syntax match clojureRegexpUnicodeCharClass "\v\\[pP]\{\cIs%(blank|hex%(digit|_digit)|uppercase|digit|control|a%(ssigned|l%(phabetic|num))|graph|ideographic|p%(rint|unctuation)|titlecase|w%(hite%(_space|space)|ord)|l%(owercase|etter)|noncharacter%(codepoint|_code_point))\}" contained display

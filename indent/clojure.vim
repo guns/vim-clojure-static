@@ -6,7 +6,7 @@
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
-" Last Change:  30 January 2013
+" Last Change:  %%RELEASE_DATE%%
 
 " TODO: Indenting after multibyte characters is broken:
 "       (let [Δ (if foo

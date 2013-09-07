@@ -5,7 +5,7 @@
 " Maintainer:   Sung Pae <self@sungpae.com>
 " URL:          https://github.com/guns/vim-clojure-static
 " License:      Same as Vim
-" Last Change:  06 February 2013
+" Last Change:  %%RELEASE_DATE%%
 
 if exists("b:did_ftplugin")
     finish

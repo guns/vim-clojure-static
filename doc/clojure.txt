@@ -1,4 +1,4 @@
-*clojure.txt*					Last Change: 30 January 2013
+*clojure.txt*					Last Change: %%RELEASE_DATE%%
 
 INTRODUCTION						*clojure-introduction*
 
