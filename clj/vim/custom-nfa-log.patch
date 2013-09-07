@@ -1,0 +1,75 @@
+commit 09b1321fd7fa91e5a8e36ebc2d858079969adca4 (HEAD, github/custom-nfa-log, custom-nfa-log)
+Author: guns <self@sungpae.com>
+Date:   Thu, 1 Aug 2013 10:56:19 -0500
+
+    Add custom NFA logging to nfa_regexp.log
+    
+    The goal is to get a ballpark estimate of the number of steps the regexp
+    engine undertakes in a session. One line of logging is done:
+    
+    * Start of nfa_regmatch()
+    * For each character considered
+    * For each state of a character considered
+    
+    Vimm should be compiled with -DDEBUG; if the NFA engine state graphs are
+    desired, then also use -DINCLUDE_NFA_DUMP.
+    
+    This branch can also be found at:
+    
+    https://github.com/guns/vim/tree/custom-nfa-log
+---
+ src/regexp_nfa.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/src/regexp_nfa.c b/src/regexp_nfa.c
+index 738ac3b..bea9d50 100644
+--- a/src/regexp_nfa.c
++++ b/src/regexp_nfa.c
+@@ -24,9 +24,18 @@
+ #ifdef DEBUG
+ # define NFA_REGEXP_ERROR_LOG	"nfa_regexp_error.log"
+ # define ENABLE_LOG
+-# define NFA_REGEXP_DUMP_LOG	"nfa_regexp_dump.log"
+-# define NFA_REGEXP_RUN_LOG	"nfa_regexp_run.log"
+-# define NFA_REGEXP_DEBUG_LOG	"nfa_regexp_debug.log"
++# ifdef INCLUDE_NFA_DUMP
++#  define NFA_REGEXP_DUMP_LOG	"nfa_regexp.log"
++# else
++#  define NFA_REGEXP_DUMP_LOG	"/dev/null"
++# endif
++# define NFA_REGEXP_RUN_LOG	"/dev/null"
++# define NFA_REGEXP_DEBUG_LOG	"/dev/null"
++# define LOG(fmt, ...) do {			\
++    FILE *log = fopen("nfa_regexp.log", "a");	\
++    fprintf(log, fmt, __VA_ARGS__);		\
++    fclose(log);				\
++} while (0)
+ #endif
+ 
+ enum
+@@ -5043,6 +5052,8 @@ nfa_regmatch(prog, start, submatch, m)
+ 	goto theend;
+ 
+ #ifdef ENABLE_LOG
++    LOG("START nfa_regmatch: alloc=%d pattern=\"%s\"\n", size*2, prog->pattern);
++
+     log_fd = fopen(NFA_REGEXP_RUN_LOG, "a");
+     if (log_fd != NULL)
+     {
+@@ -5129,6 +5140,8 @@ nfa_regmatch(prog, start, submatch, m)
+ 	nextlist->id = nfa_listid + 1;
+ 
+ #ifdef ENABLE_LOG
++	LOG("# states=%d reginput=\"%s\"\n", thislist->n, reginput);
++
+ 	fprintf(log_fd, "------------------------------------------\n");
+ 	fprintf(log_fd, ">>> Reginput is \"%s\"\n", reginput);
+ 	fprintf(log_fd, ">>> Advanced one character ... Current char is %c (code %d) \n", curc, (int)curc);
+@@ -5161,6 +5174,7 @@ nfa_regmatch(prog, start, submatch, m)
+ 	    fprintf(debug, "%s, ", code);
+ #endif
+ #ifdef ENABLE_LOG
++	    LOG("## computing nextlist: code=\"%s\"\n", code);
+ 	    {
+ 		int col;
+ 

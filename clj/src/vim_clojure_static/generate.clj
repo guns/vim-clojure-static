@@ -3,18 +3,26 @@
 
 (ns vim-clojure-static.generate
   (:require [clojure.string :as string]
-            [clojure.set :as set]))
+            [clojure.set :as set]
+            [frak]))
 
 ;;
 ;; Helpers
 ;;
 
+(defn vim-frak-pattern
+  "Create a non-capturing regular expression pattern compatible with Vim."
+  [strs]
+  (-> (str (frak/pattern strs))
+      (string/replace #"\(\?:" "\\%\\(")))
+
 (defn property-pattern
   "Vimscript very magic pattern for a character property class."
   ([s] (property-pattern s true))
-  ([s braces?] (if braces?
-                 (format "\\v\\\\[pP]\\{%s\\}" s)
-                 (format "\\v\\\\[pP]%s" s))))
+  ([s braces?]
+   (if braces?
+     (format "\\v\\\\[pP]\\{%s\\}" s)
+     (format "\\v\\\\[pP]%s" s))))
 
 (defn syntax-match-properties
   "Vimscript literal `syntax match` for a character property class."
@@ -22,7 +30,7 @@
   ([group fmt props braces?]
    (format "syntax match %s \"%s\" contained display\n"
            (name group)
-           (property-pattern (format fmt (string/join \| (sort props))) braces?))))
+           (property-pattern (format fmt (vim-frak-pattern props)) braces?))))
 
 (defn get-private-field
   "Violate encapsulation and get the value of a private field."
@@ -141,7 +149,7 @@
   ;; `IsPosix` works, but is undefined.
   (syntax-match-properties
     :clojureRegexpPosixCharClass
-    "%%(%s)"
+    "%s"
     (:posix character-properties)))
 
 (def vim-java-char-classes
@@ -149,7 +157,7 @@
   ;; `IsjavaMethod` works, but is undefined.
   (syntax-match-properties
     :clojureRegexpJavaCharClass
-    "java%%(%s)"
+    "java%s"
     (map #(string/replace % #"\Ajava" "") (:java character-properties))))
 
 (def vim-unicode-binary-char-classes
@@ -158,26 +166,32 @@
   ;; insensitively like the other Unicode properties.
   (syntax-match-properties
     :clojureRegexpUnicodeCharClass
-    "\\cIs%%(%s)"
+    "\\cIs%s"
     (map string/lower-case (:binary character-properties))))
 
 (def vim-unicode-category-char-classes
   "Vimscript literal `syntax match` for Unicode General Category classes."
-  (let [cats (map seq (:category character-properties))
-        cats (map (fn [[c subcats]]
-                    (format "%s[%s]" c (apply str (sort (mapcat rest subcats)))))
-                  (group-by first cats))]
+  (let [cats (sort (:category character-properties))
+        chrs (->> (map seq cats)
+                  (group-by first)
+                  (keys)
+                  (map str)
+                  (sort))]
     ;; gc= and general_category= can be case insensitive, but this is behavior
     ;; is undefined.
     (str
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
-        "%%(%s)"
-        (sort (filter #(= (count %) 1) (:category character-properties)))
+        "%s"
+        chrs
         false)
       (syntax-match-properties
         :clojureRegexpUnicodeCharClass
-        "%%(Is|gc\\=|general_category\\=)?%%(%s)"
+        "%s"
+        cats)
+      (syntax-match-properties
+        :clojureRegexpUnicodeCharClass
+        "%%(Is|gc\\=|general_category\\=)?%s"
         cats))))
 
 (def vim-unicode-script-char-classes
@@ -189,7 +203,7 @@
   ;; InScriptName works, but is undefined.
   (syntax-match-properties
     :clojureRegexpUnicodeCharClass
-    "\\c%%(Is|sc\\=|script\\=)%%(%s)"
+    "\\c%%(Is|sc\\=|script\\=)%s"
     (map string/lower-case (:script character-properties))))
 
 (def vim-unicode-block-char-classes
@@ -198,10 +212,26 @@
   ;; of Is.
   (syntax-match-properties
     :clojureRegexpUnicodeCharClass
-    "\\c%%(In|blk\\=|block\\=)%%(%s)"
+    "\\c%%(In|blk\\=|block\\=)%s"
     (map string/lower-case (:block character-properties))))
 
+(def comprehensive-clojure-character-property-regexps
+  "A string representing a Clojure literal vector of regular expressions
+   containing all possible property character classes. For testing Vimscript
+   syntax matching optimizations."
+  (let [fmt (fn [prefix prop-key]
+              (let [props (map (partial format "\\p{%s%s}" prefix)
+                               (sort (get character-properties prop-key)))]
+                (format "#\"%s\"" (string/join props))))]
+    (string/join \newline [(fmt "" :posix)
+                           (fmt "" :java)
+                           (fmt "Is" :binary)
+                           (fmt "general_category=" :category)
+                           (fmt "script=" :script)
+                           (fmt "block=" :block)])))
+
 (comment
+  ;; Generate the vim literal definitions for pasting into the runtime files.
   (spit "tmp/clojure-defs.vim"
         (str generation-comment
              clojure-version-comment
@@ -218,4 +248,8 @@
              vim-unicode-binary-char-classes
              vim-unicode-category-char-classes
              vim-unicode-script-char-classes
-             vim-unicode-block-char-classes)))
+             vim-unicode-block-char-classes))
+  ;; Generate an example file with all possible character property literals.
+  (spit "tmp/all-char-props.clj"
+        comprehensive-clojure-character-property-regexps))
+
