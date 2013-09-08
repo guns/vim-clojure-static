@@ -1,18 +1,18 @@
 " Vim syntax file
-" Language:     Clojure
-" Authors:      Toralf Wittner <toralf.wittner@gmail.com>
-"               modified by Meikel Brandmeyer <mb@kotka.de>
-" URL:          http://kotka.de/projects/clojure/vimclojure.html
+" Language:	Clojure
+" Authors:	Toralf Wittner <toralf.wittner@gmail.com>
+"		modified by Meikel Brandmeyer <mb@kotka.de>
+" URL:		http://kotka.de/projects/clojure/vimclojure.html
 "
-" Contributors: Joel Holdbrooks <cjholdbrooks@gmail.com> (Regexp support, bug fixes)
+" Contributors:	Joel Holdbrooks <cjholdbrooks@gmail.com> (Regexp support, bug fixes)
 "
-" Maintainer:   Sung Pae <self@sungpae.com>
-" URL:          https://github.com/guns/vim-clojure-static
-" License:      Same as Vim
-" Last Change:  %%RELEASE_DATE%%
+" Maintainer:	Sung Pae <self@sungpae.com>
+" URL:		https://github.com/guns/vim-clojure-static
+" License:	Same as Vim
+" Last Change:	%%RELEASE_DATE%%
 
 if exists("b:current_syntax")
-    finish
+	finish
 endif
 
 " Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
@@ -54,7 +54,7 @@ syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-
 
 let s:radix_chars = "0123456789abcdefghijklmnopqrstuvwxyz"
 for s:radix in range(2, 36)
-    execute 'syntax match clojureNumber "\v\c<[-+]?' . s:radix . 'r[' . strpart(s:radix_chars, 0, s:radix) . ']+>"'
+	execute 'syntax match clojureNumber "\v\c<[-+]?' . s:radix . 'r[' . strpart(s:radix_chars, 0, s:radix) . ']+>"'
 endfor
 unlet! s:radix_chars s:radix
 
@@ -95,11 +95,11 @@ syntax match   clojureRegexpPredefinedCharClass "\v%(\\[dDsSwW]|\.)" contained d
 syntax cluster clojureRegexpCharPropertyClasses contains=clojureRegexpPosixCharClass,clojureRegexpJavaCharClass,clojureRegexpUnicodeCharClass
 syntax cluster clojureRegexpCharClasses         contains=clojureRegexpPredefinedCharClass,clojureRegexpCharClass,@clojureRegexpCharPropertyClasses
 syntax region  clojureRegexpCharClass           start="\[" skip=/\\\\\|\\]/ end="]" contained contains=clojureRegexpPredefinedCharClass,@clojureRegexpCharPropertyClasses
-syntax match   clojureRegexpBoundary            "\\[bBAGZz]"   contained display
-syntax match   clojureRegexpBoundary            "[$^]"         contained display
-syntax match   clojureRegexpQuantifier          "[?*+][?+]\="  contained display
-syntax match   clojureRegexpQuantifier          "\v\{\d+%(,|,\d+)?}\??" contained display
-syntax match   clojureRegexpOr                  "|" contained display
+syntax match   clojureRegexpBoundary            "\\[bBAGZz]"                     contained display
+syntax match   clojureRegexpBoundary            "[$^]"                           contained display
+syntax match   clojureRegexpQuantifier          "[?*+][?+]\="                    contained display
+syntax match   clojureRegexpQuantifier          "\v\{\d+%(,|,\d+)?}\??"          contained display
+syntax match   clojureRegexpOr                  "|"                              contained display
 syntax match   clojureRegexpBackRef             "\v\\%([1-9]\d*|k\<[a-zA-z]+\>)" contained display
 
 " Mode modifiers, mode-modified spans, lookaround, regular and atomic
@@ -126,54 +126,54 @@ syntax match clojureError "]\|}\|)"
 
 syntax sync fromstart
 
-highlight default link clojureConstant     Constant
-highlight default link clojureBoolean      Boolean
-highlight default link clojureCharacter    Character
-highlight default link clojureKeyword      Keyword
-highlight default link clojureNumber       Number
-highlight default link clojureString       String
-highlight default link clojureStringEscape Character
+highlight default link clojureConstant		Constant
+highlight default link clojureBoolean		Boolean
+highlight default link clojureCharacter		Character
+highlight default link clojureKeyword		Keyword
+highlight default link clojureNumber		Number
+highlight default link clojureString		String
+highlight default link clojureStringEscape	Character
 
-highlight default link clojureRegexp                    Constant
-highlight default link clojureRegexpEscape              Character
-highlight default link clojureRegexpCharClass           SpecialChar
-highlight default link clojureRegexpPosixCharClass      clojureRegexpCharClass
-highlight default link clojureRegexpJavaCharClass       clojureRegexpCharClass
-highlight default link clojureRegexpUnicodeCharClass    clojureRegexpCharClass
-highlight default link clojureRegexpPredefinedCharClass clojureRegexpCharClass
-highlight default link clojureRegexpBoundary            SpecialChar
-highlight default link clojureRegexpQuantifier          SpecialChar
-highlight default link clojureRegexpMod                 SpecialChar
-highlight default link clojureRegexpOr                  SpecialChar
-highlight default link clojureRegexpBackRef             SpecialChar
-highlight default link clojureRegexpGroup               clojureRegexp
-highlight default link clojureRegexpQuoted              clojureString
-highlight default link clojureRegexpQuote               clojureRegexpBoundary
+highlight default link clojureRegexp			Constant
+highlight default link clojureRegexpEscape		Character
+highlight default link clojureRegexpCharClass		SpecialChar
+highlight default link clojureRegexpPosixCharClass	clojureRegexpCharClass
+highlight default link clojureRegexpJavaCharClass	clojureRegexpCharClass
+highlight default link clojureRegexpUnicodeCharClass	clojureRegexpCharClass
+highlight default link clojureRegexpPredefinedCharClass	clojureRegexpCharClass
+highlight default link clojureRegexpBoundary		SpecialChar
+highlight default link clojureRegexpQuantifier		SpecialChar
+highlight default link clojureRegexpMod			SpecialChar
+highlight default link clojureRegexpOr			SpecialChar
+highlight default link clojureRegexpBackRef		SpecialChar
+highlight default link clojureRegexpGroup		clojureRegexp
+highlight default link clojureRegexpQuoted		clojureString
+highlight default link clojureRegexpQuote		clojureRegexpBoundary
 
-highlight default link clojureVariable  Identifier
-highlight default link clojureCond      Conditional
-highlight default link clojureDefine    Define
-highlight default link clojureException Exception
-highlight default link clojureFunc      Function
-highlight default link clojureMacro     Macro
-highlight default link clojureRepeat    Repeat
+highlight default link clojureVariable	Identifier
+highlight default link clojureCond	Conditional
+highlight default link clojureDefine	Define
+highlight default link clojureException	Exception
+highlight default link clojureFunc	Function
+highlight default link clojureMacro	Macro
+highlight default link clojureRepeat	Repeat
 
-highlight default link clojureSpecial   Special
-highlight default link clojureVarArg    Special
-highlight default link clojureQuote     SpecialChar
-highlight default link clojureUnquote   SpecialChar
-highlight default link clojureMeta      SpecialChar
-highlight default link clojureDeref     SpecialChar
-highlight default link clojureAnonArg   SpecialChar
-highlight default link clojureDispatch  SpecialChar
+highlight default link clojureSpecial	Special
+highlight default link clojureVarArg	Special
+highlight default link clojureQuote	SpecialChar
+highlight default link clojureUnquote	SpecialChar
+highlight default link clojureMeta	SpecialChar
+highlight default link clojureDeref	SpecialChar
+highlight default link clojureAnonArg	SpecialChar
+highlight default link clojureDispatch	SpecialChar
 
-highlight default link clojureComment     Comment
-highlight default link clojureCommentTodo Todo
+highlight default link clojureComment		Comment
+highlight default link clojureCommentTodo	Todo
 
-highlight default link clojureError     Error
+highlight default link clojureError	Error
 
-highlight default link clojureParen     Delimiter
+highlight default link clojureParen	Delimiter
 
 let b:current_syntax = "clojure"
 
-" vim:sts=4:sw=4:ts=4:et:smc=0
+" vim:sts=8:sw=8:ts=8:noet:smc=0

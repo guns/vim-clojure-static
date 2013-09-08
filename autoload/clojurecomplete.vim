@@ -1,9 +1,9 @@
 " Vim completion script
-" Language:     Clojure
-" Maintainer:   Sung Pae <self@sungpae.com>
-" URL:          https://github.com/guns/vim-clojure-static
-" License:      Same as Vim
-" Last Change:  %%RELEASE_DATE%%
+" Language:	Clojure
+" Maintainer:	Sung Pae <self@sungpae.com>
+" URL:		https://github.com/guns/vim-clojure-static
+" License:	Same as Vim
+" Last Change:	%%RELEASE_DATE%%
 
 " Special forms and public vars in clojure.core
 " Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
@@ -12,9 +12,11 @@ let s:words = ["*","*'","*1","*2","*3","*agent*","*allow-unresolved-vars*","*ass
 
 " Simple word completion omnifunc
 function! clojurecomplete#Complete(findstart, base)
-    if a:findstart
-        return searchpos('\<', 'bnW', line('.'))[1] - 1
-    else
-        return { 'words': filter(copy(s:words), 'v:val =~ "\\V\\^' . a:base . '"') }
-    endif
+	if a:findstart
+		return searchpos('\<', 'bnW', line('.'))[1] - 1
+	else
+		return { 'words': filter(copy(s:words), 'v:val =~ "\\V\\^' . a:base . '"') }
+	endif
 endfunction
+
+" vim:sts=8:sw=8:ts=8:noet
