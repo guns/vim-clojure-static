@@ -166,7 +166,7 @@
     "\\c1" !regexp-escape
     "\\c" !regexp-escape
     ;; Special character escapes
-    "\\(\\)\\[\\]\\{\\}\\^\\$\\*\\?\\+" regexp-escape
+    "\\(\\)\\[\\]\\{\\}\\^\\$\\*\\?\\+\\." regexp-escape
 
     ;;;; Character classes
 
