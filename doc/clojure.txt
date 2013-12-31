@@ -1,4 +1,4 @@
-*clojure.txt*					Last Change: %%RELEASE_DATE%%
+*clojure.txt*	Clojure runtime files
 
 INTRODUCTION						*clojure-introduction*
 
@@ -145,5 +145,7 @@ indent/clojure.vim
 Modified and relicensed under the Vim License for distribution with Vim:
 
 	Copyright 2013 (c) Sung Pae <self@sungpae.com>
+
+Last Change: %%RELEASE_DATE%%
 
  vim:tw=78:noet:sw=8:sts=8:ts=8:ft=help:norl:
