@@ -15,7 +15,7 @@ if exists("b:current_syntax")
 	finish
 endif
 
-if has("folding") && exists("g:clojure_fold")
+if has("folding") && exists("g:clojure_fold") && g:clojure_fold > 0
 	setlocal foldmethod=syntax
 endif
 
