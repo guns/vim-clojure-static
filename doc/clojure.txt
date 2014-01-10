@@ -123,6 +123,17 @@ This option is off by default.
 	" Default
 	let g:clojure_align_subforms = 0
 <
+							*g:clojure_fold*
+
+Setting this option enables folding Clojure code via syntax forms. Any list,
+vector, or map that extends over more than one line can be folded using the
+standard Vim |fold-commands|.
+
+This option is off by default.
+>
+	" Default
+	let g:clojure_fold = 0
+<
 
 ABOUT							*clojure-about*
 

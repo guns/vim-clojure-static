@@ -15,6 +15,10 @@ if exists("b:current_syntax")
 	finish
 endif
 
+if has("folding") && exists("g:clojure_fold")
+	setlocal foldmethod=syntax
+endif
+
 " Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
 " Clojure version 1.5.1
 syntax keyword clojureConstant nil
@@ -117,9 +121,9 @@ syntax keyword clojureCommentTodo contained FIXME XXX TODO FIXME: XXX: TODO:
 syntax match clojureComment ";.*$" contains=clojureCommentTodo,@Spell
 syntax match clojureComment "#!.*$"
 
-syntax region clojureSexp   matchgroup=clojureParen start="("  matchgroup=clojureParen end=")" contains=TOP,@Spell
-syntax region clojureVector matchgroup=clojureParen start="\[" matchgroup=clojureParen end="]" contains=TOP,@Spell
-syntax region clojureMap    matchgroup=clojureParen start="{"  matchgroup=clojureParen end="}" contains=TOP,@Spell
+syntax region clojureSexp   matchgroup=clojureParen start="("  matchgroup=clojureParen end=")" contains=TOP,@Spell fold
+syntax region clojureVector matchgroup=clojureParen start="\[" matchgroup=clojureParen end="]" contains=TOP,@Spell fold
+syntax region clojureMap    matchgroup=clojureParen start="{"  matchgroup=clojureParen end="}" contains=TOP,@Spell fold
 
 " Highlight superfluous closing parens, brackets and braces.
 syntax match clojureError "]\|}\|)"
