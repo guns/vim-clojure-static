@@ -39,6 +39,12 @@
     (.setAccessible field true)
     (.get field field)))
 
+(defn fn-var? [v]
+  (let [f @v]
+    (or (contains? (meta v) :arglists)
+        (fn? f)
+        (instance? clojure.lang.MultiFn f))))
+
 ;;
 ;; Definitions
 ;;
@@ -78,8 +84,8 @@
     (conj builtins
           ;; Clojure devs are fastidious about accurate metadata
           ["Define" (select! #(re-seq #"\Adef(?!ault)" (str %)))]
-          ["Macro" (select! #(:macro (meta (resolve %))))]
-          ["Func" (select! #(:arglists (meta (resolve %))))]
+          ["Macro" (select! #(:macro (meta (ns-resolve 'clojure.core %))))]
+          ["Func" (select! #(fn-var? (ns-resolve 'clojure.core %)))]
           ["Variable" (select! identity)])))
 
 (def character-properties
@@ -238,17 +244,17 @@
              vim-syntax-keywords
              \newline
              generation-comment
-             clojure-version-comment
-             vim-completion-words
-             \newline
-             generation-comment
              java-version-comment
              vim-posix-char-classes
              vim-java-char-classes
              vim-unicode-binary-char-classes
              vim-unicode-category-char-classes
              vim-unicode-script-char-classes
-             vim-unicode-block-char-classes))
+             vim-unicode-block-char-classes
+             \newline
+             generation-comment
+             clojure-version-comment
+             vim-completion-words))
   ;; Generate an example file with all possible character property literals.
   (spit "tmp/all-char-props.clj"
         comprehensive-clojure-character-property-regexps)
