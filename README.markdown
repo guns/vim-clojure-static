@@ -28,111 +28,71 @@
 
 
 
-Meikel Brandmeyer's excellent Clojure runtime files, extracted for static
-editing and use with alternate Clojure development plugins.
+Meikel Brandmeyer's excellent Clojure runtime files, extracted from the
+[VimClojure](http://www.vim.org/scripts/script.php?script_id=2501) project for
+use with alternate Clojure REPL plugins.
 
-Rationale
-=========
-
-[VimClojure](http://www.vim.org/scripts/script.php?script_id=2501) consists of
-a syntax script, indent script, filetype settings, limited static completions,
-and a sophisticated synchronous REPL environment for interacting with JVM
-Clojure processes.
-
-While it is not necessary to use any of the interactive features of
-VimClojure, the static runtime files are not standalone scripts and cannot
-easily be extracted from the VimClojure support libraries. The side effects of
-this coupling are:
-
-* Hacking on the runtime files is more difficult.
-
-* Installing the latest revisions from source is more complicated than
-  tracking a single repository.
-
-* Installing the whole VimClojure distribution for the runtime files is
-  overkill. A smaller, self-contained set of files would be eligible for
-  inclusion in Vim itself.
-
-This is a shame since VimClojure's syntax and indent scripts are of very high
-quality. This fork aims to address these problems.
-
-Differences from VimClojure
-===========================
-
-* Only provides syntax, indent, and filetype settings for Clojure and
-  ClojureScript files.
-
-* All scripts are independent and do not depend on VimClojure library
-  functions.
-
-* Rainbow parentheses support is omitted in favor of more general and
-  extensible third-party scripts. kien's
-  [`rainbow_parentheses.vim`](https://github.com/kien/rainbow_parentheses.vim)
-  is an excellent replacement.
-
-* Basic insert mode completion is provided for special forms and public vars
-  in `clojure.core`. It is bound to both the `'omnifunc'` and `'completefunc'`
-  options, which can be invoked with the insert mode mappings `<C-X><C-O>` and
-  `<C-X><C-U>` respectively.
-
-  For more comprehensive completions, consider using an interactive
-  development plugin listed below.
-
-Interactive Clojure Development Plugins
-=======================================
-
-### [vim-fireplace](https://github.com/tpope/vim-fireplace)
-
-New nREPL client by Tim Pope.
-
-### [VimClojure](http://www.vim.org/scripts/script.php?script_id=2501)
-
-The original interactive Clojure editing environment by Meikel Brandmeyer.
-These runtime files are **incompatible** with the original VimClojure project
-in several small ways, so be sure to uninstall vim-clojure-static when using
-VimClojure.
-
-Meikel has [announced](https://groups.google.com/forum/?fromgroups=#!topic/vimclojure/B-UU8qctd5A)
-that the upcoming version of VimClojure will feature only the dynamic portion
-of the project, and will be compatible with these static files.
-
-### [slimv.vim](http://www.vim.org/scripts/script.php?script_id=2531)
-
-SWANK client for Vim by Tamas Kovacs.
-
-### [screen](http://www.vim.org/scripts/script.php?script_id=2711)
-
-Send text to REPLs running in GNU Screen or tmux. Not Clojure specific.
-
-By Eric Van Dewoestine.
-
-### [vim-slime](https://github.com/jpalardy/vim-slime)
-
-Like `screen` above, an asynchronous REPL plugin that uses GNU screen and
-tmux. Not Clojure specific.
-
-By Jonathan Palardy.
+These files ship with Vim versions 7.3.803 and later, and are periodically
+merged into the official Vim repository.
 
 Installation
 ============
 
-Vim version 7.3.803 and later ships with these runtime files, so you may
-already have them installed!
+If you are running an old version of Vim or if you would like to keep up with
+development, you can install this repository like a standard Vim plugin.
 
-If you are running an earlier version or you would like to keep up with
-development, you can install this repository like a standard Vim plugin. If
-you don't have a favorite method for installing plugins,
-[Pathogen](https://github.com/tpope/vim-pathogen) or
-[Vundle](https://github.com/gmarik/vundle) are recommended.
+If you are unfamiliar with this process, refer to
+the [Pathogen](https://github.com/tpope/vim-pathogen) project.
 
-Please make sure that the following options are set in your .vimrc:
+Please make sure that the following options are set in your vimrc to enable
+all features:
 
 ```vim
 syntax on
 filetype plugin indent on
 ```
 
-Otherwise the filetype is not activated.
+Features
+========
+
+* Syntax highlighting for Clojure and ClojureScript buffers.
+
+* [Configurable](#indent-options) Clojure-specific indentation.
+
+* Basic insert mode completion for special forms and public vars in
+  `clojure.core`.
+
+  This is bound to both the `'omnifunc'` and `'completefunc'` options, which
+  can be invoked with the insert mode mappings `<C-X><C-O>` and `<C-X><C-U>`
+  respectively.
+
+If you install this project as a plugin, `*.edn` files are recognized as a
+Clojure filetype, overriding the built-in declaration as `edif`.
+
+Third Party Extensions
+======================
+
+* Rainbow Parentheses
+
+  kien's
+  [`rainbow_parentheses.vim`](https://github.com/kien/rainbow_parentheses.vim)
+  is highly recommended.
+
+* Extended Syntax Highlighting
+
+  [`vim-clojure-highlight`](https://github.com/guns/vim-clojure-highlight)
+  is a fireplace.vim plugin that extends syntax highlighting to referred and
+  aliased vars.
+
+  This is a reimplementation of the DynamicHighlighting feature from
+  VimClojure.
+
+Clojure REPL Plugins
+====================
+
+If you would like to get more serious about programming in Clojure, consider
+using an interactive
+[Clojure REPL plugin](https://github.com/guns/vim-clojure-static/wiki/Clojure-REPL-Plugins).
 
 Indent Options
 ==============
@@ -156,7 +116,7 @@ without limits.
 let g:clojure_maxlines = 100
 ```
 
-### `g:clojure_fuzzy_indent`, `g:clojure_fuzzy_indent_patterns`, and `g:clojure_fuzzy_indent_blacklist`
+### `g:clojure_fuzzy_indent`, `g:clojure_fuzzy_indent_patterns`, `g:clojure_fuzzy_indent_blacklist`
 
 The `'lispwords'` option is a list of comma-separated words that mark special
 forms whose subforms must be indented with two spaces.
@@ -237,6 +197,46 @@ This option is off by default.
 let g:clojure_align_multiline_strings = 0
 ```
 
+### `g:clojure_align_subforms`
+
+By default, parenthesized compound forms that look like function calls and
+whose head subform is on its own line have subsequent subforms indented by
+two spaces relative to the opening paren:
+
+```clojure
+(foo
+  bar
+  baz)
+```
+
+Setting this option changes this behavior so that all subforms are aligned to
+the same column, emulating the default behavior of clojure-mode.el:
+
+```clojure
+(foo
+ bar
+ baz)
+```
+
+This option is off by default.
+
+```vim
+" Default
+let g:clojure_align_subforms = 0
+```
+
+Development
+===========
+
+Pull requests and patches are strongly encouraged!
+
+A large portion of the syntax file is generated from Clojure code in
+`clj/src/`. Generation of vim code in this fashion is preferred over hand
+crafting of the same.
+
+There is an incomplete syntax test suite in `clj/test/`. Any additions and
+improvements to these tests are highly appreciated.
+
 License and Acknowledgements
 ============================
 
@@ -250,15 +250,15 @@ Thanks to [Tim Pope](https://github.com/tpope/) for advice in #vim.
 * Copyright 2007-2008 (c) Toralf Wittner <toralf.wittner@gmail.com>
 * Copyright 2008-2012 (c) Meikel Brandmeyer <mb@kotka.de>
 
-`ftdetect/clojure.vim`<br>
-`ftplugin/clojure.vim`<br>
+`ftdetect/clojure.vim`,<br>
+`ftplugin/clojure.vim`,<br>
 `indent/clojure.vim`
 
 * Copyright 2008-2012 (c) Meikel Brandmeyer <mb@kotka.de>
 
 Modified and relicensed under the Vim License for distribution with Vim:
 
-* Copyright 2013 (c) Sung Pae <self@sungpae.com>
+* Copyright 2013-2014 (c) Sung Pae <self@sungpae.com>
 
 See LICENSE.txt for more information.
 

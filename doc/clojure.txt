@@ -112,7 +112,7 @@ two spaces relative to the opening paren:
 	  baz)
 <
 Setting this option changes this behavior so that all subforms are aligned to
-the same column:
+the same column, emulating the default behavior of clojure-mode.el:
 >
 	(foo
 	 bar
@@ -153,15 +153,15 @@ syntax/clojure.vim
 	Copyright 2007-2008 (c) Toralf Wittner <toralf.wittner@gmail.com>
 	Copyright 2008-2012 (c) Meikel Brandmeyer <mb@kotka.de>
 
-ftdetect/clojure.vim
-ftplugin/clojure.vim
+ftdetect/clojure.vim,
+ftplugin/clojure.vim,
 indent/clojure.vim
 
 	Copyright 2008-2012 (c) Meikel Brandmeyer <mb@kotka.de>
 
 Modified and relicensed under the Vim License for distribution with Vim:
 
-	Copyright 2013 (c) Sung Pae <self@sungpae.com>
+	Copyright 2013-2014 (c) Sung Pae <self@sungpae.com>
 
 Last Change: %%RELEASE_DATE%%
 
