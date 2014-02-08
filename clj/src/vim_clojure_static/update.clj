@@ -1,8 +1,8 @@
 ;; Authors: Sung Pae <self@sungpae.com>
 
 (ns vim-clojure-static.update
-  (:require [clojure.string :as string]
-            [clojure.java.shell :refer [sh]])
+  (:require [clojure.java.shell :refer [sh]]
+            [clojure.string :as string])
   (:import (java.text SimpleDateFormat)
            (java.util Date)))
 

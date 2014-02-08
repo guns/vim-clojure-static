@@ -1,11 +1,12 @@
 ;; Authors: Sung Pae <self@sungpae.com>
 
 (ns vim-clojure-static.test
-  (:require [clojure.java.io :as io]
+  (:require [clojure.edn :as edn]
+            [clojure.java.io :as io]
             [clojure.java.shell :as shell]
-            [clojure.edn :as edn]
             [clojure.string :as string]
-            [clojure.test :as test]))
+            [clojure.test :as test])
+  (:import (java.util List)))
 
 (defn syn-id-names
   "Map lines of clojure text to vim synID names at each column as keywords:
@@ -28,7 +29,7 @@
    %s in format spec fmt"
   [fmt s]
   (let [f (seq (format fmt \o001))
-        i (.indexOf f \o001)]
+        i (.indexOf ^List f \o001)]
     (->> s
          (drop i)
          (drop-last (- (count f) i 1)))))
@@ -48,6 +49,7 @@
    At runtime the syn-id-names of the strings (which are placed in the format
    spec) are passed to their associated predicates. The format spec should
    contain a single `%s`."
+  {:require [#'test/deftest]}
   [name & body]
   (assert (every? (fn [[fmt tests]] (and (string? fmt)
                                          (coll? tests)

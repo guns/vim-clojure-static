@@ -2,7 +2,7 @@
 ;;          Joel Holdbrooks <cjholdbrooks@gmail.com>
 
 (ns vim-clojure-static.syntax-test
-  (:require [vim-clojure-static.test :as test :refer [defsyntaxtest]]))
+  (:require [vim-clojure-static.test :refer [defsyntaxtest]]))
 
 (defmacro defbooleantest
   "Create two complementary test function vars `sym` and `!sym` which test if

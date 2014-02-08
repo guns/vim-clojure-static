@@ -2,9 +2,13 @@
 ;;          Joel Holdbrooks <cjholdbrooks@gmail.com>
 
 (ns vim-clojure-static.generate
-  (:require [clojure.string :as string]
-            [clojure.set :as set]
-            [frak]))
+  (:require [clojure.set :as set]
+            [clojure.string :as string]
+            [frak :as f])
+  (:import (clojure.lang MultiFn)
+           (java.lang Character$UnicodeBlock Character$UnicodeScript)
+           (java.lang.reflect Field)
+           (java.util.regex Pattern$CharPropertyNames UnicodeProp)))
 
 ;;
 ;; Helpers
@@ -13,7 +17,7 @@
 (defn vim-frak-pattern
   "Create a non-capturing regular expression pattern compatible with Vim."
   [strs]
-  (-> (str (frak/pattern strs))
+  (-> (str (f/pattern strs))
       (string/replace #"\(\?:" "\\%\\(")))
 
 (defn property-pattern
@@ -34,8 +38,9 @@
 
 (defn get-private-field
   "Violate encapsulation and get the value of a private field."
-  [cls fieldname]
-  (let [field (first (filter #(= fieldname (.getName %)) (.getDeclaredFields cls)))]
+  [^Class cls fieldname]
+  (let [^Field field (first (filter #(= fieldname (.getName ^Field %))
+                                    (.getDeclaredFields cls)))]
     (.setAccessible field true)
     (.get field field)))
 
@@ -43,7 +48,10 @@
   (let [f @v]
     (or (contains? (meta v) :arglists)
         (fn? f)
-        (instance? clojure.lang.MultiFn f))))
+        (instance? MultiFn f))))
+
+(defn inner-class-name [^Field field]
+  (string/replace (.getName (class field)) #".*\$(.+)" "$1"))
 
 ;;
 ;; Definitions
@@ -90,16 +98,15 @@
 
 (def character-properties
   "Character property names derived via reflection."
-  (let [props (map (fn [[p typ]] [p (string/replace (.getName (type typ)) #".*\$(.+)" "$1")])
-                   (get-private-field java.util.regex.Pattern$CharPropertyNames "map"))
-        props (map (fn [[typ ps]] [typ (map first ps)])
-                   (group-by peek props))
-        props (into {} props)
-        binary (concat (map #(. % name) (get-private-field java.util.regex.UnicodeProp "$VALUES"))
-                       (keys (get-private-field java.util.regex.UnicodeProp "aliases")))
-        script (concat (map #(. % name) (java.lang.Character$UnicodeScript/values))
-                       (keys (get-private-field java.lang.Character$UnicodeScript "aliases")))
-        block (keys (get-private-field java.lang.Character$UnicodeBlock "map"))]
+  (let [props (->> (get-private-field Pattern$CharPropertyNames "map")
+                   (mapv (fn [[prop field]] [(inner-class-name field) prop]))
+                   (group-by first)
+                   (reduce (fn [m [k v]] (assoc m k (mapv peek v))) {}))
+        binary (concat (map #(.name ^UnicodeProp %) (get-private-field UnicodeProp "$VALUES"))
+                       (keys (get-private-field UnicodeProp "aliases")))
+        script (concat (map #(.name ^Character$UnicodeScript %) (Character$UnicodeScript/values))
+                       (keys (get-private-field Character$UnicodeScript "aliases")))
+        block (keys (get-private-field Character$UnicodeBlock "map"))]
     ;;
     ;; * The keys "1"…"5" reflect the order of CharPropertyFactory
     ;;   declarations in Pattern.java!
