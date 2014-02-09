@@ -50,8 +50,22 @@
         (fn? f)
         (instance? MultiFn f))))
 
-(defn inner-class-name [^Field field]
-  (string/replace (.getName (class field)) #".*\$(.+)" "$1"))
+(defn inner-class-name [^Class cls]
+  (string/replace (.getName cls) #".*\$(.+)" "$1"))
+
+(defn map-keyword-names [coll]
+  (reduce
+    (fn [v x]
+      ;; Include fully qualified versions of core vars for matching vars in
+      ;; macroexpanded forms
+      (cond (symbol? x) (if-let [m (meta (resolve x))]
+                          (conj v
+                                (str (:name m))
+                                (str (:ns m) \/ (:name m)))
+                          (conj v (str x)))
+            (nil? x) (conj v "nil")
+            :else (conj v (str x))))
+    [] coll))
 
 ;;
 ;; Definitions
@@ -68,38 +82,39 @@
 
 (def special-forms
   "http://clojure.org/special_forms"
-  '[def if do let quote var fn loop recur throw try catch finally
-    monitor-enter monitor-exit . new set!])
+  '#{def if do let quote var fn loop recur throw try catch finally
+     monitor-enter monitor-exit . new set!})
 
 (def keyword-groups
   "Special forms, constants, and every public var in clojure.core listed by
    syntax group suffix."
-  (let [builtins [["Constant" '[nil]]
-                  ["Boolean" '[true false]]
+  (let [builtins [["Constant" '#{nil}]
+                  ["Boolean" '#{true false}]
                   ["Special" special-forms]
-                  ;; The duplicates from Special are intentional here
-                  ["Exception" '[throw try catch finally]]
-                  ["Cond" '[case cond cond-> cond->> condp if-let if-not when
-                            when-first when-let when-not]]
+                  ;; These are duplicates from special-forms
+                  ["Exception" '#{throw try catch finally}]
+                  ["Cond" '#{case cond cond-> cond->> condp if-let if-not when
+                             when-first when-let when-not}]
                   ;; Imperative looping constructs (not sequence functions)
-                  ["Repeat" '[doall dorun doseq dotimes while]]]
-        declared (atom (set (filter symbol? (mapcat peek builtins))))
-        coresyms (keys (ns-publics `clojure.core))
-        select! (fn [pred]
-                  (let [xs (set/difference (set (filter pred coresyms)) @declared)]
-                    (swap! declared into xs)
-                    (vec xs)))]
-    (conj builtins
-          ;; Clojure devs are fastidious about accurate metadata
-          ["Define" (select! #(re-seq #"\Adef(?!ault)" (str %)))]
-          ["Macro" (select! #(:macro (meta (ns-resolve 'clojure.core %))))]
-          ["Func" (select! #(fn-var? (ns-resolve 'clojure.core %)))]
-          ["Variable" (select! identity)])))
+                  ["Repeat" '#{doall dorun doseq dotimes while}]]
+        coresyms (set/difference (set (keys (ns-publics 'clojure.core)))
+                                 (set (mapcat peek builtins)))
+        group-preds [["Define" #(re-seq #"\Adef(?!ault)" (str %))]
+                     ["Macro" #(:macro (meta (ns-resolve 'clojure.core %)))]
+                     ["Func" #(fn-var? (ns-resolve 'clojure.core %))]
+                     ["Variable" identity]]]
+    (first
+      (reduce
+        (fn [[v syms] [group pred]]
+          (let [group-syms (set (filterv pred syms))]
+            [(conj v [group group-syms])
+             (set/difference syms group-syms)]))
+        [builtins coresyms] group-preds))))
 
 (def character-properties
   "Character property names derived via reflection."
   (let [props (->> (get-private-field Pattern$CharPropertyNames "map")
-                   (mapv (fn [[prop field]] [(inner-class-name field) prop]))
+                   (mapv (fn [[prop field]] [(inner-class-name (class field)) prop]))
                    (group-by first)
                    (reduce (fn [m [k v]] (assoc m k (mapv peek v))) {}))
         binary (concat (map #(.name ^UnicodeProp %) (get-private-field UnicodeProp "$VALUES"))
@@ -130,32 +145,23 @@
 
 (def vim-syntax-keywords
   "Vimscript literal `syntax keyword` definitions."
-  (let [names (fn [coll]
-                (reduce (fn [v x]
-                          ;; Include fully qualified versions of core vars
-                          (cond (symbol? x) (if-let [m (meta (resolve x))]
-                                              (conj v (str (:name m)) (str (:ns m) \/ (:name m)))
-                                              (conj v (str x)))
-                                (nil? x) (conj v "nil")
-                                :else (conj v (str x))))
-                        [] coll))
-        definitions (map (fn [[group keywords]]
-                           (format "syntax keyword clojure%s %s\n"
-                                   group
-                                   (string/join \space (sort (names keywords)))))
-                         keyword-groups)]
-    (string/join definitions)))
+  (->> keyword-groups
+       (map (fn [[group keywords]]
+              (format "syntax keyword clojure%s %s\n"
+                      group
+                      (string/join \space (sort (map-keyword-names keywords))))))
+       string/join))
 
 (def vim-completion-words
   "Vimscript literal list of words for omnifunc completion."
-  (format "let s:words = [%s]\n"
-          (->> `clojure.core
-               ns-publics
-               keys
-               (concat special-forms)
-               (map #(str \" % \"))
-               sort
-               (string/join \,))))
+  (->> 'clojure.core
+       ns-publics
+       keys
+       (concat special-forms)
+       (map #(str \" % \"))
+       sort
+       (string/join \,)
+       (format "let s:words = [%s]\n")))
 
 (def vim-posix-char-classes
   "Vimscript literal `syntax match` for POSIX character classes."
