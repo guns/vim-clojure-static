@@ -2,33 +2,22 @@
 ;;          Joel Holdbrooks <cjholdbrooks@gmail.com>
 
 (ns vim-clojure-static.syntax-test
-  (:require [vim-clojure-static.test :refer [defsyntaxtest]]))
+  (:require [vim-clojure-static.test :refer [defpredicates defsyntaxtest]]))
 
-(defmacro defbooleantest
-  "Create two complementary test function vars `sym` and `!sym` which test if
-   all members of a passed collection are equal to `kw`"
-  [sym kw]
-  (let [!sym (symbol (str \! sym))]
-    `(do (def ~sym ~(format "All elements in coll equal to %s ?" kw)
-           (partial every? (partial = ~kw)))
-         (def ~!sym ~(format "All elements in coll not equal to %s ?" kw)
-           (complement ~sym))
-         [#'~sym #'~!sym])))
-
-(defbooleantest number :clojureNumber)
-(defbooleantest kw :clojureKeyword)
-(defbooleantest regexp :clojureRegexp)
-(defbooleantest regexp-escape :clojureRegexpEscape)
-(defbooleantest regexp-char-class :clojureRegexpCharClass)
-(defbooleantest regexp-predefined-char-class :clojureRegexpPredefinedCharClass)
-(defbooleantest regexp-posix-char-class :clojureRegexpPosixCharClass)
-(defbooleantest regexp-java-char-class :clojureRegexpJavaCharClass)
-(defbooleantest regexp-unicode-char-class :clojureRegexpUnicodeCharClass)
-(defbooleantest regexp-boundary :clojureRegexpBoundary)
-(defbooleantest regexp-quantifier :clojureRegexpQuantifier)
-(defbooleantest regexp-back-ref :clojureRegexpBackRef)
-(defbooleantest regexp-or :clojureRegexpOr)
-(defbooleantest regexp-group :clojureRegexpGroup)
+(defpredicates number :clojureNumber)
+(defpredicates kw :clojureKeyword)
+(defpredicates regexp :clojureRegexp)
+(defpredicates regexp-escape :clojureRegexpEscape)
+(defpredicates regexp-char-class :clojureRegexpCharClass)
+(defpredicates regexp-predefined-char-class :clojureRegexpPredefinedCharClass)
+(defpredicates regexp-posix-char-class :clojureRegexpPosixCharClass)
+(defpredicates regexp-java-char-class :clojureRegexpJavaCharClass)
+(defpredicates regexp-unicode-char-class :clojureRegexpUnicodeCharClass)
+(defpredicates regexp-boundary :clojureRegexpBoundary)
+(defpredicates regexp-quantifier :clojureRegexpQuantifier)
+(defpredicates regexp-back-ref :clojureRegexpBackRef)
+(defpredicates regexp-or :clojureRegexpOr)
+(defpredicates regexp-group :clojureRegexpGroup)
 (defn regexp-mod [xs] (= (second xs) :clojureRegexpMod))
 (def !regexp-mod (complement regexp-mod))
 

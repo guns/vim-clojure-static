@@ -71,6 +71,22 @@
                             ss λs)))
                 contexts)))))
 
+(defmacro defpredicates
+  "Create two complementary predicate vars, `sym` and `!sym`, which test if
+   all members of a passed collection are equal to `kw`"
+  [sym kw]
+  `(do
+     (defn ~sym
+       ~(str "Returns true if all elements of coll equal " kw)
+       {:arglists '~'[coll]}
+       [coll#]
+       (every? (partial = ~kw) coll#))
+     (defn ~(symbol (str \! sym))
+       ~(str "Returns true if any alements of coll do not equal " kw)
+       {:arglists '~'[coll]}
+       [coll#]
+       (boolean (some (partial not= ~kw) coll#)))))
+
 (defn vim-nfa-dump
   "Run a patched version of Vim compiled with -DDEBUG on a new file containing
    buffer, then move the NFA log to log-path. The patch is located at
