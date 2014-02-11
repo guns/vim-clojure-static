@@ -172,7 +172,7 @@ if exists("*searchpairpos")
 
 		call search('\S', 'W')
 		let w = s:StripNamespaceAndMacroChars(s:CurrentWord())
-		if g:clojure_special_indent_words =~ '\<' . w . '\>'
+		if g:clojure_special_indent_words =~ '\V\<' . w . '\>'
 			return 1
 		endif
 
