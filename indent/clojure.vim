@@ -70,7 +70,7 @@ if exists("*searchpairpos")
 	endfunction
 
 	function! s:IsParen()
-		return s:CurrentChar() =~ '\v[\(\)\[\]\{\}]' &&
+		return s:CurrentChar() =~# '\v[\(\)\[\]\{\}]' &&
 		     \ s:SynIdName() !~? '\vstring|regex|comment|character'
 	endfunction
 
@@ -82,7 +82,7 @@ if exists("*searchpairpos")
 			   \ ? a:patterns
 			   \ : map(split(a:patterns, ','), '"^" . v:val . "$"')
 		for pat in list
-			if a:string =~ pat | return 1 | endif
+			if a:string =~# pat | return 1 | endif
 		endfor
 	endfunction
 
@@ -172,7 +172,7 @@ if exists("*searchpairpos")
 
 		call search('\S', 'W')
 		let w = s:StripNamespaceAndMacroChars(s:CurrentWord())
-		if g:clojure_special_indent_words =~ '\V\<' . w . '\>'
+		if g:clojure_special_indent_words =~# '\V\<' . w . '\>'
 			return 1
 		endif
 
@@ -280,7 +280,7 @@ if exists("*searchpairpos")
 		" e.g. clojure.core/defn and #'defn should both indent like defn.
 		let ww = s:StripNamespaceAndMacroChars(w)
 
-		if &lispwords =~ '\V\<' . ww . '\>'
+		if &lispwords =~# '\V\<' . ww . '\>'
 			return paren[1] + &shiftwidth - 1
 		endif
 
