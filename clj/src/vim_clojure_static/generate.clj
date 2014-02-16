@@ -139,6 +139,25 @@
      :script   (set script)
      :block    (set block)}))
 
+(def lispwords
+  "Specially indented symbols in clojure.core and clojure.test. Please read
+   the commit message tagged `lispwords-guidelines` when adding new words to
+   this list."
+  (set/union
+    ;; Definitions
+    '#{bound-fn def definline definterface defmacro defmethod defmulti defn
+       defn- defonce defprotocol defrecord defstruct deftest deftest- deftype
+       extend extend-protocol extend-type fn ns proxy reify set-test}
+    ;; Binding forms
+    '#{as-> binding doall dorun doseq dotimes doto for if-let let letfn
+       locking loop testing when-first when-let with-bindings with-in-str
+       with-local-vars with-open with-precision with-redefs with-redefs-fn
+       with-test}
+    ;; Conditional branching
+    '#{case cond-> cond->> condp if if-not when when-not while}
+    ;; Exception handling
+    '#{catch}))
+
 ;;
 ;; Vimscript literals
 ;;
@@ -249,6 +268,10 @@
                            (fmt "script=" :script)
                            (fmt "block=" :block)])))
 
+(def vim-lispwords
+  "Vimscript literal `setlocal lispwords=` statement."
+  (str "setlocal lispwords=" (string/join \, (sort lispwords)) "\n"))
+
 (comment
   ;; Generate the vim literal definitions for pasting into the runtime files.
   (spit "tmp/clojure-defs.vim"
@@ -264,6 +287,9 @@
              vim-unicode-category-char-classes
              vim-unicode-script-char-classes
              vim-unicode-block-char-classes
+             \newline
+             generation-comment
+             vim-lispwords
              \newline
              generation-comment
              clojure-version-comment
