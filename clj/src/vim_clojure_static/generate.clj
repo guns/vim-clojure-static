@@ -162,8 +162,8 @@
 ;; Vimscript literals
 ;;
 
-(def vim-syntax-keywords
-  "Vimscript literal `syntax keyword` definitions."
+(def vim-keywords
+  "Vimscript literal `syntax keyword` for important identifiers."
   (->> keyword-groups
        (map (fn [[group keywords]]
               (format "syntax keyword clojure%s %s\n"
@@ -277,7 +277,7 @@
   (spit "tmp/clojure-defs.vim"
         (str generation-comment
              clojure-version-comment
-             vim-syntax-keywords
+             vim-keywords
              \newline
              generation-comment
              java-version-comment
