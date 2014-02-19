@@ -272,6 +272,17 @@
   "Vimscript literal `setlocal lispwords=` statement."
   (str "setlocal lispwords=" (string/join \, (sort lispwords)) "\n"))
 
+(def vim-top-cluster
+  "Vimscript literal `syntax cluster` for all top-level syntax groups."
+  (->> "../syntax/clojure.vim"
+       slurp
+       (re-seq #"syntax\s+(?:keyword|match|region)\s+(\S+)(?!.*\bcontained\b)")
+       (map peek)
+       sort
+       distinct
+       (string/join \,)
+       (format "syntax cluster clojureTop contains=@Spell,%s\n")))
+
 (comment
   ;; Generate the vim literal definitions for pasting into the runtime files.
   (spit "tmp/clojure-defs.vim"
@@ -287,6 +298,9 @@
              vim-unicode-category-char-classes
              vim-unicode-script-char-classes
              vim-unicode-block-char-classes
+             \newline
+             generation-comment
+             vim-top-cluster
              \newline
              generation-comment
              vim-lispwords
