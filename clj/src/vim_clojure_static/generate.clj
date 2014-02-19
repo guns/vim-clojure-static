@@ -17,7 +17,7 @@
 (defn vim-frak-pattern
   "Create a non-capturing regular expression pattern compatible with Vim."
   [strs]
-  (-> (str (f/pattern strs))
+  (-> (f/string-pattern strs {:escape-chars :vim})
       (string/replace #"\(\?:" "\\%\\(")))
 
 (defn property-pattern
@@ -166,9 +166,9 @@
   "Vimscript literal `syntax keyword` for important identifiers."
   (->> keyword-groups
        (map (fn [[group keywords]]
-              (format "syntax keyword clojure%s %s\n"
+              (format "syntax match clojure%s \"\\v<%s>\"\n"
                       group
-                      (string/join \space (sort (map-keyword-names keywords))))))
+                      (vim-frak-pattern (map-keyword-names keywords)))))
        string/join))
 
 (def vim-completion-words
@@ -294,7 +294,36 @@
              generation-comment
              clojure-version-comment
              vim-completion-words))
+
   ;; Generate an example file with all possible character property literals.
   (spit "tmp/all-char-props.clj"
         comprehensive-clojure-character-property-regexps)
+
+  ;; Performance test: `syntax keyword` vs `syntax match`
+  (vim-clojure-static.test/benchmark
+    1000 "tmp/bench.clj" (str keyword-groups)
+    ;; `syntax keyword`
+    (->> keyword-groups
+         (map (fn [[group keywords]]
+                (format "syntax keyword clojure%s %s\n"
+                        group
+                        (string/join \space (sort (map-keyword-names keywords))))))
+         (map string/trim-newline)
+         (string/join " | "))
+    ;; Naive `syntax match`
+    (->> keyword-groups
+         (map (fn [[group keywords]]
+                (format "syntax match clojure%s \"\\V\\<%s\\>\"\n"
+                        group
+                        (string/join "\\|" (map-keyword-names keywords)))))
+         (map string/trim-newline)
+         (string/join " | "))
+    ;; Frak-optimized `syntax match`
+    (->> keyword-groups
+         (map (fn [[group keywords]]
+                (format "syntax match clojure%s \"\\v<%s>\"\n"
+                        group
+                        (vim-frak-pattern (map-keyword-names keywords)))))
+         (map string/trim-newline)
+         (string/join " | ")))
   )

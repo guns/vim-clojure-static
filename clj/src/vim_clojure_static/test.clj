@@ -17,9 +17,9 @@
     (try
       (io/make-parents file)
       (spit file buf)
+      (spit tmp (str "let @x = " vim-expr))
       (shell/sh "vim" "-N" "-u" "vim/test-runtime.vim"
-                "-c" (str "let @x = " vim-expr)
-                "-c" (str "call writefile([@x], " (pr-str (str tmp)) ") | quitall!")
+                "-c" (str "source " tmp " | call writefile([@x], " (pr-str (str tmp)) ") | quitall!")
                 file)
       (edn/read-string (slurp tmp))
       (finally
@@ -99,3 +99,8 @@
        {:arglists '~'[coll]}
        [coll#]
        (boolean (some (partial not= ~kw) coll#)))))
+
+(defn benchmark [n file buf & exprs]
+  (vim-exec file buf (format "Benchmark(%d, %s)"
+                             n
+                             (string/join \, (map pr-str exprs)))))
