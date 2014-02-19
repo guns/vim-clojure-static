@@ -6,7 +6,24 @@
             [clojure.java.shell :as shell]
             [clojure.string :as string]
             [clojure.test :as test])
-  (:import (java.util List)))
+  (:import (java.io File)
+           (java.util List)))
+
+(defn vim-exec
+  "Spit buf into file, then execute vim-expr after Vim loads the file. The
+   value of vim-expr is evaluated as EDN and returned."
+  [file buf vim-expr]
+  (let [tmp (File/createTempFile "vim-clojure-static.test." ".out")]
+    (try
+      (io/make-parents file)
+      (spit file buf)
+      (shell/sh "vim" "-N" "-u" "vim/test-runtime.vim"
+                "-c" (str "let @x = " vim-expr)
+                "-c" (str "call writefile([@x], " (pr-str (str tmp)) ") | quitall!")
+                file)
+      (edn/read-string (slurp tmp))
+      (finally
+        (.delete tmp)))))
 
 (defn syn-id-names
   "Map lines of clojure text to vim synID names at each column as keywords:
@@ -16,13 +33,9 @@
    First parameter is the file that is used to communicate with Vim. The file
    is not deleted to allow manual inspection."
   [file & lines]
-  (io/make-parents file)
-  (spit file (string/join \newline lines))
-  (shell/sh "vim" "-u" "NONE" "-N" "-S" "vim/test-runtime.vim" file)
-  ;; The last line of the file will contain valid EDN
   (into {} (map (fn [l ids] [l (mapv keyword ids)])
                 lines
-                (edn/read-string (peek (string/split-lines (slurp file)))))))
+                (vim-exec file (string/join \newline lines) "ClojureSynIDNames()"))))
 
 (defn subfmt
   "Extract a subsequence of seq s corresponding to the character positions of
