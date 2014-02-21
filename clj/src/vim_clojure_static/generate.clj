@@ -67,6 +67,18 @@
             :else (conj v (str x))))
     [] coll))
 
+(defn vim-top-cluster
+  "Generate a Vimscript literal `syntax cluster` statement for all top-level
+   syntax groups in the given syntax buffer."
+  [syntax-buf]
+  (->> syntax-buf
+       (re-seq #"syntax\s+(?:keyword|match|region)\s+(\S+)(?!.*\bcontained\b)")
+       (map peek)
+       sort
+       distinct
+       (string/join \,)
+       (format "syntax cluster clojureTop contains=@Spell,%s\n")))
+
 ;;
 ;; Definitions
 ;;
@@ -272,17 +284,6 @@
   "Vimscript literal `setlocal lispwords=` statement."
   (str "setlocal lispwords=" (string/join \, (sort lispwords)) "\n"))
 
-(def vim-top-cluster
-  "Vimscript literal `syntax cluster` for all top-level syntax groups."
-  (->> "../syntax/clojure.vim"
-       slurp
-       (re-seq #"syntax\s+(?:keyword|match|region)\s+(\S+)(?!.*\bcontained\b)")
-       (map peek)
-       sort
-       distinct
-       (string/join \,)
-       (format "syntax cluster clojureTop contains=@Spell,%s\n")))
-
 (comment
   ;; Generate the vim literal definitions for pasting into the runtime files.
   (spit "tmp/clojure-defs.vim"
@@ -300,7 +301,7 @@
              vim-unicode-block-char-classes
              \newline
              generation-comment
-             vim-top-cluster
+             (vim-top-cluster (slurp "../syntax/clojure.vim"))
              \newline
              generation-comment
              vim-lispwords
