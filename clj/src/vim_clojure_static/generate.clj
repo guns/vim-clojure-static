@@ -286,31 +286,6 @@
   (str "setlocal lispwords=" (string/join \, (sort lispwords)) "\n"))
 
 (comment
-  ;; Generate the vim literal definitions for pasting into the runtime files.
-  (spit "tmp/clojure-defs.vim"
-        (str generation-comment
-             clojure-version-comment
-             vim-keywords
-             \newline
-             generation-comment
-             java-version-comment
-             vim-posix-char-classes
-             vim-java-char-classes
-             vim-unicode-binary-char-classes
-             vim-unicode-category-char-classes
-             vim-unicode-script-char-classes
-             vim-unicode-block-char-classes
-             \newline
-             generation-comment
-             (vim-top-cluster (slurp "../syntax/clojure.vim"))
-             \newline
-             generation-comment
-             vim-lispwords
-             \newline
-             generation-comment
-             clojure-version-comment
-             vim-completion-words))
-
   ;; Generate an example file with all possible character property literals.
   (spit "tmp/all-char-props.clj"
         comprehensive-clojure-character-property-regexps)

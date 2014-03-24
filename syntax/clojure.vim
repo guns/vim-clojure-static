@@ -19,8 +19,9 @@ if has("folding") && exists("g:clojure_fold") && g:clojure_fold > 0
 	setlocal foldmethod=syntax
 endif
 
+" -*- KEYWORDS -*-
 " Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
-" Clojure version 1.6.0-RC3
+" Clojure version 1.6.0-RC4
 syntax keyword clojureConstant nil
 syntax keyword clojureBoolean false true
 syntax keyword clojureSpecial . catch clojure.core/fn clojure.core/let clojure.core/loop def do finally fn if let loop monitor-enter monitor-exit new quote recur set! throw try var
@@ -83,7 +84,7 @@ syntax match  clojureRegexpEscape "\v\\%([\\tnrfae.()\[\]{}^$*?+]|c\u|0[0-3]?\o{
 syntax region clojureRegexpQuoted start=/\\Q/ms=e+1 skip=/\\\\\|\\"/ end=/\\E/me=s-1 end=/"/me=s-1 contained
 syntax region clojureRegexpQuote  start=/\\Q/       skip=/\\\\\|\\"/ end=/\\E/       end=/"/me=s-1 contains=clojureRegexpQuoted keepend contained
 
-" Character property classes
+" -*- CHARACTER PROPERTY CLASSES -*-
 " Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
 " Java version 1.7.0_45
 syntax match clojureRegexpPosixCharClass "\v\\[pP]\{%(Blank|P%(unct|rint)|Digit|Graph|A%(l%(pha|num)|SCII)|XDigit|Space|Upper|Lower|Cntrl)\}" contained display
@@ -121,6 +122,7 @@ syntax keyword clojureCommentTodo contained FIXME XXX TODO FIXME: XXX: TODO:
 syntax match clojureComment ";.*$" contains=clojureCommentTodo,@Spell
 syntax match clojureComment "#!.*$"
 
+" -*- TOP CLUSTER -*-
 " Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
 syntax cluster clojureTop contains=@Spell,clojureAnonArg,clojureBoolean,clojureCharacter,clojureComment,clojureCond,clojureConstant,clojureDefine,clojureDeref,clojureDispatch,clojureError,clojureException,clojureFunc,clojureKeyword,clojureMacro,clojureMap,clojureMeta,clojureNumber,clojureQuote,clojureRegexp,clojureRepeat,clojureSexp,clojureSpecial,clojureString,clojureSymbol,clojureUnquote,clojureVarArg,clojureVariable,clojureVector
 
