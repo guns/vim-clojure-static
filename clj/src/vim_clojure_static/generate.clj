@@ -105,8 +105,9 @@
                   ["Special" special-forms]
                   ;; These are duplicates from special-forms
                   ["Exception" '#{throw try catch finally}]
-                  ["Cond" '#{case cond cond-> cond->> condp if-let if-not when
-                             when-first when-let when-not}]
+                  ["Cond" '#{case cond cond-> cond->> condp if-let if-not
+                             if-some when when-first when-let when-not
+                             when-some}]
                   ;; Imperative looping constructs (not sequence functions)
                   ["Repeat" '#{doall dorun doseq dotimes while}]]
         coresyms (set/difference (set (keys (ns-publics 'clojure.core)))
@@ -161,10 +162,10 @@
        defn- defonce defprotocol defrecord defstruct deftest deftest- deftype
        extend extend-protocol extend-type fn ns proxy reify set-test}
     ;; Binding forms
-    '#{as-> binding doall dorun doseq dotimes doto for if-let let letfn
-       locking loop testing when-first when-let with-bindings with-in-str
-       with-local-vars with-open with-precision with-redefs with-redefs-fn
-       with-test}
+    '#{as-> binding doall dorun doseq dotimes doto for if-let if-some let
+       letfn locking loop testing when-first when-let when-some with-bindings
+       with-in-str with-local-vars with-open with-precision with-redefs
+       with-redefs-fn with-test}
     ;; Conditional branching
     '#{case cond-> cond->> condp if if-not when when-not while}
     ;; Exception handling
