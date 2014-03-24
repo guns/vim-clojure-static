@@ -178,9 +178,9 @@
   "Vimscript literal `syntax keyword` for important identifiers."
   (->> keyword-groups
        (map (fn [[group keywords]]
-              (format "syntax match clojure%s \"\\v<%s>\"\n"
+              (format "syntax keyword clojure%s %s\n"
                       group
-                      (vim-frak-pattern (map-keyword-names keywords)))))
+                      (string/join \space (sort (map-keyword-names keywords))))))
        string/join))
 
 (def vim-completion-words
