@@ -95,7 +95,7 @@
        [coll#]
        (every? (partial = ~kw) coll#))
      (defn ~(symbol (str \! sym))
-       ~(str "Returns true if any alements of coll do not equal " kw)
+       ~(str "Returns true if any elements of coll do not equal " kw)
        {:arglists '~'[coll]}
        [coll#]
        (boolean (some (partial not= ~kw) coll#)))))
