@@ -21,7 +21,7 @@ endif
 
 " -*- KEYWORDS -*-
 " Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
-" Clojure version 1.6.0-RC4
+" Clojure version 1.6.0
 syntax keyword clojureConstant nil
 syntax keyword clojureBoolean false true
 syntax keyword clojureSpecial . catch clojure.core/fn clojure.core/let clojure.core/loop def do finally fn if let loop monitor-enter monitor-exit new quote recur set! throw try var
