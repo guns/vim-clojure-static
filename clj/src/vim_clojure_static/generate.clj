@@ -109,7 +109,7 @@
                              if-some when when-first when-let when-not
                              when-some}]
                   ;; Imperative looping constructs (not sequence functions)
-                  ["Repeat" '#{doall dorun doseq dotimes while}]]
+                  ["Repeat" '#{doseq dotimes while}]]
         coresyms (set/difference (set (keys (ns-publics 'clojure.core)))
                                  (set (mapcat peek builtins)))
         group-preds [["Define" #(re-seq #"\Adef(?!ault)" (str %))]
@@ -162,10 +162,10 @@
        defn- defonce defprotocol defrecord defstruct deftest deftest- deftype
        extend extend-protocol extend-type fn ns proxy reify set-test}
     ;; Binding forms
-    '#{as-> binding doall dorun doseq dotimes doto for if-let if-some let
-       letfn locking loop testing when-first when-let when-some with-bindings
-       with-in-str with-local-vars with-open with-precision with-redefs
-       with-redefs-fn with-test}
+    '#{as-> binding doseq dotimes doto for if-let if-some let letfn locking
+       loop testing when-first when-let when-some with-bindings with-in-str
+       with-local-vars with-open with-precision with-redefs with-redefs-fn
+       with-test}
     ;; Conditional branching
     '#{case cond-> cond->> condp if if-not when when-not while}
     ;; Exception handling
