@@ -55,7 +55,8 @@ filetype plugin indent on
 Features
 ========
 
-* Syntax highlighting for Clojure and ClojureScript buffers.
+* [Augmentable](#syntax-options) syntax highlighting for Clojure and
+  ClojureScript buffers.
 
 * [Configurable](#indent-options) Clojure-specific indentation.
 
@@ -74,15 +75,14 @@ Third Party Extensions
 
 * Rainbow Parentheses
 
-  kien's
-  [`rainbow_parentheses.vim`](https://github.com/kien/rainbow_parentheses.vim)
+  kien's [`rainbow_parentheses.vim`](https://github.com/kien/rainbow_parentheses.vim)
   is highly recommended.
 
 * Extended Syntax Highlighting
 
-  [`vim-clojure-highlight`](https://github.com/guns/vim-clojure-highlight)
-  is a fireplace.vim plugin that extends syntax highlighting to referred and
-  aliased vars.
+  [`vim-clojure-highlight`](https://github.com/guns/vim-clojure-highlight) is
+  a fireplace.vim plugin that extends syntax highlighting to local, referred,
+  and aliased vars via [`b:clojure_syntax_keywords`](#syntax-options).
 
   This is a reimplementation of the DynamicHighlighting feature from
   VimClojure.
@@ -93,6 +93,31 @@ Clojure REPL Plugins
 If you would like to get more serious about programming in Clojure, consider
 using an interactive
 [Clojure REPL plugin](https://github.com/guns/vim-clojure-static/wiki/Clojure-REPL-Plugins).
+
+Syntax Options
+==============
+
+Syntax highlighting for public vars from `clojure.core` is provided by
+default, but any symbol can be matched and highlighted by adding it to the
+`g:clojure_syntax_keywords` or `b:clojure_syntax_keywords` variables:
+
+```vim
+let g:clojure_syntax_keywords = {
+    \ 'clojureMacro': ["defproject", "defcustom"],
+    \ 'clojureFunc': ["string/join", "string/replace"]
+    \ }
+```
+
+See `s:clojure_syntax_keywords` in the [syntax script](syntax/clojure.vim) for
+a complete example.
+
+The global version of this variable is intended for users that always wish
+to have a certain set of symbols highlighted in a certain way, while the
+buffer-local version is intended for plugin authors who wish to highlight
+symbols dynamically.
+
+[`vim-clojure-highlight`](https://github.com/guns/vim-clojure-highlight) uses
+this feature to highlight extra vars when connected to a REPL.
 
 Indent Options
 ==============
