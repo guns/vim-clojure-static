@@ -55,7 +55,8 @@
           g/vim-unicode-block-char-classes)
     "-*- TOP CLUSTER -*-"
     (qstr g/generation-comment
-          (g/vim-top-cluster (slurp (fjoin dir "syntax/clojure.vim"))))}
+          (g/vim-top-cluster (mapv first g/keyword-groups)
+                             (slurp (fjoin dir "syntax/clojure.vim"))))}
 
    (fjoin dir "ftplugin/clojure.vim")
    {"-*- LISPWORDS -*-"

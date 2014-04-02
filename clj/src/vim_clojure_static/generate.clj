@@ -68,13 +68,13 @@
     [] coll))
 
 (defn vim-top-cluster
-  "Generate a Vimscript literal `syntax cluster` statement for all top-level
-   syntax groups in the given syntax buffer."
-  [syntax-buf]
+  "Generate a Vimscript literal `syntax cluster` statement for `groups` and
+   all top-level syntax groups in the given syntax buffer."
+  [groups syntax-buf]
   (->> syntax-buf
        (re-seq #"syntax\s+(?:keyword|match|region)\s+(\S+)(?!.*\bcontained\b)")
        (map peek)
-       (concat (map first keyword-groups))
+       (concat groups)
        sort
        distinct
        (string/join \,)
