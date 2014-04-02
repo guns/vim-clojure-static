@@ -74,6 +74,7 @@
   (->> syntax-buf
        (re-seq #"syntax\s+(?:keyword|match|region)\s+(\S+)(?!.*\bcontained\b)")
        (map peek)
+       (concat (map first keyword-groups))
        sort
        distinct
        (string/join \,)
@@ -100,22 +101,22 @@
 (def keyword-groups
   "Special forms, constants, and every public var in clojure.core listed by
    syntax group suffix."
-  (let [builtins [["Constant" '#{nil}]
-                  ["Boolean" '#{true false}]
-                  ["Special" special-forms]
+  (let [builtins [["clojureConstant" '#{nil}]
+                  ["clojureBoolean" '#{true false}]
+                  ["clojureSpecial" special-forms]
                   ;; These are duplicates from special-forms
-                  ["Exception" '#{throw try catch finally}]
-                  ["Cond" '#{case cond cond-> cond->> condp if-let if-not
-                             if-some when when-first when-let when-not
-                             when-some}]
+                  ["clojureException" '#{throw try catch finally}]
+                  ["clojureCond" '#{case cond cond-> cond->> condp if-let
+                                    if-not if-some when when-first when-let
+                                    when-not when-some}]
                   ;; Imperative looping constructs (not sequence functions)
-                  ["Repeat" '#{doseq dotimes while}]]
+                  ["clojureRepeat" '#{doseq dotimes while}]]
         coresyms (set/difference (set (keys (ns-publics 'clojure.core)))
                                  (set (mapcat peek builtins)))
-        group-preds [["Define" #(re-seq #"\Adef(?!ault)" (str %))]
-                     ["Macro" #(:macro (meta (ns-resolve 'clojure.core %)))]
-                     ["Func" #(fn-var? (ns-resolve 'clojure.core %))]
-                     ["Variable" identity]]]
+        group-preds [["clojureDefine" #(re-seq #"\Adef(?!ault)" (str %))]
+                     ["clojureMacro" #(:macro (meta (ns-resolve 'clojure.core %)))]
+                     ["clojureFunc" #(fn-var? (ns-resolve 'clojure.core %))]
+                     ["clojureVariable" identity]]]
     (first
       (reduce
         (fn [[v syms] [group pred]]
@@ -176,13 +177,17 @@
 ;;
 
 (def vim-keywords
-  "Vimscript literal `syntax keyword` for important identifiers."
+  "Vimscript literal dictionary of important identifiers."
   (->> keyword-groups
        (map (fn [[group keywords]]
-              (format "syntax keyword clojure%s %s\n"
-                      group
-                      (string/join \space (sort (map-keyword-names keywords))))))
-       string/join))
+              (->> keywords
+                   map-keyword-names
+                   sort
+                   (map pr-str)
+                   (string/join \,)
+                   (format "'%s': [%s]" group))))
+       (string/join "\n    \\ , ")
+       (format "let s:clojure_syntax_keywords = {\n    \\   %s\n    \\ }\n")))
 
 (def vim-completion-words
   "Vimscript literal list of words for omnifunc completion."
@@ -190,7 +195,7 @@
        ns-publics
        keys
        (concat special-forms)
-       (map #(str \" % \"))
+       (map (comp pr-str str))
        sort
        (string/join \,)
        (format "let s:words = [%s]\n")))
