@@ -103,18 +103,18 @@
      monitor-enter monitor-exit . new set!})
 
 (def keyword-groups
-  "Special forms, constants, and every public var in clojure.core listed by
-   syntax group suffix."
-  (let [builtins [["clojureConstant" '#{nil}]
-                  ["clojureBoolean" '#{true false}]
-                  ["clojureSpecial" special-forms]
+  "Special forms, constants, and every public var in clojure.core keyed by
+   syntax group name."
+  (let [builtins {"clojureConstant" '#{nil}
+                  "clojureBoolean" '#{true false}
+                  "clojureSpecial" special-forms
                   ;; These are duplicates from special-forms
-                  ["clojureException" '#{throw try catch finally}]
-                  ["clojureCond" '#{case cond cond-> cond->> condp if-let
-                                    if-not if-some when when-first when-let
-                                    when-not when-some}]
+                  "clojureException" '#{throw try catch finally}
+                  "clojureCond" '#{case cond cond-> cond->> condp if-let
+                                   if-not if-some when when-first when-let
+                                   when-not when-some}
                   ;; Imperative looping constructs (not sequence functions)
-                  ["clojureRepeat" '#{doseq dotimes while}]]
+                  "clojureRepeat" '#{doseq dotimes while}}
         coresyms (set/difference (set (keys (ns-publics 'clojure.core)))
                                  (set (mapcat peek builtins)))
         group-preds [["clojureDefine" #(re-seq #"\Adef(?!ault)" (str %))]
@@ -123,9 +123,9 @@
                      ["clojureVariable" identity]]]
     (first
       (reduce
-        (fn [[v syms] [group pred]]
+        (fn [[m syms] [group pred]]
           (let [group-syms (set (filterv pred syms))]
-            [(conj v [group group-syms])
+            [(assoc m group group-syms)
              (set/difference syms group-syms)]))
         [builtins coresyms] group-preds))))
 
@@ -134,7 +134,7 @@
   (let [props (->> (get-private-field Pattern$CharPropertyNames "map")
                    (mapv (fn [[prop field]] [(inner-class-name (class field)) prop]))
                    (group-by first)
-                   (reduce (fn [m [k v]] (assoc m k (mapv peek v))) {}))
+                   (reduce-kv (fn [m k v] (assoc m k (mapv peek v))) {}))
         binary (concat (map #(.name ^UnicodeProp %) (get-private-field UnicodeProp "$VALUES"))
                        (keys (get-private-field UnicodeProp "aliases")))
         script (concat (map #(.name ^Character$UnicodeScript %) (Character$UnicodeScript/values))
@@ -183,6 +183,7 @@
 (def vim-keywords
   "Vimscript literal dictionary of important identifiers."
   (->> keyword-groups
+       sort
        (map (fn [[group keywords]]
               (->> keywords
                    map-keyword-names
@@ -344,7 +345,7 @@
           vim-unicode-block-char-classes)
     "-*- TOP CLUSTER -*-"
     (qstr generation-comment
-          (vim-top-cluster (mapv first keyword-groups)
+          (vim-top-cluster (keys keyword-groups)
                            (slurp (fjoin dir "syntax/clojure.vim"))))}
 
    (fjoin dir "ftplugin/clojure.vim")
