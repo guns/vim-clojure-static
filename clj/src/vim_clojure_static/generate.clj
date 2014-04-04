@@ -105,11 +105,11 @@
 (def keyword-groups
   "Special forms, constants, and every public var in clojure.core keyed by
    syntax group name."
-  (let [builtins {"clojureConstant" '#{nil}
+  (let [exceptions '#{throw try catch finally}
+        builtins {"clojureConstant" '#{nil}
                   "clojureBoolean" '#{true false}
-                  "clojureSpecial" special-forms
-                  ;; These are duplicates from special-forms
-                  "clojureException" '#{throw try catch finally}
+                  "clojureSpecial" (apply disj special-forms exceptions)
+                  "clojureException" exceptions
                   "clojureCond" '#{case cond cond-> cond->> condp if-let
                                    if-not if-some when when-first when-let
                                    when-not when-some}
