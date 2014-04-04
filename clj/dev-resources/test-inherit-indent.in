@@ -1,3 +1,7 @@
-(foo bar [✖])
+(foo bar
+     "This string has unpaired brackets
+      ["
+     α
+     [β])
 
 ;; vim:ft=clojure:
