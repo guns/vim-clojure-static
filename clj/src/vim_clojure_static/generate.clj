@@ -309,11 +309,11 @@
   (string/replace (apply str xs) "\\" "\\\\"))
 
 (defn- update-doc! [first-line-pattern src-file dst-file]
-  (let [sbuf (->> src-file
-                  io/reader
-                  line-seq
-                  (drop-while #(not (re-find first-line-pattern %)))
-                  (string/join \newline))
+  (let [sbuf (with-open [rdr (io/reader src-file)]
+               (->> rdr
+                    line-seq
+                    (drop-while #(not (re-find first-line-pattern %)))
+                    (string/join \newline)))
         dbuf (slurp dst-file)
         dmatch (re-find CLOJURE-SECTION dbuf)
         hunk (re-find CLOJURE-SECTION sbuf)]
