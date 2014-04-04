@@ -3,7 +3,7 @@
 execute 'set rtp=' . expand('%:p:h:h:h') . ',$VIMRUNTIME'
 filetype plugin indent on
 syntax on
-set synmaxcol=0
+set synmaxcol=0 backspace=2
 setfiletype clojure
 
 function! EDN(value)
@@ -20,8 +20,12 @@ function! ClojureSynIDNames()
 	return EDN(names)
 endfunction
 
-function! IndentFile(...)
-	if a:0 | execute 'normal! ' . a:1 | endif
+function! TypeKeys(keys)
+	execute 'normal! ' . a:keys
+	write
+endfunction
+
+function! IndentFile()
 	normal! gg=G
 	write
 endfunction

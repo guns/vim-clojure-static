@@ -138,16 +138,16 @@
   [string & opts]
   (let [{:keys [in out pre keys]} (apply hash-map opts)
         test-file (str "tmp/test-indent-" (string/replace string #"[^\w-]" "-") ".clj")
-        vim-expr (format "IndentFile(%s)"
-                         (if keys
-                           (string/replace (pr-str keys) "\\\\" "\\")
-                           ""))]
+        vim-expr (if keys
+                   (format "TypeKeys(%s)" (string/replace (pr-str keys) "\\\\" "\\"))
+                   "IndentFile()")]
     `(with-transform-test ~string
        {:in ~in :out ~out}
        [tmp#]
        ;; FIXME: Too much file IO
+       (~io/make-parents ~test-file)
        (spit ~test-file "")
-       (~vim-exec ~test-file (slurp tmp#) ~vim-expr :pre ~pre)
+       (~vim-exec ~test-file (slurp tmp#) ~vim-expr ~@(when pre [:pre pre]))
        (spit tmp# (slurp ~test-file)))))
 
 (defn benchmark [n file buf & exprs]
