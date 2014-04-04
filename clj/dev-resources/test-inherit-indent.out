@@ -1,0 +1,7 @@
+(foo bar [
+  a
+  b
+  
+  c])
+
+;; vim:ft=clojure:
