@@ -1,12 +1,13 @@
 (foo bar
-     "This string has unpaired brackets
-      ["
-     a
-     
-     [
-  a
+        "This string has unpaired brackets [
+              and is indented weirdly."
+        a
+
+              [
+               
   b
+  c
   
-  c])
+  d])
 
 ;; vim:ft=clojure:

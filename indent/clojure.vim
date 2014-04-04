@@ -347,7 +347,7 @@ if exists("*searchpairpos")
 
 			if bracket_count == 0
 				" Check if this is part of a multiline string
-				call cursor(lnum, 0)
+				call cursor(lnum, 1)
 				if s:syn_id_name() !~? '\vstring|regex'
 					return indent(lnum)
 				endif
