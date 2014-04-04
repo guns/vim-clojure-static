@@ -9,21 +9,27 @@
   (:import (java.io File)
            (java.util List)))
 
+(defmacro with-tempfile
+  {:requires [File]}
+  [tmp-sym & body]
+  `(let [~tmp-sym (File/createTempFile "vim-clojure-static" ".tmp")]
+     (try
+       ~@body
+       (finally
+         (.delete ~tmp-sym)))))
+
 (defn vim-exec
   "Spit buf into file, then execute vim-expr after Vim loads the file. The
    value of vim-expr is evaluated as EDN and returned."
   [file buf vim-expr]
-  (let [tmp (File/createTempFile "vim-clojure-static.test." ".out")]
-    (try
-      (io/make-parents file)
-      (spit file buf)
-      (spit tmp (str "let @x = " vim-expr))
-      (shell/sh "vim" "-N" "-u" "vim/test-runtime.vim"
-                "-c" (str "source " tmp " | call writefile([@x], " (pr-str (str tmp)) ") | quitall!")
-                file)
-      (edn/read-string (slurp tmp))
-      (finally
-        (.delete tmp)))))
+  (with-tempfile tmp
+    (io/make-parents file)
+    (spit file buf)
+    (spit tmp (str "let @x = " vim-expr))
+    (shell/sh "vim" "-N" "-u" "vim/test-runtime.vim"
+              "-c" (str "source " tmp " | call writefile([@x], " (pr-str (str tmp)) ") | quitall!")
+              file)
+    (edn/read-string (slurp tmp))))
 
 (defn syn-id-names
   "Map lines of clojure text to vim synID names at each column as keywords:
@@ -62,7 +68,7 @@
    At runtime the syn-id-names of the strings (which are placed in the format
    spec) are passed to their associated predicates. The format spec should
    contain a single `%s`."
-  {:require [#'test/deftest]}
+  {:requires [#'test/deftest syn-id-names subfmt]}
   [name & body]
   (assert (every? (fn [[fmt tests]] (and (string? fmt)
                                          (coll? tests)
@@ -76,7 +82,6 @@
                                    [[] []] body)
         syntable (gensym "syntable")]
     `(test/deftest ~name
-       ;; Shellout to vim should happen at runtime
        (let [~syntable (syn-id-names (str "tmp/" ~(str name) ".clj") ~@strings)]
          ~@(map (fn [{:keys [fmt ss λs]}]
                   `(test/testing ~fmt
