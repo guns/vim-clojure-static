@@ -116,8 +116,12 @@ to have a certain set of symbols highlighted in a certain way, while the
 buffer-local version is intended for plugin authors who wish to highlight
 symbols dynamically.
 
+If the buffer flag `b:clojure_syntax_without_core_keywords` is set, vars from
+`clojure.core` are not highlighted by default. This is useful for highlighting
+namespaces that have set `(:refer-clojure :only [])`.
+
 [`vim-clojure-highlight`](https://github.com/guns/vim-clojure-highlight) uses
-this feature to highlight extra vars when connected to a REPL.
+these variables to highlight extra vars when connected to a REPL.
 
 Indent Options
 ==============

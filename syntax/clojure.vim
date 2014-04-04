@@ -41,7 +41,14 @@ function! s:syntax_keyword(dict)
 	endfor
 endfunction
 
-call s:syntax_keyword(s:clojure_syntax_keywords)
+if exists('b:clojure_syntax_without_core_keywords') && b:clojure_syntax_without_core_keywords
+	" Only match language specials and primitives
+	for s:key in ['clojureBoolean', 'clojureConstant', 'clojureException', 'clojureSpecial']
+		execute 'syntax keyword' s:key join(s:clojure_syntax_keywords[s:key], ' ')
+	endfor
+else
+	call s:syntax_keyword(s:clojure_syntax_keywords)
+endif
 
 if exists('g:clojure_syntax_keywords')
 	call s:syntax_keyword(g:clojure_syntax_keywords)
@@ -51,6 +58,7 @@ if exists('b:clojure_syntax_keywords')
 	call s:syntax_keyword(b:clojure_syntax_keywords)
 endif
 
+unlet! s:key
 delfunction s:syntax_keyword
 
 " Keywords are symbols:
