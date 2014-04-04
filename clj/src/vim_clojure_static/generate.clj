@@ -378,7 +378,7 @@
   [src dst]
   (let [current-tag (string/trim-newline (:out (sh "git" "tag" "--points-at" "HEAD")))
         current-date (.format (SimpleDateFormat. "dd MMMM YYYY") (Date.))]
-    ; (assert (seq current-tag) "Git HEAD is not tagged!")
+    (assert (seq current-tag) "Git HEAD is not tagged!")
     (update-doc! #"CLOJURE\t*\*ft-clojure-indent\*"
                  (fjoin src "doc/clojure.txt")
                  (fjoin dst "runtime/doc/indent.txt"))
@@ -394,7 +394,10 @@
                                  "syntax/clojure.vim"])))
 
 (comment
+  ;; Run this to update the project files
   (update-project! "..")
+
+  ;; Run this to update a vim repository
   (update-vim! ".." "../../vim")
 
   ;; Generate an example file with all possible character property literals.
