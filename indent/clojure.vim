@@ -57,27 +57,30 @@ if exists("*searchpairpos")
 		let g:clojure_align_subforms = 0
 	endif
 
-	function! s:SynIdName()
+	function! s:syn_id_name()
 		return synIDattr(synID(line("."), col("."), 0), "name")
 	endfunction
 
-	function! s:CurrentChar()
+	function! s:ignored_region()
+		return s:syn_id_name() =~? '\vstring|regex|comment|character'
+	endfunction
+
+	function! s:current_char()
 		return getline('.')[col('.')-1]
 	endfunction
 
-	function! s:CurrentWord()
+	function! s:current_word()
 		return getline('.')[col('.')-1 : searchpos('\v>', 'n', line('.'))[1]-2]
 	endfunction
 
-	function! s:IsParen()
-		return s:CurrentChar() =~# '\v[\(\)\[\]\{\}]' &&
-		     \ s:SynIdName() !~? '\vstring|regex|comment|character'
+	function! s:is_paren()
+		return s:current_char() =~# '\v[\(\)\[\]\{\}]' && !s:ignored_region()
 	endfunction
 
 	" Returns 1 if string matches a pattern in 'patterns', which may be a
 	" list of patterns, or a comma-delimited string of implicitly anchored
 	" patterns.
-	function! s:MatchesOne(patterns, string)
+	function! s:match_one(patterns, string)
 		let list = type(a:patterns) == type([])
 			   \ ? a:patterns
 			   \ : map(split(a:patterns, ','), '"^" . v:val . "$"')
@@ -86,7 +89,7 @@ if exists("*searchpairpos")
 		endfor
 	endfunction
 
-	function! s:MatchPairs(open, close, stopat)
+	function! s:match_pairs(open, close, stopat)
 		" Stop only on vector and map [ resp. {. Ignore the ones in strings and
 		" comments.
 		if a:stopat == 0
@@ -95,11 +98,11 @@ if exists("*searchpairpos")
 			let stopat = a:stopat
 		endif
 
-		let pos = searchpairpos(a:open, '', a:close, 'bWn', "!s:IsParen()", stopat)
+		let pos = searchpairpos(a:open, '', a:close, 'bWn', "!s:is_paren()", stopat)
 		return [pos[0], virtcol(pos)]
 	endfunction
 
-	function! s:ClojureCheckForStringWorker()
+	function! s:clojure_check_for_string_worker()
 		" Check whether there is the last character of the previous line is
 		" highlighted as a string. If so, we check whether it's a ". In this
 		" case we have to check also the previous character. The " might be the
@@ -113,17 +116,17 @@ if exists("*searchpairpos")
 
 		call cursor(nb, 0)
 		call cursor(0, col("$") - 1)
-		if s:SynIdName() !~? "string"
+		if s:syn_id_name() !~? "string"
 			return -1
 		endif
 
 		" This will not work for a " in the first column...
-		if s:CurrentChar() == '"'
+		if s:current_char() == '"'
 			call cursor(0, col("$") - 2)
-			if s:SynIdName() !~? "string"
+			if s:syn_id_name() !~? "string"
 				return -1
 			endif
-			if s:CurrentChar() != '\\'
+			if s:current_char() != '\\'
 				return -1
 			endif
 			call cursor(0, col("$") - 1)
@@ -138,40 +141,40 @@ if exists("*searchpairpos")
 		return indent(".")
 	endfunction
 
-	function! s:CheckForString()
+	function! s:check_for_string()
 		let pos = getpos('.')
 		try
-			let val = s:ClojureCheckForStringWorker()
+			let val = s:clojure_check_for_string_worker()
 		finally
 			call setpos('.', pos)
 		endtry
 		return val
 	endfunction
 
-	function! s:StripNamespaceAndMacroChars(word)
+	function! s:strip_namespace_and_macro_chars(word)
 		return substitute(a:word, "\\v%(.*/|[#'`~@^,]*)(.*)", '\1', '')
 	endfunction
 
-	function! s:ClojureIsMethodSpecialCaseWorker(position)
+	function! s:clojure_is_method_special_case_worker(position)
 		" Find the next enclosing form.
 		call search('\S', 'Wb')
 
 		" Special case: we are at a '(('.
-		if s:CurrentChar() == '('
+		if s:current_char() == '('
 			return 0
 		endif
 		call cursor(a:position)
 
-		let nextParen = s:MatchPairs('(', ')', 0)
+		let next_paren = s:match_pairs('(', ')', 0)
 
 		" Special case: we are now at toplevel.
-		if nextParen == [0, 0]
+		if next_paren == [0, 0]
 			return 0
 		endif
-		call cursor(nextParen)
+		call cursor(next_paren)
 
 		call search('\S', 'W')
-		let w = s:StripNamespaceAndMacroChars(s:CurrentWord())
+		let w = s:strip_namespace_and_macro_chars(s:current_word())
 		if g:clojure_special_indent_words =~# '\V\<' . w . '\>'
 			return 1
 		endif
@@ -179,10 +182,10 @@ if exists("*searchpairpos")
 		return 0
 	endfunction
 
-	function! s:IsMethodSpecialCase(position)
+	function! s:is_method_special_case(position)
 		let pos = getpos('.')
 		try
-			let val = s:ClojureIsMethodSpecialCaseWorker(a:position)
+			let val = s:clojure_is_method_special_case_worker(a:position)
 		finally
 			call setpos('.', pos)
 		endtry
@@ -197,7 +200,7 @@ if exists("*searchpairpos")
 
 		" We have to apply some heuristics here to figure out, whether to use
 		" normal lisp indenting or not.
-		let i = s:CheckForString()
+		let i = s:check_for_string()
 		if i > -1
 			return i + !!g:clojure_align_multiline_strings
 		endif
@@ -207,9 +210,9 @@ if exists("*searchpairpos")
 		" Find the next enclosing [ or {. We can limit the second search
 		" to the line, where the [ was found. If no [ was there this is
 		" zero and we search for an enclosing {.
-		let paren = s:MatchPairs('(', ')', 0)
-		let bracket = s:MatchPairs('\[', '\]', paren[0])
-		let curly = s:MatchPairs('{', '}', bracket[0])
+		let paren = s:match_pairs('(', ')', 0)
+		let bracket = s:match_pairs('\[', '\]', paren[0])
+		let curly = s:match_pairs('{', '}', bracket[0])
 
 		" In case the curly brace is on a line later then the [ or - in
 		" case they are on the same line - in a higher column, we take the
@@ -246,7 +249,7 @@ if exists("*searchpairpos")
 		" - In any other case we use the column of the end of the word + 2.
 		call cursor(paren)
 
-		if s:IsMethodSpecialCase(paren)
+		if s:is_method_special_case(paren)
 			return paren[1] + &shiftwidth - 1
 		endif
 
@@ -257,7 +260,7 @@ if exists("*searchpairpos")
 
 		" In case after the paren is a whitespace, we search for the next word.
 		call cursor(0, col('.') + 1)
-		if s:CurrentChar() == ' '
+		if s:current_char() == ' '
 			call search('\v\S', 'W')
 		endif
 
@@ -269,7 +272,7 @@ if exists("*searchpairpos")
 
 		" We still have to check, whether the keyword starts with a (, [ or {.
 		" In that case we use the ( position for indent.
-		let w = s:CurrentWord()
+		let w = s:current_word()
 		if stridx('([{', w[0]) > -1
 			return paren[1]
 		endif
@@ -278,15 +281,15 @@ if exists("*searchpairpos")
 		" metacharacters.
 		"
 		" e.g. clojure.core/defn and #'defn should both indent like defn.
-		let ww = s:StripNamespaceAndMacroChars(w)
+		let ww = s:strip_namespace_and_macro_chars(w)
 
 		if &lispwords =~# '\V\<' . ww . '\>'
 			return paren[1] + &shiftwidth - 1
 		endif
 
 		if g:clojure_fuzzy_indent
-			\ && !s:MatchesOne(g:clojure_fuzzy_indent_blacklist, ww)
-			\ && s:MatchesOne(g:clojure_fuzzy_indent_patterns, ww)
+			\ && !s:match_one(g:clojure_fuzzy_indent_blacklist, ww)
+			\ && s:match_one(g:clojure_fuzzy_indent_patterns, ww)
 			return paren[1] + &shiftwidth - 1
 		endif
 
