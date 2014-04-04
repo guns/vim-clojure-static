@@ -80,9 +80,11 @@
                                        [(concat strings ss)
                                         (conj contexts {:fmt fmt :ss ss :λs λs})]))
                                    [[] []] body)
+        test-file (str "tmp/" name ".clj")
         syntable (gensym "syntable")]
     `(test/deftest ~name
-       (let [~syntable (syn-id-names (str "tmp/" ~(str name) ".clj") ~@strings)]
+       (spit ~test-file "")
+       (let [~syntable (syn-id-names ~test-file ~@strings)]
          ~@(map (fn [{:keys [fmt ss λs]}]
                   `(test/testing ~fmt
                      ~@(map (fn [s λ] `(test/is (~λ (subfmt ~fmt (get ~syntable ~s)))))
