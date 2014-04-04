@@ -21,7 +21,7 @@
 (defn regexp-mod [xs] (= (second xs) :clojureRegexpMod))
 (def !regexp-mod (complement regexp-mod))
 
-(defsyntaxtest number-literals-test
+(defsyntaxtest test-number-literals
   ["%s"
    ["1234567890" number "+1"    number "-1"    number ; Integer
     "0"          number "+0"    number "-0"    number ; Integer zero
@@ -79,7 +79,7 @@
     "0xfe-1" !number
     "2r1e-1" !number]])
 
-(comment (test #'number-literals-test))
+(comment (test #'test-number-literals))
 
 ;; TODO: Finish me! (this was in an old git stash)
 ;; (defsyntaxtest keywords-test
@@ -103,7 +103,7 @@
 ;;
 ;; (comment (test #'keywords-test))
 
-(defsyntaxtest java-regexp-literals-test
+(defsyntaxtest test-java-regexp-literals
   ["#\"%s\""
    [;; http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
     ;;
@@ -386,4 +386,4 @@
     "\"\\[]\"" (partial = [:clojureRegexp :clojureRegexpEscape :clojureRegexpEscape :clojureRegexp :clojureRegexp])
     "\"\\\\[]\"" (partial = [:clojureRegexp :clojureRegexpEscape :clojureRegexpEscape :clojureRegexpCharClass :clojureRegexpCharClass :clojureRegexp])]])
 
-(comment (test #'java-regexp-literals-test))
+(comment (test #'test-java-regexp-literals))
