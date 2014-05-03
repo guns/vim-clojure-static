@@ -307,7 +307,10 @@ if exists("*searchpairpos")
 	function! GetClojureIndent()
 		let lnum = line('.')
 		let [opening_lnum, indent] = s:clojure_indent_pos()
-		let indent -= indent - virtcol([opening_lnum, indent])
+
+		if opening_lnum > 0
+			let indent -= indent - virtcol([opening_lnum, indent])
+		endif
 
 		" Return if there are no previous lines to inherit from
 		if opening_lnum < 1 || opening_lnum >= lnum - 1
