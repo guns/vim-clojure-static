@@ -308,6 +308,7 @@ if exists("*searchpairpos")
 		let lnum = line('.')
 		let [opening_lnum, indent] = s:clojure_indent_pos()
 
+		" Account for multibyte characters
 		if opening_lnum > 0
 			let indent -= indent - virtcol([opening_lnum, indent])
 		endif
