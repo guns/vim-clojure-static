@@ -306,7 +306,9 @@ if exists("*searchpairpos")
 
 	function! GetClojureIndent()
 		let lnum = line('.')
+		let cnum = col('.')
 		let [opening_lnum, indent] = s:clojure_indent_pos()
+		call cursor(lnum, cnum)
 
 		if opening_lnum > 0
 			let indent -= indent - virtcol([opening_lnum, indent])
