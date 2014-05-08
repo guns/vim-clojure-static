@@ -17,3 +17,9 @@
                :in "test-inherit-indent.in"
                :out "test-inherit-indent.out"
                :keys "/α\\<CR>s\\<C-O>Oa\\<Esc>/β\\<CR>s\\<CR>\\<CR>\\<C-H>\\<C-H>\\<C-H>\\<C-H>\\<C-H>\\<C-H>\\<C-H>b\\<CR>c\\<CR>\\<CR>d\\<Esc>"))
+
+(deftest test-side-effects-in-indentexpr
+  (test-indent "GetClojureIndent does not move cursor"
+               :in "test-side-effects-in-indentexpr.in"
+               :out "test-side-effects-in-indentexpr.out"
+               :keys "/α\\<CR>:call GetClojureIndent()\\<CR>rxj:call GetClojureIndent()\\<CR>ry"))
