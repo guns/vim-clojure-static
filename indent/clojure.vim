@@ -306,6 +306,7 @@ if exists("*searchpairpos")
 
 	function! GetClojureIndent()
 		let lnum = line('.')
+		let cnum = col('.')
 		let [opening_lnum, indent] = s:clojure_indent_pos()
 
 		if opening_lnum > 0
@@ -314,6 +315,7 @@ if exists("*searchpairpos")
 
 		" Return if there are no previous lines to inherit from
 		if opening_lnum < 1 || opening_lnum >= lnum - 1
+			call cursor(lnum, cnum)
 			return indent
 		endif
 
@@ -348,11 +350,13 @@ if exists("*searchpairpos")
 				" Check if this is part of a multiline string
 				call cursor(lnum, 1)
 				if s:syn_id_name() !~? '\vstring|regex'
+					call cursor(lnum, cnum)
 					return indent(lnum)
 				endif
 			endif
 		endwhile
 
+		call cursor(lnum, cnum)
 		return indent
 	endfunction
 
