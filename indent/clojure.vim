@@ -345,6 +345,7 @@ setlocal lispwords+=dorun
 setlocal lispwords+=doseq
 setlocal lispwords+=dotimes
 setlocal lispwords+=doto
+setlocal lispwords+=dochan " David Nolen's channel read macro
 setlocal lispwords+=for
 setlocal lispwords+=if-let
 setlocal lispwords+=let
@@ -374,8 +375,20 @@ setlocal lispwords+=when
 setlocal lispwords+=when-not
 setlocal lispwords+=while
 
+" Arrows!
+setlocal lispwords+=->
+setlocal lispwords+=->>
+
+" Om
+setlocal lispwords+=om/
+setlocal lispwords+=dom/
+
 " Exception handling
 setlocal lispwords+=catch
+
+" Test systems
+setlocal lispwords+=describe
+setlocal lispwords+=it
 
 let &cpo = s:save_cpo
 unlet! s:save_cpo

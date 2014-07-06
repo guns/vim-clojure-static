@@ -1,0 +1,11 @@
+clojure-about	clojure.txt	/*clojure-about*
+clojure-indent	clojure.txt	/*clojure-indent*
+clojure-introduction	clojure.txt	/*clojure-introduction*
+clojure.txt	clojure.txt	/*clojure.txt*
+ft-clojure-indent	clojure.txt	/*ft-clojure-indent*
+g:clojure_align_multiline_strings	clojure.txt	/*g:clojure_align_multiline_strings*
+g:clojure_fuzzy_indent	clojure.txt	/*g:clojure_fuzzy_indent*
+g:clojure_fuzzy_indent_blacklist	clojure.txt	/*g:clojure_fuzzy_indent_blacklist*
+g:clojure_fuzzy_indent_patterns	clojure.txt	/*g:clojure_fuzzy_indent_patterns*
+g:clojure_maxlines	clojure.txt	/*g:clojure_maxlines*
+g:clojure_special_indent_words	clojure.txt	/*g:clojure_special_indent_words*

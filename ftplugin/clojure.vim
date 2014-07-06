@@ -17,7 +17,9 @@ set cpo&vim
 
 let b:undo_ftplugin = 'setlocal iskeyword< define< formatoptions< comments< commentstring<'
 
-setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:,$
+" setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:,$
+" Exclude . and / so foo/bar and foo.bar aren't treated as single words
+setlocal iskeyword+=?,-,*,!,+,=,<,>,:,$
 
 " There will be false positives, but this is better than missing the whole set
 " of user-defined def* definitions.
