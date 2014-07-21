@@ -306,7 +306,7 @@
   (string/join \/ args))
 
 (defn- qstr [& xs]
-  (string/replace (apply str xs) "\\" "\\\\"))
+  (string/replace (string/join xs) "\\" "\\\\"))
 
 (defn- update-doc! [first-line-pattern src-file dst-file]
   (let [sbuf (with-open [rdr (io/reader src-file)]
