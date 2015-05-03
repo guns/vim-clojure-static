@@ -158,9 +158,61 @@
      :block    (set block)}))
 
 (def lispwords
-  "Specially indented symbols in clojure.core and clojure.test. Please read
-   the commit message tagged `lispwords-guidelines` when adding new words to
-   this list."
+  "Specially indented symbols in clojure.core and clojure.test. The following
+   commit message (tag `lispwords-guidelines`) outlines a convention:
+
+   commit c2920f43191ae48084cea2c641a42ca8d34381f5
+   Author: guns <self@sungpae.com>
+   Date:   Sat Jan 26 06:53:14 2013 -0600
+
+       Update lispwords
+
+       Besides expanding the definitions into an easily maintainable style, we
+       update the set of words for Clojure 1.5 using a simple rule:
+
+           A function should only be indented specially if its first argument
+           is special.
+
+       This generally includes:
+
+           * Definitions
+           * Binding forms
+           * Constructs that branch from a predicate
+
+       What it does not include are functions/macros that accept a flat list of
+       arguments (arglist: [& body]). Omissions include:
+
+           clojure.core/dosync                       [& exprs]
+           clojure.core/future                       [& body]
+           clojure.core/gen-class                    [& options]
+           clojure.core/gen-interface                [& options]
+           clojure.core/with-out-str                 [& body]
+
+       Also added some symbols from clojure.test, since this namespace is
+       present in many projects.
+
+       Interestingly, clojure-mode.el includes \"assoc\" and \"struct-map\" in the
+       special indent list, which makes a good deal of sense:
+
+         (assoc my-map
+           :foo \"foo\"
+           :bar \"bar\")
+
+       If we were to include this in lispwords, the following functions/macros
+       should also be considered since they also take optional key value pairs
+       at the end of the arglist:
+
+           clojure.core/agent                        [state & options]
+           clojure.core/assoc                        … [map key val & kvs]
+           clojure.core/assoc!                       … [coll key val & kvs]
+           clojure.core/atom                         … [x & options]
+           clojure.core/ref                          [x] [x & options]
+           clojure.core/refer                        [ns-sym & filters]
+           clojure.core/restart-agent                [a new-state & options]
+           clojure.core/slurp                        [f & opts]
+           clojure.core/sorted-map-by                [comparator & keyvals]
+           clojure.core/spit                         [f content & options]
+           clojure.core/struct-map                   [s & inits]"
   (set/union
     ;; Definitions
     '#{bound-fn def definline definterface defmacro defmethod defmulti defn
