@@ -71,7 +71,7 @@ syntax match clojureKeyword "\v<:{1,2}%([^ \n\r\t()\[\]{}";@^`~\\%/]+/)*[^ \n\r\
 
 syntax match clojureStringEscape "\v\\%([\\btnfr"]|u\x{4}|[0-3]\o{2}|\o{1,2})" contained
 
-syntax region clojureString start=/"/ skip=/\\\\\|\\"/ end=/"/ contains=clojureStringEscape,@Spell
+syntax region clojureString matchgroup=clojureStringDelimiter start=/"/ skip=/\\\\\|\\"/ end=/"/ contains=clojureStringEscape,@Spell
 
 syntax match clojureCharacter "\\."
 syntax match clojureCharacter "\\o\%([0-3]\o\{2\}\|\o\{1,2\}\)"
@@ -169,6 +169,7 @@ highlight default link clojureCharacter			Character
 highlight default link clojureKeyword			Keyword
 highlight default link clojureNumber			Number
 highlight default link clojureString			String
+highlight default link clojureStringDelimiter		String
 highlight default link clojureStringEscape		Character
 
 highlight default link clojureRegexp			Constant
