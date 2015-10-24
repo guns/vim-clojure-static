@@ -35,6 +35,8 @@ use with alternate Clojure REPL plugins.
 These files ship with Vim versions 7.3.803 and later, and are periodically
 merged into the official Vim repository.
 
+This plugin contributes to [vim-polyglot](https://github.com/sheerun/vim-polyglot) language pack.
+
 Installation
 ============
 
