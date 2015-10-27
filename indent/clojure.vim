@@ -383,6 +383,12 @@ setlocal lispwords+=->>
 setlocal lispwords+=om/
 setlocal lispwords+=dom/
 
+" Prismatic schema
+setlocal lispwords+=defschema
+
+" Compojure API
+setlocal lispwords+=context*
+
 " Exception handling
 setlocal lispwords+=catch
 
