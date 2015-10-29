@@ -187,6 +187,16 @@ if exists("*searchpairpos")
 		return val
 	endfunction
 
+	" Check if form is a reader conditional, that is, it is prefixed by #?
+	" or @#?
+	function! s:is_reader_conditional_special_case(position)
+		if getline(a:position[0])[a:position[1] - 3 : a:position[1] - 2] == "#?"
+			return 1
+		endif
+
+		return 0
+	endfunction
+
 	" Returns 1 for opening brackets, -1 for _anything else_.
 	function! s:bracket_type(char)
 		return stridx('([{', a:char) > -1 ? 1 : -1
@@ -252,6 +262,10 @@ if exists("*searchpairpos")
 
 		if s:is_method_special_case(paren)
 			return [paren[0], paren[1] + &shiftwidth - 1]
+		endif
+
+		if s:is_reader_conditional_special_case(paren)
+			return paren
 		endif
 
 		" In case we are at the last character, we use the paren position.
