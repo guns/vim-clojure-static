@@ -115,11 +115,15 @@
                                    when-not when-some}
                   ;; Imperative looping constructs (not sequence functions)
                   "clojureRepeat" '#{doseq dotimes while}}
-        coresyms (set/difference (set (keys (ns-publics 'clojure.core)))
-                                 (set (mapcat peek builtins)))
+        coresyms (set/difference
+                   (set/union
+                     (set (keys (ns-publics 'clojure.core)))
+                     (set (keys (ns-publics 'clojure.test))))
+                   (set (mapcat peek builtins)))
         group-preds [["clojureDefine" #(re-seq #"\Adef(?!ault)" (str %))]
                      ["clojureMacro" #(:macro (meta (ns-resolve 'clojure.core %)))]
-                     ["clojureFunc" #(fn-var? (ns-resolve 'clojure.core %))]
+                     ["clojureFunc" #(fn-var? (or (ns-resolve 'clojure.core %)
+                                                  (ns-resolve 'clojure.test %)))]
                      ["clojureVariable" identity]]]
     (first
       (reduce
@@ -248,8 +252,8 @@
 
 (def vim-completion-words
   "Vimscript literal list of words for omnifunc completion."
-  (->> 'clojure.core
-       ns-publics
+  (->> ['clojure.core 'clojure.test]
+       (mapcat ns-publics)
        keys
        (concat special-forms)
        (map (comp pr-str str))
