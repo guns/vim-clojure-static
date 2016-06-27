@@ -1,12 +1,12 @@
 " Vim indent file
-" Language:	Clojure
-" Author:	Meikel Brandmeyer <mb@kotka.de>
-" URL:		http://kotka.de/projects/clojure/vimclojure.html
+" Language:     Clojure
+" Author:       Meikel Brandmeyer <mb@kotka.de>
+" URL:          http://kotka.de/projects/clojure/vimclojure.html
 "
-" Maintainer:	Sung Pae <self@sungpae.com>
-" URL:		https://github.com/guns/vim-clojure-static
-" License:	Same as Vim
-" Last Change:	%%RELEASE_DATE%%
+" Maintainer:   Sung Pae <self@sungpae.com>
+" URL:          https://github.com/guns/vim-clojure-static
+" License:      Same as Vim
+" Last Change:  %%RELEASE_DATE%%
 
 if exists("b:did_indent")
 	finish
@@ -77,8 +77,8 @@ if exists("*searchpairpos")
 	" patterns.
 	function! s:match_one(patterns, string)
 		let list = type(a:patterns) == type([])
-			   \ ? a:patterns
-			   \ : map(split(a:patterns, ','), '"^" . v:val . "$"')
+		           \ ? a:patterns
+		           \ : map(split(a:patterns, ','), '"^" . v:val . "$"')
 		for pat in list
 			if a:string =~# pat | return 1 | endif
 		endfor
