@@ -25,6 +25,6 @@
                :keys "/α\\<CR>:call GetClojureIndent()\\<CR>rxj:call GetClojureIndent()\\<CR>ry"))
 
 (deftest test-reader-conditional-indent
-  (test-indent "is inherited from previous element"
+  (test-indent "reader conditionals are indented like maps"
                :in "test-reader-conditional-indent.in"
                :out "test-reader-conditional-indent.out"))
