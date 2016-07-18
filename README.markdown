@@ -61,7 +61,7 @@ Features
 * [Configurable](#indent-options) Clojure-specific indentation.
 
 * Basic insert mode completion for special forms and public vars in
-  `clojure.core`.
+  `clojure.core` and `clojure.test`.
 
   This is bound to both the `'omnifunc'` and `'completefunc'` options, which
   can be invoked with the insert mode mappings `<C-X><C-O>` and `<C-X><C-U>`
@@ -97,9 +97,10 @@ using an interactive
 Syntax Options
 ==============
 
-Syntax highlighting for public vars from `clojure.core` is provided by
-default, but any symbol can be matched and highlighted by adding it to the
-`g:clojure_syntax_keywords` or `b:clojure_syntax_keywords` variables:
+Syntax highlighting for public vars from `clojure.core` and `clojure.test` is
+provided by default, but any symbol can be matched and highlighted by adding
+it to the `g:clojure_syntax_keywords` or `b:clojure_syntax_keywords`
+variables:
 
 ```vim
 let g:clojure_syntax_keywords = {
