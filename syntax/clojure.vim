@@ -15,6 +15,9 @@ if exists("b:current_syntax")
 	finish
 endif
 
+let s:cpo_sav = &cpo
+set cpo&vim
+
 if has("folding") && exists("g:clojure_fold") && g:clojure_fold > 0
 	setlocal foldmethod=syntax
 endif
@@ -213,5 +216,8 @@ highlight default link clojureError                     Error
 highlight default link clojureParen                     Delimiter
 
 let b:current_syntax = "clojure"
+
+let &cpo = s:cpo_sav
+unlet! s:cpo_sav
 
 " vim:sts=8:sw=8:ts=8:noet
