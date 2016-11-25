@@ -87,7 +87,7 @@ if exists("*searchpairpos")
 	function! s:match_pairs(open, close, stopat)
 		" Stop only on vector and map [ resp. {. Ignore the ones in strings and
 		" comments.
-		if a:stopat == 0
+		if a:stopat == 0 && g:clojure_maxlines > 0
 			let stopat = max([line(".") - g:clojure_maxlines, 0])
 		else
 			let stopat = a:stopat
