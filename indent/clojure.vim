@@ -121,7 +121,7 @@ if exists("*searchpairpos")
 			if s:syn_id_name() !~? "string"
 				return -1
 			endif
-			if s:current_char() != '\\'
+			if s:current_char() != '\'
 				return -1
 			endif
 			call cursor(0, col("$") - 1)
