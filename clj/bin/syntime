@@ -4,10 +4,22 @@
 # Distributed under the MIT license.
 # http://www.opensource.org/licenses/mit-license.php
 
-if (($# != 1)); then
-    echo "usage: $0 file.clj"
+abort_with_help() {
+    echo "usage: $(basename "$0") [-p PREFIX] file.clj"
     exit 1
-fi
+}
+
+PREFIX='report'
+
+while getopts :p: opt; do
+    case "$opt" in
+    p) PREFIX="$OPTARG";;
+    h) abort_with_help;;
+    esac
+done
+shift $((OPTIND-1))
+
+(($# == 1)) || abort_with_help
 
 VIMRC="
 set runtimepath^=$(dirname "$0")/../..
@@ -17,6 +29,6 @@ syntime on
 "
 
 exec vim -N -u <(echo "$VIMRC") \
-    -c 'execute "redir > " . strftime("report-%Y-%m-%d-%H-%M-%S.log")' \
+    -c "execute 'redir > ' . strftime('${PREFIX}-$(date +%s.%N).log')" \
     -c 'call feedkeys(repeat("j", line("$")-1) . ":silent syntime report | quit\<CR>")' \
     "$1"
