@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Copyright (c) 2017 Sung Pae <self@sungpae.com>
+# Distributed under the MIT license.
+# http://www.opensource.org/licenses/mit-license.php
+
+if (($# != 1)); then
+    echo "usage: $0 file.clj"
+    exit 1
+fi
+
+VIMRC="
+set runtimepath^=$(dirname "$0")/../..
+filetype plugin indent on
+syntax on
+syntime on
+"
+
+exec vim -N -u <(echo "$VIMRC") \
+    -c 'execute "redir > " . strftime("report-%Y-%m-%d-%H-%M-%S.log")' \
+    -c 'call feedkeys(repeat("j", line("$")-1) . ":silent syntime report | quit\<CR>")' \
+    "$1"
