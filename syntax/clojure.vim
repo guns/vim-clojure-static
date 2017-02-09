@@ -124,14 +124,14 @@ syntax match   clojureRegexpBoundary            "[$^]" contained display
 syntax match   clojureRegexpQuantifier          "[?*+][?+]\=" contained display
 syntax match   clojureRegexpQuantifier          "\v\{\d+%(,|,\d+)?}\??" contained display
 syntax match   clojureRegexpOr                  "|" contained display
-syntax match   clojureRegexpBackRef             "\v\\%([1-9]\d*|k\<[a-zA-z]+\>)" contained display
+syntax match   clojureRegexpBackRef             "\v\\%([1-9]\d*|k\<[[:alpha:]]+\>)" contained display
 
 " Mode modifiers, mode-modified spans, lookaround, regular and atomic
 " grouping, and named-capturing.
 syntax match clojureRegexpMod "\v\(@<=\?:" contained display
 syntax match clojureRegexpMod "\v\(@<=\?[xdsmiuU]*-?[xdsmiuU]+:?" contained display
 syntax match clojureRegexpMod "\v\(@<=\?%(\<?[=!]|\>)" contained display
-syntax match clojureRegexpMod "\v\(@<=\?\<[a-zA-Z]+\>" contained display
+syntax match clojureRegexpMod "\v\(@<=\?\<[[:alpha:]]+\>" contained display
 
 syntax region clojureRegexpGroup start="(" skip=/\\\\\|\\)/ end=")" matchgroup=clojureRegexpGroup contained contains=clojureRegexpMod,clojureRegexpQuantifier,clojureRegexpBoundary,clojureRegexpEscape,@clojureRegexpCharClasses
 syntax region clojureRegexp start=/\#"/ skip=/\\\\\|\\"/ end=/"/ contains=@clojureRegexpCharClasses,clojureRegexpEscape,clojureRegexpQuote,clojureRegexpBoundary,clojureRegexpQuantifier,clojureRegexpOr,clojureRegexpBackRef,clojureRegexpGroup keepend
