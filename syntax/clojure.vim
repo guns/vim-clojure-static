@@ -76,15 +76,7 @@ syntax match clojureStringEscape "\v\\%([\\btnfr"]|u\x{4}|[0-3]\o{2}|\o{1,2})" c
 
 syntax region clojureString matchgroup=clojureStringDelimiter start=/"/ skip=/\\\\\|\\"/ end=/"/ contains=clojureStringEscape,@Spell
 
-syntax match clojureCharacter "\\."
-syntax match clojureCharacter "\\o\%([0-3]\o\{2\}\|\o\{1,2\}\)"
-syntax match clojureCharacter "\\u\x\{4\}"
-syntax match clojureCharacter "\\space"
-syntax match clojureCharacter "\\tab"
-syntax match clojureCharacter "\\newline"
-syntax match clojureCharacter "\\return"
-syntax match clojureCharacter "\\backspace"
-syntax match clojureCharacter "\\formfeed"
+syntax match clojureCharacter "\v\\%(.$|o%([0-3]\o{2}|\o{1,2})|u\x{4}|newline|tab|space|return|backspace|formfeed)"
 
 syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
 

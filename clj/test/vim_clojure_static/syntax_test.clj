@@ -6,6 +6,7 @@
 
 (defpredicates number :clojureNumber)
 (defpredicates kw :clojureKeyword)
+(defpredicates character :clojureCharacter)
 (defpredicates regexp :clojureRegexp)
 (defpredicates regexp-escape :clojureRegexpEscape)
 (defpredicates regexp-char-class :clojureRegexpCharClass)
@@ -80,6 +81,27 @@
     "2r1e-1" !number]])
 
 (comment (test #'test-number-literals))
+
+(defsyntaxtest test-character-literals
+  ["%s"
+   ["\\0"  character  "\\a"    character  "\\Z"     character
+    "\\."  character  "\\\\"   character  "\\❤"     character
+    "\\o7" character  "\\o07"  character  "\\o307"  character
+    "\\o8" !character "\\o477" !character "\\o0007" !character
+
+    "\\u09af" character
+
+    "\\u0"     !character "\\u01"    !character "\\u012" !character
+    "\\u01234" !character "\\u0123g" !character
+
+    "\\newline"   character "\\new" !character
+    "\\tab"       character "\\ta"  !character
+    "\\space"     character "\\sp"  !character
+    "\\return"    character "\\ret" !character
+    "\\backspace" character "\\bs"  !character
+    "\\formfeed"  character "\\ff"  !character]])
+
+(comment (test #'test-character-literals))
 
 ;; TODO: Finish me! (this was in an old git stash)
 ;; (defsyntaxtest keywords-test
