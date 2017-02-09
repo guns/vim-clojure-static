@@ -35,6 +35,7 @@
     "0x0"        number "+0x0"  number "-0x0"  number ; Hexadecimal zero
     "3/2"        number "+3/2"  number "-3/2"  number ; Rational
     "0/0"        number "+0/0"  number "-0/0"  number ; Rational (not a syntax error)
+    "36r0XYZ"    number "16rFF" number "8r077" number ; Radix
     "2r1"        number "+2r1"  number "-2r1"  number ; Radix
     "36R1"       number "+36R1" number "-36R1" number ; Radix
 
@@ -47,7 +48,7 @@
     "1.0/1" !number
     "01/2" !number
     "1/02" !number
-    "2r2" !number
+    ; "2r2" !number ;; Removed for performance
     "1r0" !number
     "37r36" !number
 
@@ -68,7 +69,7 @@
     "08.9M" !number
     "0x1fM" !number
     "3/4M" !number
-    "2r1M" !number
+    ; "2r1M" !number ;; Removed for performance
 
     ;; Exponential notation
 
