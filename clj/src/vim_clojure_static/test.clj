@@ -90,6 +90,7 @@
         test-file (str "tmp/" name ".clj")
         syntable (gensym "syntable")]
     `(test/deftest ~name
+       (~io/make-parents ~test-file)
        (spit ~test-file "")
        (let [~syntable (syn-id-names ~test-file ~@strings)]
          ~@(map (fn [{:keys [fmt ss λs]}]
