@@ -78,7 +78,7 @@ syntax region clojureString matchgroup=clojureStringDelimiter start=/"/ skip=/\\
 
 syntax match clojureCharacter "\v\\%(.$|o%([0-3]\o{2}|\o{1,2})|u\x{4}|newline|tab|space|return|backspace|formfeed)"
 
-syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
+syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@1<!"
 
 " NB. Correct matching of radix literals was removed for better performance.
 syntax match clojureNumber "\v<[-+]?%([2-9]|[12]\d|3[0-6])[rR][[:alnum:]]+>"
