@@ -81,10 +81,7 @@ syntax match clojureCharacter "\v\\%(.$|o%([0-3]\o{2}|\o{1,2})|u\x{4}|newline|ta
 syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@1<!"
 
 " NB. Correct matching of radix literals was removed for better performance.
-syntax match clojureNumber "\v<[-+]?%([2-9]|[12]\d|3[0-6])[rR][[:alnum:]]+>"
-syntax match clojureNumber "\v<[-+]?%(0\o*|0x\x+|[1-9]\d*)N?>"
-syntax match clojureNumber "\v<[-+]?%(0|[1-9]\d*|%(0|[1-9]\d*)\.\d*)%(M|[eE][-+]?\d+)?>"
-syntax match clojureNumber "\v<[-+]?%(0|[1-9]\d*)/%(0|[1-9]\d*)>"
+syntax match clojureNumber "\v<[-+]?%(%([2-9]|[12]\d|3[0-6])[rR][[:alnum:]]+|%(0\o*|0x\x+|[1-9]\d*)N?|%(0|[1-9]\d*|%(0|[1-9]\d*)\.\d*)%(M|[eE][-+]?\d+)?|%(0|[1-9]\d*)/%(0|[1-9]\d*))>"
 
 syntax match clojureVarArg "&"
 
