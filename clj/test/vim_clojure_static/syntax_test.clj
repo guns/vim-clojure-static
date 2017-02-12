@@ -104,27 +104,25 @@
 
 (comment (test #'test-character-literals))
 
-;; TODO: Finish me! (this was in an old git stash)
-;; (defsyntaxtest keywords-test
-;;   (with-format "%s"
-;;     ":1" kw
-;;     ":A" kw
-;;     ":a" kw
-;;     ":αβγ" kw
-;;     "::a" kw
-;;     ":a/b" kw
-;;     ":a:b" kw
-;;     ":a:b/:c:b" kw
-;;     ":a/b/c/d" kw
-;;     "::a/b" !kw
-;;     "::" !kw
-;;     ":a:" !kw
-;;     ":a/" !kw
-;;     ":/" !kw
-;;     ":" !kw
-;;     ))
-;;
-;; (comment (test #'keywords-test))
+(defsyntaxtest keywords-test
+  ["%s"
+   [":1" kw
+    ":A" kw
+    ":a" kw
+    ":αβγ" kw
+    "::a" kw
+    ":a/b" kw
+    ":a:b" kw
+    ":a:b/:c:b" kw
+    ":a/b/c/d" kw
+    "::a/b" kw
+    "::" !kw
+    ":a:" !kw
+    ":a/" !kw
+    ; ":/" !kw ; This is legal, but for simplicity we do not match it
+    ":" !kw]])
+
+(comment (test #'keywords-test))
 
 (defsyntaxtest test-java-regexp-literals
   ["#\"%s\""
