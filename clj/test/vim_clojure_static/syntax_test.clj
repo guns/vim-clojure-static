@@ -84,7 +84,7 @@
 (comment (test #'test-number-literals))
 
 (defsyntaxtest test-character-literals
-  ["%s"
+  ["[%s]"
    ["\\0"  character  "\\a"    character  "\\Z"     character
     "\\."  character  "\\\\"   character  "\\❤"     character
     "\\o7" character  "\\o07"  character  "\\o307"  character
