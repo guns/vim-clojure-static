@@ -85,10 +85,8 @@ syntax match clojureNumber "\v<[-+]?%(%([2-9]|[12]\d|3[0-6])[rR][[:alnum:]]+|%(0
 
 syntax match clojureVarArg "&"
 
-syntax match clojureQuote "'"
-syntax match clojureQuote "`"
-syntax match clojureUnquote "\~"
-syntax match clojureUnquote "\~@"
+syntax match clojureQuote "\v['`]"
+syntax match clojureUnquote "\v\~\@?"
 syntax match clojureMeta "\^"
 syntax match clojureDeref "@"
 syntax match clojureDispatch "\v#[\^'=<_]?"
