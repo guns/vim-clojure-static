@@ -18,6 +18,9 @@ set cpo&vim
 
 let b:undo_indent = 'setlocal autoindent< smartindent< expandtab< softtabstop< shiftwidth< indentexpr< indentkeys<'
 
+" SpeclJ Indentation Support
+setlocal lispwords+=describe,it,context,around,should=,should-not,should,should-be,with,run-specs
+
 setlocal noautoindent nosmartindent
 setlocal softtabstop=2 shiftwidth=2 expandtab
 setlocal indentkeys=!,o,O
