@@ -293,6 +293,7 @@ if exists("*searchpairpos")
 		" (minus one if g:clojure_align_subforms = 1), or if it is
 		" ignored, in which case we use the ( position for indent.
 		if w[0] == "#"
+			" TODO: Handle #=() and other rare reader invocations?
 			if w[1] == '(' || w[1] == '{'
 				return [paren[0], paren[1] + (g:clojure_align_subforms ? 0 : &shiftwidth - 1)]
 			elseif w[1] == '_'
