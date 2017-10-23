@@ -28,3 +28,8 @@
   (test-indent "reader conditionals are indented like maps"
                :in "test-reader-conditional-indent.in"
                :out "test-reader-conditional-indent.out"))
+
+(deftest test-dispatch-macro-indent
+  (test-indent "dispatch macro indentation is handled correctly"
+               :in "test-dispatch-macro-indent.in"
+               :out "test-dispatch-macro-indent.out"))
