@@ -170,6 +170,10 @@ if exists("*searchpairpos")
 
 		call search('\S', 'W')
 		let w = s:strip_namespace_and_macro_chars(s:current_word())
+		if 'letfn' ==# w
+			let next_bracket = s:match_pairs('\[', '\]', next_paren[0])
+			return next_bracket[0] > next_paren[0] || next_bracket[1] > next_paren[1]
+		endif
 		if g:clojure_special_indent_words =~# '\V\<' . w . '\>'
 			return 1
 		endif
