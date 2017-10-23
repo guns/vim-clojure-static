@@ -196,6 +196,27 @@ if exists("*searchpairpos")
 
 		return 0
 	endfunction
+	
+	" Check if keyword is an anonymous function, prefixed by #(, or a set,
+	" prefixed by #{
+	function! s:is_anonymous_function_or_set(word)
+		if a:word[0:1] == "#("
+			return 1
+		elseif a:word[0:1] == "#{"
+			return 1
+		endif
+
+		return 0
+	endfunction
+
+	" Check if keyword is ignored, that is, prefixed by #_
+	function! s:is_ignored(word)
+		if a:word[0:1] == "#_"
+			return 1
+		endif
+
+		return 0
+	endfunction
 
 	" Returns 1 for opening brackets, -1 for _anything else_.
 	function! s:bracket_type(char)
@@ -290,6 +311,18 @@ if exists("*searchpairpos")
 		let w = s:current_word()
 		if s:bracket_type(w[0]) == 1
 			return paren
+		endif
+
+		" If the keyword begins with #, check if it is an anonymous
+		" function or set, in which case we indent by the shiftwidth
+		" (minus one if g:clojure_align_subforms = 1), or if it is
+		" ignored, in which case we use the ( position for indent.
+		if w[0] == "#"
+			if s:is_anonymous_function_or_set(w)
+				return [paren[0], paren[1] + (g:clojure_align_subforms ? 0 : &shiftwidth - 1)]
+			elseif s:is_ignored(w)
+				return paren
+			endif
 		endif
 
 		" Test words without namespace qualifiers and leading reader macro
