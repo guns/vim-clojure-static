@@ -38,9 +38,18 @@ let s:clojure_syntax_keywords = {
     \ , 'clojureVariable': ["*1","*2","*3","*agent*","*allow-unresolved-vars*","*assert*","*clojure-version*","*command-line-args*","*compile-files*","*compile-path*","*compiler-options*","*data-readers*","*default-data-reader-fn*","*e","*err*","*file*","*flush-on-newline*","*fn-loader*","*in*","*math-context*","*ns*","*out*","*print-dup*","*print-length*","*print-level*","*print-meta*","*print-readably*","*read-eval*","*source-path*","*suppress-read*","*unchecked-math*","*use-context-classloader*","*verbose-defrecords*","*warn-on-reflection*","EMPTY-NODE","char-escape-string","char-name-string","clojure.core/*1","clojure.core/*2","clojure.core/*3","clojure.core/*agent*","clojure.core/*allow-unresolved-vars*","clojure.core/*assert*","clojure.core/*clojure-version*","clojure.core/*command-line-args*","clojure.core/*compile-files*","clojure.core/*compile-path*","clojure.core/*compiler-options*","clojure.core/*data-readers*","clojure.core/*default-data-reader-fn*","clojure.core/*e","clojure.core/*err*","clojure.core/*file*","clojure.core/*flush-on-newline*","clojure.core/*fn-loader*","clojure.core/*in*","clojure.core/*math-context*","clojure.core/*ns*","clojure.core/*out*","clojure.core/*print-dup*","clojure.core/*print-length*","clojure.core/*print-level*","clojure.core/*print-meta*","clojure.core/*print-readably*","clojure.core/*read-eval*","clojure.core/*source-path*","clojure.core/*suppress-read*","clojure.core/*unchecked-math*","clojure.core/*use-context-classloader*","clojure.core/*verbose-defrecords*","clojure.core/*warn-on-reflection*","clojure.core/EMPTY-NODE","clojure.core/char-escape-string","clojure.core/char-name-string","clojure.core/default-data-readers","clojure.core/primitives-classnames","clojure.core/unquote","clojure.core/unquote-splicing","default-data-readers","primitives-classnames","unquote","unquote-splicing"]
     \ }
 
+let s:keyword_reserved_words = ["contains", "oneline", "concealends"]
+let s:keyword_reserved_re    = "'" . '\<\(' . join(s:keyword_reserved_words, '\|') . '\)\>' . "'"
+
 function! s:syntax_keyword(dict)
 	for key in keys(a:dict)
-		execute 'syntax keyword' key join(a:dict[key], ' ')
+		let filtered = filter(copy(a:dict[key]), 'v:val !~ ' . s:keyword_reserved_re)
+		execute 'syntax keyword' key join(filtered, ' ')
+
+		let removed  = filter(copy(a:dict[key]), 'v:val =~ ' . s:keyword_reserved_re)
+		if len(removed)
+			execute 'syntax match' key '+\<\('.join(removed, '\|').'\)\>+'
+		endif
 	endfor
 endfunction
 
