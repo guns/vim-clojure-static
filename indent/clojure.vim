@@ -190,32 +190,7 @@ if exists("*searchpairpos")
 	" Check if form is a reader conditional, that is, it is prefixed by #?
 	" or @#?
 	function! s:is_reader_conditional_special_case(position)
-		if getline(a:position[0])[a:position[1] - 3 : a:position[1] - 2] == "#?"
-			return 1
-		endif
-
-		return 0
-	endfunction
-	
-	" Check if keyword is an anonymous function, prefixed by #(, or a set,
-	" prefixed by #{
-	function! s:is_anonymous_function_or_set(word)
-		if a:word[0:1] == "#("
-			return 1
-		elseif a:word[0:1] == "#{"
-			return 1
-		endif
-
-		return 0
-	endfunction
-
-	" Check if keyword is ignored, that is, prefixed by #_
-	function! s:is_ignored(word)
-		if a:word[0:1] == "#_"
-			return 1
-		endif
-
-		return 0
+		return getline(a:position[0])[a:position[1] - 3 : a:position[1] - 2] == "#?"
 	endfunction
 
 	" Returns 1 for opening brackets, -1 for _anything else_.
@@ -318,9 +293,9 @@ if exists("*searchpairpos")
 		" (minus one if g:clojure_align_subforms = 1), or if it is
 		" ignored, in which case we use the ( position for indent.
 		if w[0] == "#"
-			if s:is_anonymous_function_or_set(w)
+			if w[1] == '(' || w[1] == '{'
 				return [paren[0], paren[1] + (g:clojure_align_subforms ? 0 : &shiftwidth - 1)]
-			elseif s:is_ignored(w)
+			elseif w[1] == '_'
 				return paren
 			endif
 		endif
