@@ -88,6 +88,10 @@ if has("gui_win32") && !exists("b:browsefilter")
 	let b:undo_ftplugin .= ' | unlet! b:browsefilter'
 endif
 
+if ! exists('b:AutoPairs')
+	let b:AutoPairs = {'(':')', '[':']', '{':'}','"':'"'}
+endif
+
 let &cpo = s:cpo_save
 
 unlet! s:cpo_save s:setting s:dir
