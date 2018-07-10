@@ -86,7 +86,7 @@ syntax match clojureCharacter "\\return"
 syntax match clojureCharacter "\\backspace"
 syntax match clojureCharacter "\\formfeed"
 
-syntax match clojureSymbol "\v%([a-zA-Z!$&*_+=|<.>?-]|[^\x00-\x7F])+%(:?%([a-zA-Z0-9!#$%&*_+=|'<.>/?-]|[^\x00-\x7F]))*[#:]@<!"
+syntax match clojureSymbol ""
 
 let s:radix_chars = "0123456789abcdefghijklmnopqrstuvwxyz"
 for s:radix in range(2, 36)
