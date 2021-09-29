@@ -152,6 +152,7 @@ syntax keyword clojureCommentTodo contained FIXME XXX TODO FIXME: XXX: TODO:
 
 syntax match clojureComment ";.*$" contains=clojureCommentTodo,@Spell
 syntax match clojureComment "#!.*$"
+syntax match clojureComment ","
 
 " -*- TOP CLUSTER -*-
 " Generated from https://github.com/guns/vim-clojure-static/blob/%%RELEASE_TAG%%/clj/src/vim_clojure_static/generate.clj
